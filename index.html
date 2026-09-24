@@ -638,6 +638,52 @@ html.chromium .gnav{-webkit-backdrop-filter:url(#lg) blur(14px) saturate(180%);b
 .pcard .im img,.lb-stage img,.ltile img{image-rendering:auto;-webkit-font-smoothing:antialiased}
 .lb-stage img{min-width:0;flex:0 1 auto;max-width:calc(100% - 124px)}
 @media (max-width:640px){.lb-stage img{max-width:100%}}
+
+/* ===== phone responsive fixes ===== */
+html,body{max-width:100%;overflow-x:hidden}
+.page{overflow-x:clip}
+.lstrip{min-width:0;max-width:100%;overflow:hidden}
+.ls-rows,.ls-track-w{min-width:0;max-width:100%}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.chip{min-height:40px;padding:0 16px;border-radius:999px;border:0;cursor:pointer;font-weight:500;font-size:13px;color:var(--ink);background:rgba(10,10,10,.06);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(0,0,0,.08);transition:background .2s}
+.chip[aria-pressed="true"]{background:rgba(10,10,10,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 0 0 1px rgba(10,10,10,.2)}
+@media (max-width:640px){
+  .lstrip{flex-direction:column;align-items:stretch;gap:14px;padding-inline:0}
+  .ls-lead{padding-inline:16px}
+  .ls-rows{width:100%}
+  .ltile{width:104px;height:56px;padding:7px 10px;border-radius:10px}
+  .ls-track{gap:8px}
+  .wm{font-size:clamp(30px,10.4vw,60px);letter-spacing:-.05em}
+  .jc{min-height:0}
+  .jc-h img{width:42%}
+  .jc-f{margin-top:18px}
+  .srow{--p:1!important}
+  .srow .nm{font-size:clamp(34px,10vw,44px)}
+  .hh-h{font-size:clamp(36px,10.5vw,46px)}
+  .hh-side p{font-size:20px}
+  .hh-side .hero-cta{width:100%}
+  .hh-side .hero-cta .btn{flex:1 1 0;min-width:0;padding:0 12px}
+  .hh-meta{font-size:10.5px}
+  .h2{font-size:clamp(28px,8.4vw,36px)}
+  .h1{font-size:clamp(36px,10.5vw,48px)}
+  .cta h2{font-size:clamp(34px,10vw,44px)}
+  .stats{gap:18px}
+  .stat .num{font-size:44px}
+  .fgrid{row-gap:32px}
+  .feat{padding-top:64px}
+  .wgrid{gap:28px}
+  .tc{flex-basis:84vw}
+  .foot{gap:36px}
+  .f-cols{grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+  .fbox{padding:18px}
+  .lb-top b{font-size:17px}
+  .lb-th button{width:56px;height:38px}
+  .pricing .plans{gap:12px}
+  .gnav{top:calc(8px + env(safe-area-inset-top,0px));width:calc(100% - 16px)}
+}
+@media (max-width:380px){.hh-meta span:nth-child(3){display:none}.ltile{width:92px;height:50px}}
+.cta .tag{align-self:center}
+@media (max-width:640px){.jc .jc-f{margin-top:12px!important}.jc-h{min-height:0}}
 </style>
 </head>
 <body>

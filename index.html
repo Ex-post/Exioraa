@@ -1,0 +1,1262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Exioraa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#FFFFFF; --panel:#F2F2F2; --panel2:#E9E9E9; --ink:#0A0A0A; --ink2:#2B2B2B; --muted:#6A6A6A; --line:#E4E4E4;
+  --dark:#0B0B0B; --dark2:#181818; --dark3:#222222; --dline:#2C2C2C; --dmuted:#9B9B9B; --dsoft:#CFCFCF;
+  --red:#D6282F; --focus:#2458E6;
+  --font:'Geist','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --g:clamp(16px,2.2vw,32px);
+  --ease:cubic-bezier(.2,.75,.2,1);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{margin:0;font-weight:500;letter-spacing:-.035em;text-wrap:balance}
+p{margin:0;text-wrap:pretty}
+a{color:inherit}
+img{display:block;max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:6px}
+.page{padding-inline:8px}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:var(--g)}
+.mono{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.muted{color:var(--muted)}
+.tag{display:inline-flex;align-items:center;gap:7px;padding:5px 9px;border-radius:6px;background:var(--panel);font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);align-self:flex-start;white-space:nowrap}
+.tag::before{content:"";width:6px;height:6px;border-radius:1.5px;background:var(--red)}
+.dk .tag{background:#fff;color:#0A0A0A}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:999px;border:0;text-decoration:none;font-weight:500;font-size:13px;cursor:pointer;white-space:nowrap;transition:transform .3s var(--ease),background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn .ar{transition:transform .3s var(--ease)}
+.btn:hover .ar{transform:translate(2px,-2px)}
+.b-red{background:var(--red);color:#fff}
+.b-ink{background:var(--ink);color:#fff}
+.b-white{background:#fff;color:#0A0A0A}
+.b-line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.b-lg{min-height:48px;padding:0 22px;font-size:15px}
+.lnk{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-weight:500}
+.lnk:hover{opacity:.65}
+.dk{background:var(--dark);color:#fff;border-radius:20px}
+.dk .muted{color:var(--dmuted)}
+.h1{font-size:clamp(40px,5.6vw,80px);line-height:1.02;letter-spacing:-.045em}
+.h2{font-size:clamp(32px,3.6vw,52px);line-height:1.06;letter-spacing:-.04em}
+.h3{font-size:clamp(24px,2.2vw,32px);line-height:1.15;letter-spacing:-.03em}
+.sec{padding-block:clamp(72px,9vw,128px) 0}
+.pill-img{display:inline-block;width:1.45em;height:.92em;border-radius:.46em;overflow:hidden;vertical-align:-.08em;margin-inline:.08em}
+.pill-img img{width:100%;height:100%;object-fit:cover}
+.sup{font-family:var(--mono);font-size:11px;letter-spacing:.04em;vertical-align:super;margin-left:6px;font-weight:400}
+
+/* ---------- reveal system ---------- */
+.js [data-r]{opacity:0;filter:blur(12px);transform:translateY(26px);transition:opacity 1s var(--ease),filter 1s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
+.js [data-r].in{opacity:1;filter:blur(0);transform:none}
+.js [data-split] .w{display:inline-block;opacity:0;filter:blur(10px);transform:translateY(.25em);transition:opacity .9s var(--ease),filter .9s var(--ease),transform .9s var(--ease);transition-delay:calc(var(--i)*55ms + var(--d,0s))}
+.js [data-split].in .w{opacity:1;filter:blur(0);transform:none}
+.scrub .w{transition:color .25s linear}
+@media (prefers-reduced-motion:reduce){.js [data-r],.js [data-split] .w{opacity:1!important;filter:none!important;transform:none!important;transition:none!important}.marq-track{animation:none!important}}
+#app.leave{opacity:0;filter:blur(8px);transition:opacity .25s ease,filter .25s ease}
+#app{transition:opacity .35s ease,filter .35s ease}
+
+/* ---------- nav ---------- */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px;padding-inline:clamp(12px,1.6vw,20px);position:relative;z-index:20}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:18px;letter-spacing:-.03em}
+.logo sup{font-size:9px;font-weight:500;margin-left:-4px}
+.links{display:flex;align-items:center;gap:26px;font-size:13px;font-weight:500}
+.links>a,.links .dd>button{position:relative;text-decoration:none;display:flex;align-items:center;gap:4px;background:none;border:0;padding:8px 0;cursor:pointer;color:inherit;opacity:.92}
+.links>a:hover,.links .dd>button:hover{opacity:.6}
+.links a[aria-current="page"]{color:var(--red);opacity:1}
+.badge{position:absolute;top:-4px;right:-16px;min-width:18px;height:14px;padding:0 4px;border-radius:8px;background:var(--red);color:#fff;font-family:var(--mono);font-size:8.5px;line-height:14px;text-align:center}
+.dd{position:relative}
+.ddm{position:absolute;top:calc(100% + 10px);left:50%;translate:-50% 0;width:220px;padding:6px;border-radius:14px;background:#fff;color:#0A0A0A;box-shadow:0 20px 50px -20px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.06);display:grid}
+.ddm a{padding:10px 12px;border-radius:9px;text-decoration:none;font-size:14px}
+.ddm a:hover{background:var(--panel)}
+.call{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 4px;border-radius:999px;background:#fff;color:#0A0A0A;text-decoration:none;font-size:12.5px;font-weight:500;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.call img{width:28px;height:28px;border-radius:50%;object-fit:cover}
+.nav.lt .call{background:var(--ink);color:#fff}
+.burger{display:none;width:40px;height:40px;border-radius:50%;border:0;background:#fff;color:#0A0A0A;align-items:center;justify-content:center;cursor:pointer}
+.nav.lt .burger{background:var(--ink);color:#fff}
+.mob{position:fixed;inset:0;z-index:80;background:var(--dark);color:#fff;padding:calc(16px + env(safe-area-inset-top,0px)) 20px 24px;display:flex;flex-direction:column;gap:6px;overflow:auto}
+.mob a{font-size:30px;font-weight:500;letter-spacing:-.03em;text-decoration:none;padding:8px 0;border-bottom:1px solid var(--dline)}
+.mob .x{align-self:flex-end;width:44px;height:44px;border-radius:50%;border:0;background:#fff;color:#0A0A0A;cursor:pointer;margin-bottom:12px}
+@media (max-width:980px){.links,.nav .call{display:none}.burger{display:flex}}
+
+/* ---------- hero ---------- */
+.hero{margin-top:8px;display:flex;flex-direction:column;min-height:min(640px,86svh)}
+.hero-c{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:22px;padding:48px var(--g)}
+.hero-b{display:flex;justify-content:space-between;gap:16px;padding:0 20px 18px;color:var(--dmuted)}
+.hero h1{max-width:16ch}
+.lhero{margin-top:8px;background:var(--panel);border-radius:20px;display:flex;flex-direction:column}
+.lhero-c{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;padding:clamp(40px,6vw,88px) clamp(16px,2vw,24px) clamp(28px,3vw,40px)}
+.lhero-c .side{max-width:360px;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+
+/* ---------- who ---------- */
+.who{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+.who h2{max-width:16ch}
+.marq{overflow:hidden;margin-top:48px;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.marq-track{display:flex;gap:10px;width:max-content;animation:marq 45s linear infinite}
+.marq:hover .marq-track{animation-play-state:paused}
+.marq-item{width:clamp(200px,20vw,290px);aspect-ratio:3/3.7;border-radius:14px;overflow:hidden;flex-shrink:0;position:relative}
+.marq-item img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.marq-item:hover img{transform:scale(1.06)}
+.marq-item span{position:absolute;left:12px;bottom:10px;color:#fff;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.4)}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ---------- stats / odometer ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:28px}
+.stat{display:flex;flex-direction:column;gap:10px}
+.stat .num{font-size:clamp(44px,5vw,68px);line-height:1;letter-spacing:-.05em;font-weight:500;padding-bottom:14px;border-bottom:1px dashed #BDBDBD;display:flex}
+.stat b{font-weight:500;font-size:14px}
+.stat p{font-size:12px;color:var(--muted);max-width:30ch}
+.odo{display:inline-flex;overflow:hidden;height:1em;line-height:1}
+.odo .col{display:flex;flex-direction:column;transition:transform 2s var(--ease);transform:translateY(0)}
+.odo .col span{height:1em;display:block}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}}
+
+/* ---------- services dark list ---------- */
+.svc{margin-top:clamp(72px,9vw,120px);padding:clamp(28px,4vw,48px) clamp(16px,2.4vw,32px) clamp(40px,6vw,88px)}
+.svc-top{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;padding-bottom:28px;border-bottom:1px solid var(--dline)}
+.svc-top p{max-width:300px;font-size:12px}
+.srows{display:flex;flex-direction:column;margin-top:36px}
+.srow{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:14px 0;text-decoration:none;color:#fff;border-bottom:1px solid transparent;transition:border-color .3s}
+.srow .nm{font-size:clamp(38px,6vw,84px);line-height:1.05;letter-spacing:-.05em;font-weight:500;transition:transform .5s var(--ease)}
+.srow:hover .nm{transform:translateX(12px)}
+.srow .chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:420px}
+.srow .chips span{padding:5px 10px;border-radius:999px;border:1px solid var(--dline);font-size:12px;color:var(--dsoft)}
+.srow:hover{border-bottom-color:var(--dline)}
+@media (max-width:760px){.srow{flex-direction:column;align-items:flex-start;gap:10px}.srow .chips{justify-content:flex-start}}
+
+/* ---------- featured ---------- */
+.feat{position:relative;padding-top:clamp(80px,9vw,128px)}
+.feat-sticky{position:sticky;top:28vh;height:0;z-index:0;display:flex;justify-content:center}
+.feat-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;translate:0 0}
+.feat-head p{max-width:40ch;font-size:12px}
+.fgrid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:20px;row-gap:72px;padding-top:36vh}
+.fcard{text-decoration:none;display:flex;flex-direction:column;gap:10px}
+.fcard .im{border-radius:14px;overflow:hidden;aspect-ratio:16/10.5;background:var(--panel)}
+.fcard .im img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.fcard:hover .im img{transform:scale(1.05)}
+.fmeta{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.fmeta b{font-weight:500;font-size:16px;letter-spacing:-.02em}
+.fc1{grid-column:1/span 5}.fc2{grid-column:9/span 4;margin-top:-18vh}
+.fc3{grid-column:4/span 5}.fc4{grid-column:1/span 5}.fc5{grid-column:9/span 4;margin-top:6vh}
+.allc{display:flex;justify-content:center;padding-top:64px}
+@media (max-width:760px){.feat-sticky{position:static;height:auto;margin-bottom:32px}.fgrid{padding-top:0;row-gap:40px}.fcard{grid-column:1/-1!important;margin-top:0!important}}
+
+/* ---------- pricing ---------- */
+.pricing{background:var(--panel);margin-top:clamp(80px,9vw,128px);padding-block:clamp(64px,7vw,96px)}
+.p-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+.tog{display:flex;gap:2px;padding:3px;border-radius:999px;background:#fff}
+.tog button{border:0;background:transparent;border-radius:999px;padding:6px 12px;font-size:11px;cursor:pointer;font-weight:500;color:var(--muted);min-height:30px}
+.tog button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.plan{background:#fff;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:20px;box-shadow:0 0 0 1px rgba(0,0,0,.03)}
+.plan.pop{box-shadow:0 0 0 1.5px var(--red)}
+.plan-h{display:flex;justify-content:space-between;align-items:center}
+.plan-n{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.plan-n i{width:20px;height:20px;border-radius:50%;background:var(--panel);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:9px}
+.pop-b{padding:4px 8px;border-radius:4px;background:var(--red);color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.price{font-size:28px;font-weight:500;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.price small{font-size:14px;letter-spacing:-.01em}
+.plan ul{list-style:none;margin:0;padding:18px 0 0;border-top:1px solid var(--line);display:grid;gap:12px;flex:1}
+.plan li{display:flex;align-items:center;gap:10px;font-size:13px}
+.plan li svg{flex-shrink:0;color:var(--muted)}
+@media (max-width:900px){.plans{grid-template-columns:1fr}}
+
+/* ---------- faq ---------- */
+.faqw{display:grid;grid-template-columns:5fr 6fr;gap:40px;align-items:start}
+.faqw .l{display:flex;flex-direction:column;gap:16px;position:sticky;top:24px}
+.faqw .l p{font-size:12px;max-width:34ch}
+.faq{display:grid;gap:8px}
+.faq details{background:var(--panel);border-radius:12px}
+.faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:52px;padding:12px 18px;cursor:pointer;font-size:14px;font-weight:500}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary svg{flex-shrink:0;transition:transform .35s var(--ease)}
+.faq details[open] summary svg{transform:rotate(45deg)}
+.faq .a{padding:0 18px 18px;font-size:13.5px;color:var(--muted);max-width:60ch}
+@media (max-width:860px){.faqw{grid-template-columns:1fr}.faqw .l{position:static}}
+
+/* ---------- testimonials ---------- */
+.testi{margin-top:clamp(80px,9vw,128px);padding:clamp(28px,4vw,48px) clamp(16px,2.4vw,32px) clamp(24px,3vw,32px)}
+.t-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:32px}
+.t-top p{max-width:300px;font-size:12px}
+.track{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px;cursor:grab}
+.track::-webkit-scrollbar{display:none}
+.tc{flex:0 0 clamp(260px,26vw,340px);scroll-snap-align:start;background:var(--dark3);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:22px;min-height:300px}
+.tc-h{display:flex;justify-content:space-between;align-items:center}
+.tc-h img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+.tc-h span{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600}
+.tc q{font-size:13.5px;line-height:1.5;color:var(--dsoft);quotes:none;flex:1}
+.tc q::before{content:"❝ ";color:var(--red)}
+.tc .who b{display:block;font-weight:500;font-size:14px}
+.tc .who small{color:var(--dmuted);font-size:11px}
+.t-ctl{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+.dots{display:flex;gap:6px}
+.dots button{width:6px;height:6px;border-radius:50%;border:0;padding:0;background:#555;cursor:pointer}
+.dots button[aria-current="true"]{background:#fff}
+.arrows{display:flex;gap:8px}
+.arrows button{width:34px;height:34px;border-radius:50%;border:0;background:var(--dark3);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.arrows button:hover{background:#333}
+
+/* ---------- journal ---------- */
+.j-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+.jgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.jc{background:var(--panel);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:14px;text-decoration:none;min-height:340px;transition:background .3s}
+.jc:hover{background:var(--panel2)}
+.jc-h{display:flex;justify-content:space-between;align-items:flex-start}
+.jc-h span{font-size:11px;font-weight:500;padding:4px 6px}
+.jc-h img{width:34%;aspect-ratio:1.15;border-radius:8px;object-fit:cover;transition:transform .8s var(--ease)}
+.jc:hover .jc-h img{transform:scale(1.04)}
+.jc-f{margin-top:auto;display:flex;flex-direction:column;gap:8px;padding:4px}
+.jc-m{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted)}
+.jc-m .rd::before{content:"●";color:var(--red);font-size:7px;margin-right:5px;vertical-align:2px}
+.jc h3{font-size:17px;letter-spacing:-.02em;line-height:1.25}
+.jc p{font-size:12px;color:var(--muted)}
+@media (max-width:900px){.jgrid{grid-template-columns:1fr}}
+
+/* ---------- cta + footer ---------- */
+.cta{display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;padding-block:clamp(96px,11vw,150px) clamp(72px,8vw,110px)}
+.cta h2{font-size:clamp(40px,5.2vw,72px);line-height:1.04;letter-spacing:-.045em;max-width:14ch}
+.foot{position:relative;overflow:hidden;margin-bottom:8px;padding:clamp(24px,3vw,40px) clamp(16px,2.4vw,32px) 18px;display:flex;flex-direction:column;gap:clamp(40px,6vw,72px);--mx:70%;--my:40%}
+.foot::before{content:"";position:absolute;inset:0;background:radial-gradient(520px circle at var(--mx) var(--my),rgba(255,255,255,.09),transparent 60%);pointer-events:none;transition:background .1s}
+.foot>*{position:relative}
+.f-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.f-news{display:flex;flex-direction:column;gap:18px;max-width:360px;flex:1 1 280px}
+.f-news h3{font-size:clamp(22px,2vw,28px);letter-spacing:-.03em;line-height:1.2;font-weight:400}
+.nf{display:flex;align-items:center;gap:6px;height:40px;padding:0 4px 0 14px;border-radius:999px;box-shadow:inset 0 0 0 1px #3A3A3A}
+.nf input{flex:1;min-width:0;background:none;border:0;outline:none;color:#fff;font-size:12px}
+.nf input::placeholder{color:#8A8A8A}
+.nf button{width:30px;height:30px;border-radius:50%;border:0;background:#fff;color:#0A0A0A;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.soc{display:flex;gap:6px}
+.soc a{display:flex;align-items:center;gap:4px;height:22px;padding:0 7px;border-radius:5px;background:#1E1E1E;font-family:var(--mono);font-size:9px;text-decoration:none;color:var(--dsoft)}
+.soc a:hover{background:#2A2A2A}
+.f-cols{display:grid;grid-template-columns:repeat(3,auto);gap:10px clamp(36px,7vw,110px);font-size:12.5px}
+.f-cols div{display:flex;flex-direction:column;gap:7px}
+.f-cols a,.f-cols button{text-decoration:none;color:#fff;background:none;border:0;padding:0;text-align:left;cursor:pointer;font-size:12.5px}
+.f-cols a:hover,.f-cols button:hover{color:var(--dmuted)}
+.wm{font-size:clamp(36px,11vw,168px);font-weight:600;letter-spacing:-.06em;line-height:.8;text-align:center;white-space:nowrap}
+.f-bot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--dsoft)}
+.f-bot b{color:#fff;font-weight:600}
+.f-bot a{text-decoration:none;color:var(--dsoft)}.f-bot a:hover{color:#fff}
+@media (max-width:640px){.f-cols{grid-template-columns:repeat(2,auto)}}
+
+/* ---------- studio ---------- */
+.story{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.story .t{display:flex;flex-direction:column;gap:18px;font-size:clamp(18px,1.6vw,22px);line-height:1.35;letter-spacing:-.015em}
+.story .t .w{color:#C9C9C9}
+.story .t .w.on{color:var(--ink)}
+.by{display:flex;align-items:center;gap:10px;font-size:12px;margin-top:auto}
+.by img{width:28px;height:28px;border-radius:50%;object-fit:cover}
+.pin{position:relative;margin-top:clamp(72px,9vw,120px);height:260vh}
+.pin-in{position:sticky;top:8px;height:calc(100svh - 16px);overflow:hidden;display:flex;flex-direction:column;padding:clamp(24px,3vw,40px) clamp(16px,2.4vw,32px)}
+.pin-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.days{flex:1;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;align-items:end;padding-top:28px}
+.day{background:#fff;color:#0A0A0A;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:12px;min-height:min(46svh,380px);will-change:transform}
+.day h4{font-size:13px;letter-spacing:-.01em;font-weight:500}.day h4 span{color:var(--muted);margin-left:6px;font-weight:400}
+.day svg{flex:1;width:70%;max-height:170px;align-self:center;color:#EFEFEF}
+.day p{font-size:11.5px;color:var(--muted)}
+@media (max-width:980px){.days{grid-template-columns:repeat(3,minmax(0,1fr))}.day{min-height:0}.day svg{max-height:70px}}
+@media (max-width:640px){.pin{height:auto}.pin-in{position:static;height:auto}.days{grid-template-columns:1fr 1fr}.day{transform:none!important}.story{grid-template-columns:1fr}}
+.logos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:20px}
+.logos div{background:var(--panel);border-radius:10px;height:clamp(64px,7vw,96px);display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:14px;letter-spacing:-.02em}
+@media (max-width:640px){.logos{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.found{display:grid;grid-template-columns:5fr 6fr;gap:clamp(24px,5vw,80px);align-items:center}
+.found .im{border-radius:14px;overflow:hidden;aspect-ratio:4/4.4}
+.found .im img{width:100%;height:100%;object-fit:cover}
+.acc{display:grid;margin-top:24px}
+.acc details{border-bottom:1px solid var(--line)}
+.acc summary{list-style:none;display:flex;align-items:center;gap:10px;padding:14px 0;cursor:pointer;font-size:13px;font-weight:500}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary svg{color:var(--muted)}
+.acc p{padding:0 0 16px 26px;font-size:12.5px;color:var(--muted);max-width:52ch}
+.team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.tm{border-radius:12px;overflow:hidden;position:relative;aspect-ratio:1/1.08;background:var(--panel)}
+.tm img,.ci>img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.tm:hover img{transform:scale(1.05)}
+.tm .cap{position:absolute;left:10px;right:10px;bottom:10px;padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);display:flex;flex-direction:column}
+.tm .cap b{font-size:13px;font-weight:500}.tm .cap small{font-size:11px;color:var(--muted)}
+.tm.join{display:flex;flex-direction:column;justify-content:space-between;padding:16px;background:var(--panel)}
+@media (max-width:900px){.team{grid-template-columns:repeat(2,minmax(0,1fr))}.found{grid-template-columns:1fr}}
+
+/* ---------- work ---------- */
+.lmarq{display:flex;align-items:center;gap:32px;padding:18px clamp(16px,2vw,24px);overflow:hidden}
+.lmarq .lead{display:flex;align-items:center;gap:10px;flex-shrink:0;max-width:210px}
+.lm{overflow:hidden;flex:1;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.lm .marq-track{gap:44px;animation-duration:30s}
+.lm span{display:flex;align-items:center;gap:7px;font-weight:600;font-size:13px;white-space:nowrap}
+.wgrid{display:grid;grid-template-columns:1fr 1fr;gap:56px 12px;margin-top:clamp(40px,5vw,64px)}
+.wgrid .fcard .im{aspect-ratio:16/9.6}
+@media (max-width:760px){.wgrid{grid-template-columns:1fr}}
+
+/* ---------- project single ---------- */
+.ps-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-top:clamp(40px,6vw,72px)}
+.ps-meta{display:flex;gap:28px;flex-wrap:wrap;font-size:11px;margin-top:10px}
+.ps-meta span{color:var(--muted);font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;margin-right:6px}
+.ps-thumb{position:relative;width:min(320px,100%);aspect-ratio:16/9.5;border-radius:12px;overflow:hidden}
+.ps-thumb img{width:100%;height:100%;object-fit:cover}
+.ps-thumb .btn{position:absolute;left:12px;bottom:12px;min-height:30px;font-size:11px;padding:0 12px}
+.ps-hero{margin-top:36px;border-radius:14px;overflow:hidden;aspect-ratio:16/7.5}
+.ps-hero img{width:100%;height:100%;object-fit:cover}
+.ps-row{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding-block:clamp(56px,7vw,96px) 0}
+.ps-row .body{display:flex;flex-direction:column;gap:14px;font-size:14px;line-height:1.6;max-width:62ch}
+.ps-row ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.ps-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:clamp(56px,7vw,96px)}
+.ps-2 div{border-radius:14px;overflow:hidden;aspect-ratio:16/10.5}
+.ps-2 img{width:100%;height:100%;object-fit:cover}
+.quote{max-width:560px;margin:clamp(56px,7vw,96px) auto 0;display:flex;flex-direction:column;gap:22px}
+.quote blockquote{margin:0;font-size:clamp(20px,2vw,26px);line-height:1.35;letter-spacing:-.02em}
+.quote blockquote::before{content:"❝ ";color:var(--red)}
+.quote figcaption{display:flex;align-items:center;gap:10px;font-size:12px;padding-top:18px;border-top:1px solid var(--line)}
+.quote figcaption img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+@media (max-width:760px){.ps-row,.ps-2{grid-template-columns:1fr}.ps-hero{aspect-ratio:4/3}}
+
+/* ---------- services page ---------- */
+.plist{display:flex;flex-direction:column;margin-top:clamp(40px,5vw,64px)}
+.pl{display:grid;grid-template-columns:80px 1.1fr 1.4fr;gap:24px;align-items:start;padding:32px 0;border-top:1px solid var(--line);scroll-margin-top:24px}
+.pl:last-child{border-bottom:1px solid var(--line)}
+.pl h3{font-size:clamp(32px,3.6vw,52px);letter-spacing:-.045em;line-height:1}
+.pl .one{font-size:13px;color:var(--muted);margin-top:10px;max-width:34ch}
+.pl .chips{display:flex;flex-wrap:wrap;gap:6px}
+.pl .chips span{padding:7px 12px;border-radius:999px;background:var(--panel);font-size:12.5px}
+@media (max-width:760px){.pl{grid-template-columns:1fr;gap:14px}}
+.igrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:28px}
+.ic{background:var(--panel);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;min-height:150px}
+.ic b{font-weight:500;font-size:16px;letter-spacing:-.02em}.ic p{font-size:12px;color:var(--muted)}
+@media (max-width:900px){.igrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ---------- careers / forms ---------- */
+.jobs{display:flex;flex-direction:column;margin-top:32px}
+.job{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:20px;align-items:center;padding:22px 0;border-top:1px solid var(--line);text-decoration:none}
+.job:last-child{border-bottom:1px solid var(--line)}
+.job b{font-size:clamp(18px,1.8vw,24px);font-weight:500;letter-spacing:-.025em}
+.job .go{width:36px;height:36px;border-radius:50%;background:var(--panel);display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
+.job:hover .go{background:var(--red);color:#fff}
+@media (max-width:760px){.job{grid-template-columns:1fr auto}.job .h{display:none}}
+.jhero-b{display:flex;justify-content:space-between;gap:16px;padding:0 20px 18px;color:var(--dmuted)}
+.apply{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);align-items:start;margin-top:clamp(40px,5vw,64px)}
+.role{display:flex;flex-direction:column;gap:26px;font-size:13px;line-height:1.6}
+.role h3{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;letter-spacing:-.01em;margin-bottom:6px}
+.role ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.role b{font-weight:600}
+.fbox{background:var(--panel);border-radius:16px;padding:clamp(18px,2.4vw,28px);display:flex;flex-direction:column;gap:18px;position:sticky;top:16px}
+.fbox h2{font-size:clamp(26px,2.4vw,34px);letter-spacing:-.035em}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fl{display:flex;flex-direction:column;gap:6px}
+.fl label,.fl legend{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:500}
+.fl label i,.fl legend i{color:var(--red);font-style:normal}
+.fl input,.fl select,.fl textarea{width:100%;min-height:42px;padding:10px 12px;border-radius:8px;border:1px solid transparent;background:#fff;font-size:13px;outline:none;transition:border-color .2s}
+.fl textarea{min-height:110px;resize:vertical}
+.fl input:focus,.fl select:focus,.fl textarea:focus{border-color:var(--ink)}
+.fl.bad input,.fl.bad select,.fl.bad textarea{border-color:var(--red)}
+.fl .er{font-size:11px;color:var(--red)}
+.fl .er:empty{display:none}
+fieldset{border:0;margin:0;padding:0}
+.chk{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chk label{position:relative;font-family:var(--font);font-size:12.5px;letter-spacing:0;text-transform:none;font-weight:500}
+.chk input{position:absolute;opacity:0;width:1px;height:1px}
+.chk span{display:inline-flex;align-items:center;min-height:36px;padding:0 13px;border-radius:999px;background:#fff;cursor:pointer;transition:background .2s,color .2s}
+.chk input:checked+span{background:var(--ink);color:#fff}
+.chk input:focus-visible+span{outline:2px solid var(--focus);outline-offset:2px}
+.file{display:flex;align-items:center;gap:10px;min-height:42px;padding:6px 6px 6px 12px;border-radius:8px;background:#fff;font-size:12.5px;color:var(--muted)}
+.file label{margin-left:auto;cursor:pointer}
+.file input{position:absolute;opacity:0;width:1px;height:1px}
+.okbox{display:flex;flex-direction:column;gap:14px}
+.okbox .ic2{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center}
+.brief{font-family:var(--mono);font-size:11.5px;line-height:1.7;white-space:pre-wrap;background:#fff;border-radius:10px;padding:14px;max-height:280px;overflow:auto;user-select:all}
+.cinfo{display:flex;flex-direction:column;gap:10px}
+.ci{background:var(--panel);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.ci code{font-family:var(--mono);font-size:14px;user-select:all}
+@media (max-width:860px){.apply{grid-template-columns:1fr}.fbox{position:static}}
+@media (max-width:520px){.fr{grid-template-columns:1fr}}
+.prose{max-width:66ch;margin:0 auto;display:flex;flex-direction:column;gap:16px;font-size:16px;line-height:1.7}
+.prose h2{font-size:24px;letter-spacing:-.03em;margin-top:14px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));translate:-50% 0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;font-weight:500;z-index:90}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.smp{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:4px;box-shadow:inset 0 0 0 1px currentColor;opacity:.55}
+
+/* ================= LIQUID GLASS ================= */
+.glass{position:relative;isolation:isolate;background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.24));-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1px 1px rgba(255,255,255,.95),inset 0 -1px 1px rgba(255,255,255,.3),0 14px 34px -16px rgba(0,0,0,.22),0 2px 6px -3px rgba(0,0,0,.08)}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;background:radial-gradient(130% 90% at var(--gx,18%) var(--gy,-10%),rgba(255,255,255,.75),rgba(255,255,255,0) 55%);mix-blend-mode:soft-light;transition:background .2s}
+.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,0) 38%,rgba(255,255,255,0) 62%,rgba(255,255,255,.6));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.glass-dk{position:relative;isolation:isolate;background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.035));-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(255,255,255,.05),0 24px 48px -24px rgba(0,0,0,.7)}
+.glass-dk::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;background:radial-gradient(120% 90% at var(--gx,15%) var(--gy,-10%),rgba(255,255,255,.16),rgba(255,255,255,0) 55%)}
+.glass-dk::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.45),rgba(255,255,255,0) 35%,rgba(255,255,255,0) 65%,rgba(255,255,255,.2));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+/* floating glass nav */
+.gnav{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:50%;translate:-50% 0;width:min(1200px,calc(100% - 24px));z-index:60;border-radius:999px;transition:translate .5s var(--ease),background .4s,color .4s,box-shadow .4s}
+.gnav.hide{translate:-50% calc(-100% - 24px)}
+.gnav .nav{height:56px;padding-inline:10px 8px}
+.gnav .logo{padding-left:8px}
+.gnav:not(.on-dark){color:var(--ink)}
+.gnav.on-dark{color:#fff;background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.04));border-color:rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 20px 40px -20px rgba(0,0,0,.6)}
+.gnav.on-dark::before{background:radial-gradient(130% 90% at var(--gx,18%) var(--gy,-10%),rgba(255,255,255,.18),rgba(255,255,255,0) 55%);mix-blend-mode:normal}
+.gnav.on-dark::after{opacity:.45}
+.gnav .call{background:var(--ink);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+.gnav.on-dark .call{background:#fff;color:#0A0A0A}
+.gnav .burger{background:var(--ink);color:#fff}
+.gnav.on-dark .burger{background:#fff;color:#0A0A0A}
+.gnav .links a[aria-current="page"]{color:var(--red)}
+.navspace{height:84px;flex-shrink:0}
+html.chromium .gnav{-webkit-backdrop-filter:url(#lg) blur(14px) saturate(180%);backdrop-filter:url(#lg) blur(14px) saturate(180%)}
+.ddm.glass{background:linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.5));color:#0A0A0A}
+/* ambient imagery behind glass */
+.hero,.lhero{position:relative;overflow:hidden;isolation:isolate}
+.hero-bg{position:absolute;inset:-12%;z-index:-1;pointer-events:none}
+.hero-bg img{width:100%;height:100%;object-fit:cover;filter:blur(70px) saturate(140%);opacity:.42;transform:scale(1.1)}
+.lhero .hero-bg img{opacity:.3;filter:blur(80px) saturate(150%)}
+@media (prefers-reduced-motion:no-preference){.hero-bg img{animation:drift 18s ease-in-out infinite alternate}@keyframes drift{from{transform:scale(1.1) translate(-3%,-2%)}to{transform:scale(1.25) translate(3%,3%)}}}
+.hero-c .tag{align-self:center}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.aura{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;border-radius:inherit}
+.aura img{width:100%;height:100%;object-fit:cover;filter:blur(90px) saturate(150%);opacity:.5;transform:scale(1.2)}
+.orbs{position:relative;isolation:isolate}
+.orbs::before{content:"";position:absolute;z-index:-1;pointer-events:none;inset:8% -4% auto auto;width:min(520px,70vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(214,40,47,.35),rgba(214,40,47,0) 65%);filter:blur(30px)}
+.orbs::after{content:"";position:absolute;z-index:-1;pointer-events:none;left:-6%;bottom:0;width:min(460px,60vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,.30),rgba(245,166,35,0) 65%);filter:blur(30px)}
+.pricing{position:relative;overflow:hidden;isolation:isolate}
+.testi{position:relative;overflow:hidden;isolation:isolate}
+.plan.glass{background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,255,255,.34))}
+.plan.pop.glass{box-shadow:0 0 0 1.5px var(--red),inset 0 1px 1px rgba(255,255,255,.95),0 24px 48px -20px rgba(214,40,47,.35)}
+.tog{background:rgba(255,255,255,.5);-webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%);box-shadow:inset 0 1px 0 #fff,0 6px 16px -8px rgba(0,0,0,.2)}
+.faq details.glass{background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(255,255,255,.35));border-radius:14px}
+.fbox.glass{background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(255,255,255,.38))}
+.fbox.glass .fl input,.fbox.glass .fl select,.fbox.glass .fl textarea,.fbox.glass .chk span,.fbox.glass .file,.fbox.glass .brief{background:rgba(255,255,255,.62);box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(0,0,0,.04)}
+.ci.glass{background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(255,255,255,.35))}
+.tc.glass-dk{background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.03))}
+.arrows button{background:rgba(255,255,255,.1);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.srow .chips span{background:rgba(255,255,255,.06);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.gchip{position:absolute;left:12px;bottom:12px;z-index:2;padding:6px 11px;border-radius:999px;color:#fff;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.08));-webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 6px 16px -6px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.3);transition:transform .5s var(--ease)}
+.fcard .im{position:relative}
+.fcard:hover .gchip{transform:translateY(-3px)}
+.gview{position:absolute;right:12px;top:12px;z-index:2;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(255,255,255,.08));-webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%);box-shadow:inset 0 1px 0 rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.3);opacity:0;transform:scale(.7);transition:opacity .4s,transform .5s var(--ease)}
+.fcard:hover .gview{opacity:1;transform:none}
+.tag{background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(12px) saturate(170%);backdrop-filter:blur(12px) saturate(170%);box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(0,0,0,.05)}
+.sec .tag,.wrap>.tag{background:var(--panel)}
+.dk .tag{background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.07));color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 0 1px rgba(255,255,255,.1)}
+.btn{position:relative;isolation:isolate;overflow:hidden}
+.btn::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0) 55%);opacity:.7}
+.btn:active{transform:scale(.97)}
+.b-red{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 24px -10px rgba(214,40,47,.6)}
+.b-ink{box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 10px 24px -12px rgba(0,0,0,.5)}
+.b-glass{color:#fff;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.06));-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 0 0 1px rgba(255,255,255,.18),0 10px 24px -12px rgba(0,0,0,.5)}
+.b-line{background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.4));-webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(0,0,0,.08),0 8px 20px -12px rgba(0,0,0,.25)}
+.mob{background:rgba(10,10,10,.55);-webkit-backdrop-filter:blur(30px) saturate(160%);backdrop-filter:blur(30px) saturate(160%)}
+.mob a{border-bottom-color:rgba(255,255,255,.12)}
+.toast{background:rgba(15,15,15,.6);-webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 12px 30px -12px rgba(0,0,0,.5)}
+.nf{background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.03));-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.15),inset 0 0 0 1px rgba(255,255,255,.14)}
+.soc a{background:rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.tm .cap{background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(255,255,255,.4));-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);box-shadow:inset 0 1px 0 #fff,0 8px 20px -10px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.5)}
+.jc-h span{border-radius:999px;background:rgba(255,255,255,.7);box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(0,0,0,.05);padding:4px 9px}
+.ps-thumb .btn{background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(255,255,255,.1));color:#fff;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.gnav{background:rgba(255,255,255,.92)}.gnav.on-dark{background:rgba(20,20,20,.92)}.glass-dk{background:#1c1c1c}}
+
+/* ===== ALL BUTTONS: LIQUID GLASS, 20% FILL ===== */
+.btn,.call,.burger,.arrows button,.nf button,.mini,.job .go,.tog button,.mob .x{
+  --t:10,10,10; --fg:var(--ink);
+  color:var(--fg)!important;
+  background:rgba(var(--t),.2)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(255,255,255,.18),inset 0 0 0 1px rgba(255,255,255,.35),0 0 0 1px rgba(var(--t),.18),0 10px 24px -12px rgba(0,0,0,.28)!important;
+  border:0!important;
+  transition:transform .35s var(--ease),background .25s,box-shadow .25s!important}
+.btn:hover,.call:hover,.burger:hover,.arrows button:hover,.nf button:hover,.mini:hover,.job:hover .go,.tog button:hover,.mob .x:hover{background:rgba(var(--t),.3)!important}
+.btn::after{background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%)!important;opacity:.8}
+.b-red{--t:214,40,47;--fg:#A5171D}
+.b-white,.b-line,.b-glass{--t:255,255,255;--fg:var(--ink)}
+.b-line,.b-white{box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(0,0,0,.1),0 10px 24px -12px rgba(0,0,0,.2)!important}
+.tog{background:rgba(255,255,255,.2)}
+.tog button{background:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+.tog button[aria-pressed="true"]{background:rgba(10,10,10,.2)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 0 0 1px rgba(10,10,10,.15)!important;color:var(--ink)!important}
+/* dark surroundings: white-tinted glass, white text */
+.dk .btn,.dk .mini,.gnav.on-dark .call,.gnav.on-dark .burger,.dk .arrows button,.dk .nf button,.mob .x,.mob .btn,.ps-thumb .btn{--t:255,255,255;--fg:#fff}
+.dk .b-red,.mob .b-red{--t:214,40,47;--fg:#fff}
+.dk .btn,.mob .btn{box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.2),0 12px 28px -12px rgba(0,0,0,.6)!important}
+.dk .b-red,.mob .b-red{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 0 0 1px rgba(214,40,47,.55),0 12px 28px -12px rgba(214,40,47,.55)!important}
+.b-red:not(.dk .b-red){box-shadow:inset 0 1px 0 rgba(255,255,255,.8),inset 0 0 0 1px rgba(214,40,47,.4),0 10px 24px -12px rgba(214,40,47,.45)!important}
+.job:hover .go{color:var(--ink)}
+.call img{box-shadow:0 0 0 1px rgba(255,255,255,.4)}
+
+/* ===== compact nav on tablet/phone: no full-width bar ===== */
+@media (max-width:980px){
+  .gnav{background:none!important;box-shadow:none!important;border:0!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;pointer-events:none}
+  .gnav::before,.gnav::after{display:none!important}
+  .gnav .nav{height:auto;padding:0}
+  .gnav .logo,.gnav .burger{pointer-events:auto}
+  .gnav .logo{height:44px;padding:0 16px 0 12px;border-radius:999px;background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(0,0,0,.08),0 10px 24px -12px rgba(0,0,0,.25)}
+  .gnav.on-dark .logo{background:rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 0 0 1px rgba(255,255,255,.2),0 12px 28px -12px rgba(0,0,0,.6)}
+  .gnav .burger{width:44px;height:44px}
+}
+
+/* ===== animated logo name ===== */
+.logo{gap:9px}
+.lname{display:inline-flex;align-items:baseline;white-space:nowrap}
+.lname .l{display:inline-block;height:1.2em;line-height:1.2;overflow:hidden;vertical-align:bottom}
+.lname .l>span{display:block;transition:transform .55s var(--ease);transition-delay:calc(var(--i)*28ms)}
+.logo:hover .lname .l>span,.logo:focus-visible .lname .l>span{transform:translateY(-100%)}
+.lname .l>span:last-child{color:var(--red)}
+.lag{display:inline-flex;margin-left:.28em;font-weight:400;opacity:.62}
+.mark{overflow:visible;transition:transform .7s var(--ease)}
+.logo:hover .mark{transform:rotate(90deg)}
+.mark .q{transform-box:fill-box;transform-origin:center}
+@media (prefers-reduced-motion:no-preference){
+  html:not(.logo-done) .lname .l>span{animation:lrise .9s var(--ease) both;animation-delay:calc(.2s + var(--i)*45ms)}
+  @keyframes lrise{from{translate:0 115%}to{translate:0 0}}
+  html:not(.logo-done) .mark .q{animation:qpop .7s var(--ease) both}
+  html:not(.logo-done) .mark .q2{animation-delay:.08s}html:not(.logo-done) .mark .q3{animation-delay:.16s}html:not(.logo-done) .mark .q4{animation-delay:.24s}
+  @keyframes qpop{from{scale:0;rotate:-90deg}to{scale:1;rotate:0deg}}
+  .mark .q1{animation:qbeat 4.5s ease-in-out 1.5s infinite}
+  .mark .q4{animation:qbeat 4.5s ease-in-out 3.75s infinite}
+  @keyframes qbeat{0%,80%,100%{scale:1}88%{scale:.62}}
+}
+@media (max-width:420px){.lag{display:none}}
+/* footer wordmark */
+.wm{user-select:none}
+.wm .wl{display:inline-block;will-change:transform;transition:transform .5s var(--ease),color .35s,opacity 1s var(--ease),filter 1s var(--ease)}
+.js .wm:not(.in) .wl{opacity:0;filter:blur(14px);transform:translateY(45%) rotate(4deg)}
+.wm.in:not(.done) .wl{transition-delay:calc(var(--i)*55ms)}
+.wm .wl.hot{color:var(--red)}
+.wm .sp{display:inline-block;width:.28em}
+@media (prefers-reduced-motion:reduce){.wm .wl{opacity:1!important;filter:none!important;transform:none!important}}
+
+/* ===== home hero like reference ===== */
+.hh{min-height:min(860px,94svh);justify-content:space-between}
+.hh-bg{inset:0}
+.hh-bg img{filter:blur(26px) saturate(115%) brightness(.8);opacity:.85;transform:scale(1.08)}
+.hh::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(8,8,8,.72) 0%,rgba(8,8,8,.35) 55%,rgba(8,8,8,.55) 100%),linear-gradient(0deg,rgba(8,8,8,.6),rgba(8,8,8,0) 45%);pointer-events:none}
+.hh-main{display:flex;flex-direction:column;gap:22px;padding:clamp(40px,7vh,96px) clamp(18px,2vw,30px) 0;max-width:900px}
+.hh-main .tag{align-self:flex-start}
+.hh-h{font-size:clamp(46px,6.6vw,104px);line-height:1.02;letter-spacing:-.05em;font-weight:500;max-width:11ch}
+.hh-sub{font-size:clamp(14px,1.1vw,16px);color:#E3E3E3;max-width:48ch}
+.hh-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;padding:40px clamp(18px,2vw,30px) clamp(20px,2.4vw,32px)}
+.hh-meta{display:flex;gap:clamp(20px,8vw,150px);flex-wrap:wrap;font-size:clamp(11px,1vw,14px);color:#BDBDBD;letter-spacing:.06em}
+.hh-side{display:flex;flex-direction:column;gap:20px;max-width:440px}
+.hh-side p{font-size:clamp(20px,2vw,30px);line-height:1.2;letter-spacing:-.03em}
+.hh .b-white{--t:255,255,255;--fg:#fff}
+@media (max-width:760px){.hh-meta{gap:10px 18px}.hh-foot{flex-direction:column;align-items:flex-start}}
+/* ===== trusted-by strip ===== */
+.lstrip{display:flex;align-items:center;gap:clamp(20px,3vw,44px);padding:22px clamp(16px,2vw,24px);border-block:1px dashed #E2E2E2;margin-top:8px}
+.ls-lead{display:flex;align-items:center;gap:14px;flex-shrink:0;color:var(--ink)}
+.ls-lead p{font-size:clamp(10.5px,1vw,13px);line-height:1.6;letter-spacing:.06em;color:var(--ink2)}
+.ls-lead svg{flex-shrink:0}
+@media (prefers-reduced-motion:no-preference){.ls-lead svg{animation:spin 14s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}}
+.ls-track-w{flex:1;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.ls-track{display:flex;gap:clamp(40px,5vw,72px);width:max-content;animation:marq 60s linear infinite}
+.lstrip:hover .ls-track{animation-play-state:paused}
+.brand{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:clamp(16px,1.5vw,21px);letter-spacing:-.035em;white-space:nowrap;color:var(--ink);opacity:.88;transition:opacity .3s,color .3s}
+.brand:hover{opacity:1;color:var(--red)}
+@media (max-width:640px){.lstrip{flex-direction:column;align-items:flex-start}.ls-track-w{width:100%}}
+
+/* ===== hero video ===== */
+.hh-bg .hh-poster{filter:none;opacity:1;transform:none;animation:none!important}
+.hh-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease;filter:saturate(108%)}
+.hh-bg video.on{opacity:1}
+
+/* ===== hero particle animation ===== */
+.hh{background:#070707}
+.hh::after{background:linear-gradient(90deg,rgba(7,7,7,.55) 0%,rgba(7,7,7,0) 50%),linear-gradient(0deg,rgba(7,7,7,.7),rgba(7,7,7,0) 40%)!important}
+.hh-spot{position:absolute;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(60% 55% at 68% -8%,rgba(214,40,47,.55),rgba(214,40,47,.12) 45%,rgba(214,40,47,0) 70%),radial-gradient(40% 40% at 70% 55%,rgba(214,40,47,.14),rgba(214,40,47,0) 70%)}
+.hh-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.hh-shape{position:absolute;right:clamp(18px,4vw,64px);top:clamp(96px,16vh,150px);color:#E9A7A9;letter-spacing:.1em;font-size:11px;display:flex;gap:6px;transition:opacity .5s,filter .5s}
+.hh-shape.sw{opacity:0;filter:blur(6px)}
+.hh-sn{color:var(--red)}
+@media (max-width:900px){.hh-shape{top:auto;bottom:clamp(220px,34vh,300px)}}
+
+/* ===== services list (fixed) ===== */
+.srows{margin-top:8px}
+.srow{--p:1;display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,420px) 48px;align-items:center;gap:24px;padding:26px 12px;border-bottom:1px solid var(--dline)!important;border-radius:0;opacity:1!important;filter:none!important;position:relative;isolation:isolate;transition:background .4s}
+.srow::before{content:"";position:absolute;inset:4px 0;border-radius:16px;z-index:-1;background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.02));box-shadow:inset 0 1px 0 rgba(255,255,255,.12);opacity:0;transition:opacity .4s}
+.srow:hover::before,.srow:focus-visible::before{opacity:1}
+.srow .s-num{color:var(--red);font-size:11px}
+.srow .nm{font-size:clamp(34px,5.2vw,76px);line-height:1;letter-spacing:-.05em;font-weight:500;color:color-mix(in srgb,#fff calc(var(--p)*100%),#3b3b3b);transition:transform .5s var(--ease)}
+.srow:hover .nm{transform:translateX(10px)}
+.s-info{display:flex;flex-direction:column;gap:12px;opacity:calc(.35 + var(--p)*.65)}
+.s-one{font-size:14px;color:var(--dsoft)}
+.srow .chips{justify-content:flex-start;max-width:none}
+.s-go{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;background:rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.15);transition:transform .5s var(--ease),background .3s}
+.srow:hover .s-go{transform:rotate(45deg);background:rgba(214,40,47,.35)}
+@media (max-width:900px){.srow{grid-template-columns:40px minmax(0,1fr) 44px;row-gap:14px}.s-info{grid-column:2/4}}
+@media (max-width:520px){.srow{grid-template-columns:minmax(0,1fr) 40px;padding:22px 4px}.srow .s-num{grid-column:1/3}.s-info{grid-column:1/3}.s-go{width:38px;height:38px;grid-row:2;grid-column:2}}
+.orbs{overflow-x:clip}
+.orbs::before{right:0!important}
+/* ===== hero: match reference placement ===== */
+.hh{min-height:max(640px,calc(100svh - 16px))}
+.hh-main{padding-top:clamp(56px,11vh,130px);max-width:none}
+.hh-main .tag{background:#fff;color:#0A0A0A;box-shadow:0 0 0 1px rgba(0,0,0,.06)}
+.hh-h{font-size:clamp(44px,5.9vw,96px);line-height:1.1;letter-spacing:-.045em;max-width:none}
+.hh-sub{font-size:clamp(14px,1.05vw,16px);color:#fff;max-width:60ch;margin-top:clamp(12px,3vh,36px)}
+.hh-foot{align-items:flex-end}
+.hh-meta{flex:1 1 520px;max-width:820px;justify-content:space-between;gap:16px 24px;color:#C9C9C9;font-size:clamp(11px,1.05vw,16px)}
+.hh-side{max-width:470px}
+.hh-side p{font-size:clamp(20px,2vw,32px);line-height:1.25}
+@media (max-width:900px){.hh-main{padding-top:24px}.hh-foot{flex-direction:column-reverse;align-items:flex-start;gap:28px}.hh-meta{flex:none;width:100%;justify-content:flex-start;gap:8px 18px}.hh-h br{display:none}}
+@media (max-width:520px){.hh-h{font-size:clamp(38px,11vw,48px);line-height:1.05}}
+.feat-head .tag{align-self:center}
+.feat-head{will-change:opacity,filter,transform}
+@media (max-width:760px){.feat-head{opacity:1!important;filter:none!important;transform:none!important;visibility:visible!important}}
+
+/* ===== real client logos ===== */
+.ls-rows{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.ls-track{gap:10px;animation-duration:70s}
+.ls-track.rev{animation-direction:reverse;animation-duration:80s}
+.ltile{flex-shrink:0;width:138px;height:72px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1px #ECECEC;display:flex;align-items:center;justify-content:center;padding:10px 14px}
+.ltile img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
+.lstrip:hover .ls-track{animation-play-state:paused}
+.cwall{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:8px}
+.cw{display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px 10px 14px;border-radius:14px;background:var(--panel);transition:transform .4s var(--ease),box-shadow .3s}
+.cw:hover{transform:translateY(-3px);box-shadow:0 14px 30px -18px rgba(0,0,0,.3)}
+.cw .ltile{width:100%;height:92px;box-shadow:none}
+.cw-n{font-size:11.5px;color:var(--muted);text-align:center;line-height:1.3;min-height:2.6em;display:flex;align-items:center}
+@media (max-width:1100px){.cwall{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:640px){.cwall{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.cw{padding:6px 6px 8px;gap:6px}.cw .ltile{height:64px;padding:6px}.cw-n{font-size:10px}.ltile{width:112px;height:60px}}
+/* ===== portfolio cards ===== */
+.pcard .im{background:#111}
+.pcard .im img{object-position:center}
+.pcard .im.fit{background:#0d0d0d;display:flex;align-items:center;justify-content:center}
+.pcard .im.fit img{object-fit:contain;padding:6%}
+.pcount{position:absolute;right:12px;bottom:12px;z-index:2;padding:5px 9px;border-radius:999px;color:#fff;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-size:9.5px}
+.wgrid .pcard .im{aspect-ratio:16/10}
+/* ===== lightbox ===== */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(6,6,6,.82);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);color:#fff;display:flex;flex-direction:column;gap:14px;padding:calc(16px + env(safe-area-inset-top,0px)) clamp(12px,3vw,40px) calc(16px + env(safe-area-inset-bottom,0px))}
+.lb-top{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.lb-top b{display:block;font-size:clamp(18px,2vw,24px);font-weight:500;letter-spacing:-.02em}
+.lb-top .mono{color:var(--dmuted)}
+.lb-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:14px}
+.lb-stage img{max-width:min(100%,1400px);max-height:100%;object-fit:contain;border-radius:10px;box-shadow:0 30px 80px -30px #000}
+.lb-nav{flex-shrink:0;width:48px;padding:0}
+.lb-d{text-align:center;color:var(--dsoft);font-size:13px;max-width:70ch;margin:0 auto}
+.lb-th{display:flex;gap:8px;justify-content:center;overflow-x:auto;padding-bottom:2px}
+.lb-th button{flex-shrink:0;width:74px;height:48px;border-radius:8px;overflow:hidden;border:0;padding:0;cursor:pointer;opacity:.45;transition:opacity .2s;background:#222}
+.lb-th button[aria-current="true"]{opacity:1;outline:2px solid var(--red);outline-offset:1px}
+.lb-th img{width:100%;height:100%;object-fit:cover}
+@media (max-width:640px){.lb-nav{position:absolute;bottom:calc(84px + env(safe-area-inset-bottom,0px))}#lb-p{left:16px}#lb-n{right:16px}.lb-stage{position:relative}}
+.pcard .im img,.lb-stage img,.ltile img{image-rendering:auto;-webkit-font-smoothing:antialiased}
+.lb-stage img{min-width:0;flex:0 1 auto;max-width:calc(100% - 124px)}
+@media (max-width:640px){.lb-stage img{max-width:100%}}
+</style>
+</head>
+<body>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="lg" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.008 0.02" numOctaves="2" seed="7" result="n"/><feGaussianBlur in="n" stdDeviation="2" result="nb"/><feDisplacementMap in="SourceGraphic" in2="nb" scale="26" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
+<div id="gnav" class="gnav glass"></div>
+<div id="app" class="page"></div>
+
+<div class="page">
+  <section class="cta">
+    <span class="tag" data-r>Get started</span>
+    <h2 data-split>Start Building Your Brand Today</h2>
+    <a href="#contact" class="btn b-red" data-r style="--d:.25s">Book a Consultation <span class="ar">↗</span></a>
+  </section>
+  <footer class="dk foot" id="foot">
+    <div class="f-top">
+      <div class="f-news">
+        <h3>Stay updated with<br>Exioraa news</h3>
+        <form class="nf" id="nf" novalidate><label for="nf-e" class="sr">Email address</label><input id="nf-e" type="email" placeholder="Enter your email" autocomplete="email"><button type="submit" aria-label="Subscribe">↗</button></form>
+        <p id="nf-m" style="font-size:11px;color:var(--dmuted);min-height:16px" aria-live="polite"></p>
+        <div class="soc"><a href="https://www.instagram.com/" target="_blank" rel="noopener">IG ↗</a><a href="https://www.linkedin.com/" target="_blank" rel="noopener">IN ↗</a><a href="https://x.com/" target="_blank" rel="noopener">X ↗</a><a href="https://www.youtube.com/" target="_blank" rel="noopener">YT ↗</a></div>
+      </div>
+      <div class="f-cols">
+        <div><a href="#home">Home</a><a href="#studio">Studio</a><a href="#work">Work</a><a href="#careers">Careers</a><a href="#insights">Blog</a></div>
+        <div><a href="#services">Services</a><a href="#branding">Branding</a><a href="#marketing">Marketing</a><a href="#development">Development</a><a href="#production">Production</a></div>
+        <div><a href="#industries">Industries</a><a href="#pricing">Pricing</a><a href="#contact">Contact</a><button type="button" data-copy="connect@exioraa.com">connect@exioraa.com</button></div>
+      </div>
+    </div>
+    <div class="wm" aria-hidden="true">EXIORAA AGENCY</div>
+    <div class="f-bot"><span><b>Exioraa</b> © 2026. All rights reserved. Mohali, Punjab, India.</span><span><a href="#studio">Privacy Policy</a> &nbsp;|&nbsp; <a href="#studio">Terms &amp; Conditions</a></span></div>
+  </footer>
+</div>
+
+<div class="mob" id="mob" hidden>
+  <button type="button" class="x" id="mobx" aria-label="Close menu">✕</button>
+  <a href="#home">Home</a><a href="#studio">Studio</a><a href="#work">Work</a><a href="#services">Services</a><a href="#industries">Industries</a><a href="#insights">Insights</a><a href="#careers">Careers</a><a href="#contact">Contact</a>
+  <a href="#contact" class="btn b-red b-lg" style="margin-top:20px;border:0;font-size:15px;letter-spacing:0">Book A Call ↗</a>
+</div>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lb-t" hidden><div class="lb-top"><div><b id="lb-t"></b><span class="mono" id="lb-c"></span></div><button type="button" class="btn b-glass" id="lb-x" aria-label="Close">✕</button></div><div class="lb-stage"><button type="button" class="lb-nav btn b-glass" id="lb-p" aria-label="Previous design">←</button><img id="lb-i" alt=""><button type="button" class="lb-nav btn b-glass" id="lb-n" aria-label="Next design">→</button></div><p class="lb-d" id="lb-d"></p><div class="lb-th" id="lb-th"></div></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+document.documentElement.classList.add('js');
+(function(){
+const IMG = {"red": "assets/img/red.jpg", "saffron": "assets/img/saffron.jpg", "olive": "assets/img/olive.jpg", "orchid": "assets/img/orchid.jpg", "cobalt": "assets/img/cobalt.jpg", "sand": "assets/img/sand.jpg", "ember": "assets/img/ember.jpg", "teal": "assets/img/teal.jpg", "mono": "assets/img/mono.jpg", "plum": "assets/img/plum.jpg", "lg00": "assets/img/logos/lg00.png", "lg01": "assets/img/logos/lg01.png", "lg02": "assets/img/logos/lg02.png", "lg03": "assets/img/logos/lg03.png", "lg04": "assets/img/logos/lg04.png", "lg05": "assets/img/logos/lg05.png", "lg06": "assets/img/logos/lg06.png", "lg07": "assets/img/logos/lg07.png", "lg08": "assets/img/logos/lg08.png", "lg09": "assets/img/logos/lg09.png", "lg10": "assets/img/logos/lg10.png", "lg11": "assets/img/logos/lg11.png", "lg12": "assets/img/logos/lg12.png", "lg13": "assets/img/logos/lg13.png", "lg14": "assets/img/logos/lg14.png", "lg15": "assets/img/logos/lg15.png", "lg16": "assets/img/logos/lg16.png", "lg17": "assets/img/logos/lg17.png", "lg18": "assets/img/logos/lg18.png", "lg19": "assets/img/logos/lg19.png", "lg20": "assets/img/logos/lg20.png", "lg21": "assets/img/logos/lg21.png", "lg22": "assets/img/logos/lg22.png", "lg23": "assets/img/logos/lg23.png", "lg24": "assets/img/logos/lg24.png", "lg25": "assets/img/logos/lg25.png", "lg26": "assets/img/logos/lg26.png", "lg27": "assets/img/logos/lg27.png", "lg28": "assets/img/logos/lg28.png", "lg29": "assets/img/logos/lg29.png", "r_z_highlights": "assets/img/work/r_z_highlights.jpg", "r_z_women": "assets/img/work/r_z_women.jpg", "r_z_mix": "assets/img/work/r_z_mix.jpg", "r_z_windows": "assets/img/work/r_z_windows.jpg", "r_z_cyber": "assets/img/work/r_z_cyber.jpg", "r_z_cartoon": "assets/img/work/r_z_cartoon.jpg", "r_z_180": "assets/img/work/r_z_180.jpg", "r_z_comic": "assets/img/work/r_z_comic.jpg", "r_saree": "assets/img/work/r_saree.jpg", "r_mw_social": "assets/img/work/r_mw_social.jpg", "r_mw_brand": "assets/img/work/r_mw_brand.jpg", "r_mova": "assets/img/work/r_mova.jpg", "r_ssvarna": "assets/img/work/r_ssvarna.jpg", "r_quantira": "assets/img/work/r_quantira.jpg", "r_velour": "assets/img/work/r_velour.jpg", "r_posts_grid": "assets/img/work/r_posts_grid.jpg", "r_posts_phone": "assets/img/work/r_posts_phone.jpg", "r_posts_right": "assets/img/work/r_posts_right.jpg", "r_coffee_post": "assets/img/work/r_coffee_post.jpg", "r_coffee_strip": "assets/img/work/r_coffee_strip.jpg"};
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const AR = '<span class="ar">↗</span>';
+const PLUS = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+const ICO = {
+  star:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>',
+  clock:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  chat:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+  chart:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  bolt:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
+  crown:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 4.5 4L12 5l4.5 6L21 7l-2 12H5z"/></svg>',
+  target:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>',
+  mission:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>',
+  grow:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="17" r="2"/><circle cx="18" cy="7" r="2"/><path d="M8 15.5 16 8.5M14 7h2"/></svg>',
+  home:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7v9H3z"/></svg>',
+  check:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
+};
+const SHAPES = [
+ '<svg viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M50 44c-10-22-38-14-30 6-22 2-18 32 4 26-4 22 26 24 26 2 0 22 30 20 26-2 22 6 26-24 4-26 8-20-20-28-30-6z"/><path fill="currentColor" d="M52 60c6 14 16 24 30 32l-4 4C64 88 54 76 48 62z"/></svg>',
+ '<svg viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M50 8a30 30 0 0 0-18 54c5 4 7 9 7 14h22c0-5 2-10 7-14A30 30 0 0 0 50 8z"/><rect x="38" y="80" width="24" height="7" rx="3" fill="currentColor"/><rect x="42" y="90" width="16" height="6" rx="3" fill="currentColor"/></svg>',
+ '<svg viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M50 8 88 28v44L50 92 12 72V28z"/></svg>',
+ '<svg viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M20 20h22a10 10 0 1 1 16 0h22v22a10 10 0 1 1 0 16v22H58a10 10 0 1 0-16 0H20V58a10 10 0 1 0 0-16z"/></svg>',
+ '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="currentColor"/></svg>',
+ '<svg viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M10 90 40 30l20 30 12-18 18 48z"/></svg>'
+];
+
+const PILLARS = [
+ {id:'branding',num:'01',name:'Branding',one:'Build a brand people recognise and trust.',chips:['Brand strategy','Visual identity','Messaging','Packaging','Rebranding','Guidelines']},
+ {id:'marketing',num:'02',name:'Marketing',one:'Turn attention into enquiries and sales.',chips:['Meta Ads','Google Ads','SEO','Social media','Content strategy','Email & WhatsApp','Influencer & UGC']},
+ {id:'development',num:'03',name:'Development',one:'Build the systems behind your growth.',chips:['Shopify','Custom Shopify apps','WordPress','Landing pages','SaaS','CRM','Maintenance']},
+ {id:'production',num:'04',name:'Production',one:'Create the content that sells.',chips:['Product photography','Reels','UGC content','Ad creatives','Campaign shoots']}
+];
+
+const WORK = [
+ {slug:'kaavya-naturals',name:'Kaavya Naturals',svc:'Brand Strategy',ind:'D2C skincare',year:'2026',time:'10 weeks',img:'kaavya1',img2:['kaavya2','packaging'],
+  sum:'A new identity and Shopify store for an Ayurvedic skincare brand moving from Instagram DMs to a real storefront.',
+  ch:'Orders came in through Instagram messages, the logo changed from post to post, and the packaging looked homemade next to competitors.',
+  so:['Positioning and competitor review','Logo system, palette and labels for 9 SKUs','Shopify store with ingredient-led product pages','Launch product and lifestyle shoot'],
+  res:[['2.4x','Online orders','In the first 90 days after launch.'],['3.1%','Store conversion','Across all traffic sources.'],['9','SKUs relaunched','With new labels and packaging.'],['40%','Repeat buyers','Through WhatsApp retention flows.']],
+  q:['Working with Exioraa felt personal. The store finally looks like the product we make, and customers find us on Google now.','Ananya Rao','Founder, Kaavya Naturals']},
+ {slug:'trailnorth-holidays',name:'TrailNorth',svc:'Performance Marketing',ind:'Travel',year:'2026',time:'Ongoing',img:'trail1',img2:['trail2','social'],
+  sum:'WhatsApp lead campaigns and short-form video for a Himachal and Ladakh group-trip operator.',
+  ch:'Leads came from Instagram but most went cold before anyone replied, and nobody knew which ad a lead came from.',
+  so:['Click-to-WhatsApp campaigns per departure','Reels and UGC-style trip videos','Automated welcome and follow-up flow','Weekly creative testing'],
+  res:[['38%','Lower lead cost','Cost per qualified lead.'],['41','Departures filled','In a single season.'],['5m','First reply','Average response time.'],['6','New ads weekly','From the creative testing plan.']],
+  q:['We stopped guessing which ads worked. Every lead now lands on WhatsApp with the trip name attached.','Rohan Mehta','Co-founder, TrailNorth']},
+ {slug:'ledgerloop',name:'LedgerLoop',svc:'SaaS Development',ind:'B2B SaaS',year:'2025',time:'12 weeks',img:'ledger1',img2:['ledger2','developer'],
+  sum:'An MVP and sales CRM for a bookkeeping platform built for small retailers.',
+  ch:'The founders had a spreadsheet process and a waitlist, but no product, no brand and no way to manage demo requests.',
+  so:['Brand identity and product UI','MVP with accounts, subscriptions and reports','CRM with lead assignment and follow-ups','Marketing site with demo booking'],
+  res:[['12','Weeks to MVP','From idea to paying users.'],['320','Paying accounts','In the first four months.'],['3','Sheets replaced','By one CRM.'],['99%','Uptime','Since launch.']],
+  q:['Exioraa built the product, the brand and the sales system as one project. We launched with everything connected.','Karan Sethi','CEO, LedgerLoop']},
+ {slug:'hearth-and-grain',name:'Hearth & Grain',svc:'Content & Local SEO',ind:'Food & beverage',year:'2025',time:'6 months',img:'hearth1',img2:['hearth2','social'],
+  sum:'A content system and local SEO for a three-outlet artisan bakery in the Chandigarh Tricity.',
+  ch:'Posting was random and the outlets barely showed up when people searched for bakeries nearby.',
+  so:['Content pillars and monthly calendar','Weekly Reels featuring the bakers','Google Business Profile for 3 outlets','Review collection over WhatsApp'],
+  res:[['3x','Map directions','Google Maps direction requests.'],['18k','New followers','On Instagram in six months.'],['4.8','Google rating','Average across outlets.'],['3','Outlets ranked','In the local top three.']],
+  q:['Our posts finally have a plan. People walk in asking for the bread they saw on Reels.','Simran Kaur','Owner, Hearth & Grain']},
+ {slug:'mehr-studio',name:'Mehr Studio',svc:'Creative Campaign',ind:'Fashion',year:'2026',time:'5 weeks',img:'mehr1',img2:['mehr2','videographer'],
+  sum:'A festive lookbook shoot and ad creative system for a handloom womenswear label.',
+  ch:'The label needed Diwali launch content and ads that did not look like every other ethnic-wear brand in the feed.',
+  so:['Campaign concept, moodboard and styling','Two-day lookbook shoot','30 statics and 12 video ads','Retargeting creatives'],
+  res:[['4.2x','Return on ad spend','Across the festive campaign.'],['62%','Stock sold','Of the festive line in 3 weeks.'],['140','Edited images','From a two-day shoot.'],['42','Ad variations','Tested during launch.']],
+  q:['The shoot gave us a season of content, and the ads sold out our best pieces.','Mehr Bedi','Founder, Mehr Studio']},
+ {slug:'upskill-academy',name:'Upskill Academy',svc:'Landing Pages & Ads',ind:'Education',year:'2025',time:'8 weeks',img:'upskill1',img2:['upskill2','marketer'],
+  sum:'Course landing pages and Google Ads for an online data analytics academy.',
+  ch:'One generic website served eight courses, and all paid traffic landed on the homepage.',
+  so:['One landing page per course','Google Search campaigns by course','Conversion tracking into the CRM','Email nurture for webinars'],
+  res:[['45%','Lower cost','Per enrolment.'],['8','Landing pages','One per course.'],['2.7x','Webinar to enrol','Conversion rate.'],['100%','Tracked','Every lead attributed.']],
+  q:['Each course has its own page and campaign now. We know exactly what an enrolment costs.','Neha Kapoor','Director, Upskill Academy']}
+];
+
+const POSTS = [
+ {slug:'ads-need-content-system',cat:'Marketing',title:'Why Ads Stop Working Without a Content System',date:'September 18, 2026',read:'6 min read',img:'marketer',ex:'Most ad accounts fail on creative, not targeting. Here is the fix.',
+  body:['Most ad accounts don\'t fail on targeting. Meta\'s algorithm is very good at finding buyers. What it can\'t do is make up for the same three creatives running for two months.','Creative fatigue is the most common reason costs rise. Frequency climbs, click-through drops, and the account looks broken when it simply ran out of new things to say.','## Build the system behind the ads','Start from content pillars, turn them into topics, then into formats: statics, carousels, Reels and UGC. Each month the ad account gets a fresh batch built from the same plan.','## Where to start','Count how many distinct concepts you ran in the last 90 days. If the answer is under ten, the problem is creative, not targeting.']},
+ {slug:'shopify-or-wordpress',cat:'Development',title:'Shopify or WordPress: Choosing Your Foundation',date:'September 4, 2026',read:'5 min read',img:'kaavya2',ex:'Both are good. The right choice depends on what you sell.',
+  body:['We build on both platforms every month. The right choice depends on what you sell and who runs the site after launch.','## Choose Shopify when','You sell physical products, want checkout and inventory handled for you, and need your team to add products without a developer.','## Choose WordPress when','You sell services, courses or bookings, content drives your leads, or you need custom features like a CRM or member area.','## Or use both','Shopify for the store and WordPress for content works well when both are designed as one brand and tracked as one funnel.']},
+ {slug:'brand-beyond-logo',cat:'Branding',title:'A Brand Is More Than a Logo',date:'August 21, 2026',read:'4 min read',img:'stationery',ex:'Positioning, audience and voice come before colours.',
+  body:['When a business asks for a logo, the real question is bigger: how should we look and sound so the right people trust us?','## The order we work in','Positioning first: who you serve and why you are the better choice. Then audience, messaging and voice. Only then the logo, colours and type.','## Why it matters','A visual identity with a clear brief is faster to design, easier to agree on, and lasts longer.']}
+];
+
+const JOBS = [
+ {slug:'performance-marketing-executive',title:'Performance Marketing Executive',type:'Full-time',loc:'Mohali, Punjab',mode:'On-site',img:'red',
+  role:'We are looking for a <b>Performance Marketing Executive</b> to plan, launch and optimise Meta and Google Ads campaigns for our D2C, travel and education clients.',
+  resp:['<b>Campaigns:</b> Build and manage lead and sales campaigns on Meta and Google.','<b>Testing:</b> Run weekly creative and audience tests.','<b>Reporting:</b> Share clear weekly reports on cost per result.','<b>Collaboration:</b> Brief the creative team on new ad concepts.'],
+  req:['1 to 3 years managing paid ads with real budgets','Comfort with Ads Manager, GA4 and conversion tracking','Clear written communication in English and Hindi'],
+  ben:['<b>Salary:</b> Competitive, based on experience.','<b>Growth:</b> Monthly learning budget and certifications.','<b>Perks:</b> Flexible hours and team offsites.']},
+ {slug:'shopify-developer',title:'Shopify Developer',type:'Full-time',loc:'Mohali, Punjab',mode:'Hybrid',img:'cobalt',
+  role:'We are hiring a <b>Shopify Developer</b> to build custom themes, sections and store features for growing e-commerce brands.',
+  resp:['<b>Build:</b> Develop Shopify themes and custom Liquid sections.','<b>Optimise:</b> Improve speed and conversion on live stores.','<b>Integrate:</b> Connect apps, pixels and third-party tools.','<b>Maintain:</b> Handle fixes and updates for retainer clients.'],
+  req:['2+ years with Liquid, HTML, CSS and JavaScript','A portfolio of live Shopify stores','Experience with Shopify CLI and Git'],
+  ben:['<b>Salary:</b> Competitive, based on experience.','<b>Flexibility:</b> Hybrid working, 3 days in studio.','<b>Growth:</b> Work on custom apps and SaaS builds.']},
+ {slug:'graphic-designer',title:'Brand & Graphic Designer',type:'Full-time',loc:'Mohali, Punjab',mode:'On-site',img:'orchid',
+  role:'We are looking for a <b>Brand & Graphic Designer</b> to create identities, packaging, social creatives and ad assets.',
+  resp:['<b>Identity:</b> Design logos, palettes and brand systems.','<b>Social:</b> Create statics, carousels and templates.','<b>Ads:</b> Produce creative variations for testing.','<b>Packaging:</b> Prepare labels and print-ready files.'],
+  req:['A strong portfolio of brand and social work','Figma and Adobe Creative Suite','An eye for type, layout and detail'],
+  ben:['<b>Salary:</b> Competitive, based on experience.','<b>Growth:</b> Lead your own brand projects.','<b>Perks:</b> Latest tools and a creative budget.']},
+ {slug:'video-editor',title:'Video Editor (Reels & UGC)',type:'Full-time',loc:'Mohali, Punjab',mode:'On-site',img:'ember',
+  role:'We need a <b>Video Editor</b> who understands short-form content and edits Reels, UGC and video ads that stop the scroll.',
+  resp:['<b>Edit:</b> Cut Reels, Shorts and UGC-style ads.','<b>Hooks:</b> Craft strong openings and captions.','<b>Variations:</b> Export multiple cuts for ad testing.','<b>Shoots:</b> Support product and founder shoots.'],
+  req:['A reel of short-form edits','Premiere Pro or DaVinci Resolve, plus CapCut','Understanding of trends and platform formats'],
+  ben:['<b>Salary:</b> Competitive, based on experience.','<b>Gear:</b> Studio equipment access.','<b>Growth:</b> Move into creative direction.']}
+];
+
+const INDUSTRIES = [['D2C & E-commerce','Brand, store, ads and content for brands selling online.'],['Travel & Hospitality','WhatsApp leads, trip content and booking-ready sites.'],['Education & Coaching','Course pages, webinar funnels and enrolment tracking.'],['Health & Wellness','Trust-first branding and content for clinics and wellness brands.'],['Food & Beverage','Local search, social content and menus for cafés and F&B.'],['Fashion & Lifestyle','Lookbooks, campaign shoots and ad creative testing.'],['SaaS & Startups','MVPs, product UI, marketing sites and sales systems.'],['Real Estate & Services','Lead generation, CRMs and follow-up automation.']];
+
+const FAQS = [
+ ['What services does your agency provide?','Branding, marketing, development and production. You can hire us for one, or combine them through our Build, Grow and Scale plans.'],
+ ['How do you approach a new project?','We start with a free discovery call, then research your business, market and competition, and share a written plan before we build or launch anything.'],
+ ['What is the typical timeline for a project?','Landing pages take 1 to 2 weeks, brand identities 3 to 5 weeks, and Shopify stores 4 to 8 weeks. Marketing retainers run month to month.'],
+ ['How do you handle revisions?','Every project includes two rounds of revisions per deliverable. Retainer clients get ongoing changes within the monthly scope.'],
+ ['How much do your services cost?','Build projects start at ₹75,000. Grow starts at ₹45,000 per month plus ad spend. Scale is custom and scoped after a discovery call.']
+];
+
+const PLANS = [
+ {id:'build',n:'Build',i:'B',sub:'For businesses that need their foundation',m:['₹75,000',' /project'],y:['₹75,000',' /project'],f:[['star','Brand identity'],['home','Website or Shopify store'],['chat','Social media setup'],['chart','Content system'],['target','Product photography']],cta:'Start A Project',cls:'b-ink'},
+ {id:'grow',n:'Grow',i:'G',sub:'For brands ready to get customers',m:['₹45,000',' /mo'],y:['₹40,500',' /mo'],pop:true,f:[['bolt','Meta & Google Ads'],['clock','Weekly optimisation'],['chart','SEO & social media'],['chat','WhatsApp marketing'],['crown','Monthly content production']],cta:'Get Started',cls:'b-red'},
+ {id:'scale',n:'Scale',i:'S',sub:'For brands with traction that need systems',m:['Custom',''],y:['Custom',''],f:[['bolt','Full performance team'],['home','CRM & automation'],['star','SaaS & custom apps'],['chart','Advanced analytics'],['crown','Dedicated growth lead']],cta:'Reach out',cls:'b-ink'}
+];
+
+/* ---------- helpers ---------- */
+const FB={kaavya1:'saffron',kaavya2:'sand',packaging:'sand',trail1:'teal',trail2:'cobalt',social:'olive',ledger1:'cobalt',ledger2:'mono',developer:'mono',hearth1:'ember',hearth2:'ember',mehr1:'red',mehr2:'plum',videographer:'plum',upskill1:'olive',upskill2:'teal',marketer:'cobalt',stationery:'mono',designer:'orchid',ugc:'orchid',teammeet:'sand'};
+const im = (k, alt='') => `<img src="${IMG[k]||IMG[FB[k]]||IMG.red}" alt="${esc(alt)}" loading="lazy" decoding="async">`;
+const split = t => t.split(' ').map((w,i)=>`<span class="w" style="--i:${i}">${w}</span>`).join(' ');
+function nav(theme, active){
+  const L = [['home','Home'],['studio','Studio'],['work','Work']];
+  const a = (id,n) => `<a href="#${id}" ${active===id?'aria-current="page"':''}>${n}${id==='work'?`<span class="badge">${String(PORTFOLIO.length).padStart(2,'0')}</span>`:''}</a>`;
+  return `<nav class="nav ${theme}" aria-label="Main">
+    <a class="logo" href="#home" aria-label="Exioraa Agency home"><svg class="mark" width="18" height="18" viewBox="0 0 22 22" aria-hidden="true"><rect class="q q1" width="9.5" height="9.5" rx="2" fill="var(--red)"/><rect class="q q2" x="12.5" width="9.5" height="9.5" rx="2" fill="currentColor"/><rect class="q q3" y="12.5" width="9.5" height="9.5" rx="2" fill="currentColor"/><rect class="q q4" x="12.5" y="12.5" width="9.5" height="9.5" rx="4.75" fill="var(--red)"/></svg><span class="lname" aria-hidden="true">${'Exioraa'.split('').map((c,i)=>`<span class="l" style="--i:${i}"><span>${c}</span><span>${c}</span></span>`).join('')}<span class="lag">${'Agency'.split('').map((c,i)=>`<span class="l" style="--i:${i+8}"><span>${c}</span><span>${c}</span></span>`).join('')}</span></span><sup>®</sup></a>
+    <div class="links">${L.map(([i,n])=>a(i,n)).join('')}
+      <div class="dd"><button type="button" class="ddb" aria-expanded="false">Pages <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="ddm glass" hidden><a href="#services">Services</a><a href="#industries">Industries</a><a href="#pricing">Pricing</a><a href="#insights">Insights</a><a href="#careers">Careers</a></div></div>
+      ${a('careers','Careers')}${a('contact','Contact')}</div>
+    <a class="call" href="#contact">${im('teammeet')}Book A Call ↗</a>
+    <button type="button" class="burger" aria-label="Open menu" data-menu><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
+  </nav>`;
+}
+const HBG={home:'mehr1',studio:'teammeet',careers:'marketer',work:'trail1',services:'kaavya1',industries:'hearth1',insights:'stationery',contact:'teammeet'};
+const bgImg = k => `<div class="hero-bg" aria-hidden="true">${im(k)}</div>`;
+const darkHero = (active, tag, title, left, right, extra='') => `<header class="dk hero">${bgImg(HBG[active]||'red')}<div class="navspace"></div><div class="hero-c"><span class="tag" data-r>${tag}</span><h1 class="h1" data-split>${title}</h1>${extra}</div><div class="hero-b mono"><span>${left}</span><span>${right}</span></div></header>`;
+const lightHero = (active, tag, title, text, btn) => `<header class="lhero">${bgImg(HBG[active]||'sand')}<div class="navspace"></div><div class="lhero-c"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>${tag}</span><h1 class="h1" data-split style="max-width:13ch">${title}</h1></div><div class="side" data-r style="--d:.2s"><p class="muted" style="font-size:13px">${text}</p>${btn||''}</div></div></header>`;
+const odo = v => { let out=''; for(const ch of v){ if(/\d/.test(ch)) out+=`<span class="odo"><span class="col" data-to="${ch}">${'0123456789'.split('').map(d=>`<span>${d}</span>`).join('')}</span></span>`; else out+=`<span>${ch}</span>`; } return out; };
+const stat = (v,b,p,i) => `<div class="stat" data-r style="--d:${i*.08}s"><div class="num" data-odo>${odo(v)}</div><b>${b}</b><p>${p}</p></div>`;
+const fcard = (w,cls='') => `<a class="fcard ${cls}" href="#work-${w.slug}" data-r><div class="im">${im(w.img,w.name+' project cover')}<span class="gchip">${esc(w.ind)}</span><span class="gview" aria-hidden="true">↗</span></div><div class="fmeta"><b>${esc(w.name)}</b><span class="mono muted">${esc(w.svc)}</span></div></a>`;
+
+function pricing(){
+  return `<section class="pricing" id="pricing-sec"><div class="aura" aria-hidden="true">${im('mehr1')}</div><div class="wrap"><div class="p-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Pricing plans</span><h2 class="h2" data-split>Ready to scale your brand?</h2></div>
+  <div class="tog" role="group" aria-label="Billing" data-r><button type="button" aria-pressed="true" data-bill="m">Monthly</button><button type="button" aria-pressed="false" data-bill="y">Annually</button></div></div>
+  <div class="plans">${PLANS.map((p,i)=>`<div class="plan glass ${p.pop?'pop':''}" data-r style="--d:${i*.1}s"><div class="plan-h"><span class="plan-n"><i>${p.i}</i>${p.n}</span>${p.pop?'<span class="pop-b">Popular</span>':''}</div>
+  <div><div class="price" data-plan="${p.id}">${p.m[0]}<small>${p.m[1]}</small></div><p class="muted" style="font-size:11.5px;margin-top:4px">${p.sub}</p></div>
+  <ul>${p.f.map(([ic,t])=>`<li>${ICO[ic]}${t}</li>`).join('')}</ul><a class="btn ${p.cls}" style="align-self:flex-start;min-height:34px;font-size:11px;letter-spacing:.04em;text-transform:uppercase" href="#contact-${p.id}">${p.cta} ${AR}</a></div>`).join('')}</div>
+  <p class="muted" data-r style="font-size:11.5px;margin-top:14px">Ad spend is billed separately. Annual plans save 10% on monthly retainers.</p></div></section>`;
+}
+const faqSec = () => `<section class="wrap sec"><div class="faqw orbs"><div class="l"><span class="tag" data-r>FAQ</span><h2 class="h2" data-split>Got questions? We've got answers</h2><p class="muted" data-r>Everything you need to know about our process, pricing, and how we work together.</p></div>
+  <div class="faq">${FAQS.map(([q,a],i)=>`<details class="glass" data-r style="--d:${i*.07}s"><summary>${q}${PLUS}</summary><p class="a">${a}</p></details>`).join('')}</div></div></section>`;
+const testiSec = () => `<section class="dk testi"><div class="aura" aria-hidden="true" style="opacity:.7">${im('ugc')}</div><div class="t-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Collaborations</span><h2 class="h2" data-split>Why they love working with us</h2></div><p class="muted" data-r>We don't just finish projects; we build growth together. Here is what our clients say.</p></div>
+  <div class="track" id="track">${WORK.map((w,i)=>`<figure class="tc glass-dk" data-r style="margin:0;--d:${i*.06}s"><div class="tc-h">${im(w.img2[0])}<span>${esc(w.name)}</span></div><q>${esc(w.q[0])}</q><figcaption class="who"><b>${esc(w.q[1])}</b><small>${esc(w.q[2])} · <span class="smp">Sample</span></small></figcaption></figure>`).join('')}</div>
+  <div class="t-ctl"><div class="dots" id="dots"></div><div class="arrows"><button type="button" id="tprev" aria-label="Previous">←</button><button type="button" id="tnext" aria-label="Next">→</button></div></div></section>`;
+const jcard = (p,i) => `<a class="jc" href="#post-${p.slug}" data-r style="--d:${i*.08}s"><div class="jc-h"><span>${p.cat}</span>${im(p.img)}</div><div class="jc-f"><div class="jc-m"><span>${p.date}</span><span class="rd">${p.read}</span></div><h3>${p.title}</h3><p>${p.ex}</p></div></a>`;
+const journal = () => `<section class="wrap sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>The journal</span><h2 class="h2" data-split>Stories, strategies, <span class="muted">and growth thinking.</span></h2></div><a class="lnk" href="#insights" data-r>View All Blogs</a></div><div class="jgrid">${POSTS.map(jcard).join('')}</div></section>`;
+
+
+const CLIENTS = ["The Casa Kitchen", "Tatvik Ayurveda", "Mom's Cook House", "Zealofy Runners Club", "Mani Aromas", "Shorba", "Indian Origins", "O'Rive Organics", "The Fern Residency", "Thoda Drama", "Keto India", "Totally Indian", "Iris by Simran", "Modern House of Antiques", "The Khokha Cafe", "Popcorn & Company", "Nutri Town", "Sipper", "Myints", "Regenta Resort Bharatpur", "Regenta Central Cassia", "Regenta Inn Blossoms", "Regenta Resort Mashobra", "Regenta Central Noida", "Regenta Central Jaipur", "Panasonic", "V-Mart", "LimeRoad", "Apollo Hospitals", "Bliss Balls"].map((n,i)=>({n, k:'lg'+String(i).padStart(2,'0')}));
+const logoTile = c => `<span class="ltile" title="${esc(c.n)}"><img src="${IMG[c.k]}" alt="${esc(c.n)}" loading="lazy" decoding="async"></span>`;
+function logoStrip(){
+  const a = CLIENTS.filter((_,i)=>i%2===0).map(logoTile).join(''), b = CLIENTS.filter((_,i)=>i%2===1).map(logoTile).join('');
+  return `<div class="lstrip" data-r><div class="ls-lead"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M24 4v40M4 24h40M9.9 9.9l28.2 28.2M38.1 9.9 9.9 38.1"/></svg><p class="mono">Trusted by ${CLIENTS.length}+ brands<br>across India and beyond.</p></div><div class="ls-rows" aria-label="Brands we have worked with"><div class="ls-track-w"><div class="ls-track">${a}${a}</div></div><div class="ls-track-w"><div class="ls-track rev">${b}${b}</div></div></div></div>`;
+}
+const clientWall = () => `<div class="cwall">${CLIENTS.map((c,i)=>`<div class="cw" data-r style="--d:${(i%6)*.05}s">${logoTile(c)}<span class="cw-n">${esc(c.n)}</span></div>`).join('')}</div>`;
+const PORTFOLIO = [
+ {id:'mova',title:'Mova',cat:'branding',tag:'Packaging & Identity',year:'2025',cover:'r_mova',imgs:['r_mova'],desc:'Bold, flavour-coded packaging system for a protein bar range.'},
+ {id:'velour',title:'Velour',cat:'branding',tag:'Beauty Brand Identity',year:'2025',cover:'r_velour',imgs:['r_velour'],desc:'Editorial wordmark and campaign look for a beauty brand.'},
+ {id:'cafe',title:'Café Social Campaign',cat:'social',tag:'Social Media Posts',year:'2024',cover:'r_coffee_strip',imgs:['r_coffee_post','r_coffee_strip'],desc:'Menu launch posts for a coffee shop: coffee, boba and matcha.'},
+ {id:'zero1',title:'Zero1 by Zerodha',cat:'social',tag:'Social Media & Content',year:'2025',cover:'r_z_cyber',imgs:['r_z_highlights','r_z_cyber','r_z_180','r_z_comic','r_z_cartoon','r_z_windows','r_z_women','r_z_mix'],desc:'Carousels, event creatives and storytelling series for Zero1, Zerodha\'s personal finance brand.'},
+ {id:'saree',title:'Draped in Elegance',cat:'campaign',tag:'Campaign Creatives',year:'2025',cover:'r_saree',imgs:['r_saree'],desc:'Festive saree collection launch: key visuals, product posts and story creatives.'},
+ {id:'motion-wear',title:'Motion Wear',cat:'branding',tag:'Logo & Branding',year:'2024',cover:'r_mw_brand',fit:'contain',imgs:['r_mw_brand','r_mw_social'],desc:'Logo, colour system, stationery, jersey design and social posts for an activewear brand.'},
+ {id:'ssvarna',title:'Ssvarna Group',cat:'branding',tag:'Brand Identity',year:'2025',cover:'r_ssvarna',imgs:['r_ssvarna'],desc:'Premium real estate identity with a geometric monogram.'},
+ {id:'quantira',title:'Quantira Wealth',cat:'branding',tag:'Brand Identity',year:'2025',cover:'r_quantira',imgs:['r_quantira'],desc:'Clean, confident identity for a wealth management firm.'},
+ {id:'social-posts',title:'Product & F&B Posts',cat:'social',tag:'Social Media Posts',year:'2024',cover:'r_posts_grid',imgs:['r_posts_grid','r_posts_phone','r_posts_right'],desc:'Product, food and lifestyle post designs for Instagram feeds and stories.'}
+];
+const PCATS=[['all','All work'],['social','Social media'],['branding','Branding'],['campaign','Campaigns']];
+const pcard = (p,cls='') => `<a class="fcard pcard ${cls}" href="#view-${p.id}" data-view="${p.id}" data-r><div class="im ${p.fit==='contain'?'fit':''}"><img src="${IMG[p.cover]}" alt="${esc(p.title)} project" loading="lazy" decoding="async"><span class="gchip">${esc(p.tag)}</span><span class="gview" aria-hidden="true">↗</span>${p.imgs.length>1?`<span class="pcount mono">${p.imgs.length} designs</span>`:''}</div><div class="fmeta"><b>${esc(p.title)}</b><span class="mono muted">${esc(p.tag)}</span></div></a>`;
+function homeHero(){
+  return `<header class="dk hero hh"><div class="hh-spot" aria-hidden="true"></div><canvas class="hh-canvas" aria-hidden="true"></canvas><div class="navspace"></div>
+  <div class="hh-main"><span class="tag" data-r>Next-gen growth agency</span><h1 class="hh-h" data-split>Building Brands <br>That Grow, Sell <br>and Scale</h1><p class="hh-sub" data-r style="--d:.35s">Branding, marketing, technology and content, built by one team from one plan.</p></div>
+  <div class="hh-foot"><div class="hh-meta mono" data-r style="--d:.5s"><span>+ Strategy first</span><span>+ Based in Mohali, India</span><span>+ System: Exioraa Agency</span></div>
+  <div class="hh-side" data-r style="--d:.6s"><p>Branding, Performance &amp; Tech for founders and growing brands</p><div class="hero-cta" style="justify-content:flex-start"><a class="btn b-red b-lg" href="#work">View Projects ${AR}</a><a class="btn b-white b-lg" href="#contact">Reach Out ${AR}</a></div></div></div></header>`;
+}
+
+/* ---------- hero particles: one living orb, looping ---------- */
+function particleHero(cv){
+  const ctx=cv.getContext('2d'); if(!ctx) return ()=>{};
+  const N = innerWidth<700 ? 3600 : 7500, R=Math.random;
+  // points on a unit sphere (fibonacci) + a thin inner shell, each with its own random offsets
+  const dir=new Float32Array(N*3), rnd=new Float32Array(N*4);
+  const ga=Math.PI*(3-Math.sqrt(5));
+  for(let i=0;i<N;i++){ const y=1-(i+.5)/N*2, r=Math.sqrt(1-y*y), t=i*ga; dir[i*3]=Math.cos(t)*r; dir[i*3+1]=y; dir[i*3+2]=Math.sin(t)*r; rnd[i*4]=R(); rnd[i*4+1]=R()*2-1; rnd[i*4+2]=R()*2-1; rnd[i*4+3]=R()*2-1; }
+  let W=0,H=0,dpr=1,raf=0,running=true,t0=performance.now(),mx=-1e4,my=-1e4;
+  const resize=()=>{ const b=cv.getBoundingClientRect(); dpr=Math.min(2,devicePixelRatio||1); W=b.width; H=b.height; cv.width=W*dpr; cv.height=H*dpr; };
+  resize(); addEventListener('resize',resize);
+  const host=cv.parentNode;
+  const pm=e=>{ const b=cv.getBoundingClientRect(); mx=e.clientX-b.left; my=e.clientY-b.top; }, pl=()=>{ mx=my=-1e4; };
+  host.addEventListener('pointermove',pm); host.addEventListener('pointerleave',pl);
+  const LOOP=12; // seconds: breathe + one dust wave per loop
+  function frame(now){
+    raf=running?requestAnimationFrame(frame):0;
+    const T=Math.max(0,(now-t0)/1000), ph=(T%LOOP)/LOOP, w=Math.PI*2*ph;
+    const wide=W>900, cx=wide?W*.7:W*.5, cy=wide?H*.43:H*.34, sc=Math.min(wide?W*.18:W*.34,H*.26);
+    const ry=T*.22, rx=.35+Math.sin(w)*.12, cyr=Math.cos(ry), syr=Math.sin(ry), cxr=Math.cos(rx), sxr=Math.sin(rx);
+    // a dust wave sweeps across the orb once per loop (x from -1.6 to 1.6), lifting particles off the surface
+    const wave=-1.6+ph*3.2*1.25;
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+    const aB=wide?1:.6;
+    for(let i=0;i<N;i++){
+      const k=i*3,q=i*4, dx0=dir[k],dy0=dir[k+1],dz0=dir[k+2];
+      // organic surface: layered waves over the sphere, looping with w
+      const n=Math.sin(dx0*3.1+w)*.5+Math.sin(dy0*4.3-w*2+dz0*2)*.3+Math.sin(dz0*5.7+dx0*2.2+w)*.2;
+      let r=.86+n*.14+(rnd[q]<.18?-rnd[q]*1.4:0);
+      // dust wave: particles near the wave front drift outward and swirl, then settle back
+      const d=Math.abs(dx0-wave), lift=Math.max(0,1-d/.55); const lift2=lift*lift;
+      r+=lift2*(.35+rnd[q]*1.1);
+      let x=dx0*r+rnd[q+1]*lift2*.5, y=dy0*r+rnd[q+2]*lift2*.5+lift2*.25, z=dz0*r+rnd[q+3]*lift2*.5;
+      // tiny shimmer
+      x+=Math.sin(T*1.7+rnd[q+1]*9)*.008; y+=Math.cos(T*1.5+rnd[q+2]*9)*.008;
+      let X=x*cyr+z*syr, Z=-x*syr+z*cyr, Y=y*cxr-Z*sxr; Z=y*sxr+Z*cxr;
+      const f=3.4/(3.4+Z), px=cx+X*sc*f, py=cy-Y*sc*f;
+      let ox=0,oy=0; const ex=px-mx, ey=py-my, d2=ex*ex+ey*ey;
+      if(d2<16900){ const dd=Math.sqrt(d2)||1, p=(1-dd/130)*30; ox=ex/dd*p; oy=ey/dd*p; }
+      const depth=Math.max(0,Math.min(1,(1.2-Z)/2.4)), glow=Math.min(1,depth+lift*.6);
+      const size=(.8+depth*1.6)*f*(1-lift*.35);
+      ctx.fillStyle=`rgba(${200+glow*55|0},${30+glow*130|0},${38+glow*120|0},${(.22+depth*.7)*(1-lift*.35)*aB})`;
+      ctx.fillRect(px+ox,py+oy,size,size);
+    }
+    ctx.globalCompositeOperation='source-over';
+  }
+  const io2='IntersectionObserver' in window ? new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!running){ running=true; raf=requestAnimationFrame(frame);} else if(!v) running=false; }) : null;
+  if(io2) io2.observe(host);
+  const vis=()=>{ if(document.hidden) running=false; else if(!running){ running=true; raf=requestAnimationFrame(frame); } };
+  document.addEventListener('visibilitychange',vis);
+  if(reduce){ running=false; frame(performance.now()); } else raf=requestAnimationFrame(frame);
+  return ()=>{ running=false; cancelAnimationFrame(raf); removeEventListener('resize',resize); document.removeEventListener('visibilitychange',vis); io2&&io2.disconnect(); };
+}
+/* ---------- pages ---------- */
+function home(){
+  const mq = ['stationery','marketer','kaavya1','ugc','designer','packaging','developer','videographer','mehr1','trail1'];
+  const names = ['Branding','Performance','Product shoots','UGC','Brand design','Packaging','Development','Production','Lookbooks','Travel campaigns'];
+  const items = mq.map((k,i)=>`<div class="marq-item">${im(k)}<span>${names[i]}</span></div>`).join('');
+  return `${homeHero()}
+  ${logoStrip()}
+  <section class="wrap sec"><div class="who"><div style="display:flex;flex-direction:column;gap:14px"><span class="tag" data-r>Who we are</span><h2 class="h2" data-split>We build brands, drive growth and build the systems behind it.</h2></div><a class="lnk" href="#studio" data-r>About The Studio</a></div></section>
+  <div class="marq" data-r><div class="marq-track">${items}${items}</div></div>
+  <section class="wrap sec"><span class="tag" data-r>By the numbers</span><div class="stats">${stat('04','Core disciplines','Branding, marketing, development and production under one roof.',0)}${stat('25+','Service lines','From Meta Ads to custom Shopify apps.',1)}${stat('06','Step process','Discover, strategise, build, launch, optimise, scale.',2)}${stat('24h','Response time','Every enquiry gets a reply within one working day.',3)}</div></section>
+  <section class="dk svc"><div class="svc-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Services</span><h2 class="h2" data-split>Everything <span class="pill-img">${im('kaavya1')}</span> your brand needs</h2></div><p class="muted" data-r>Strategy, marketing, technology and content, working from one plan.</p></div>
+  <div class="srows">${PILLARS.map(p=>`<a class="srow" href="#${p.id}" data-scrub><span class="s-num mono">[${p.num}]</span><span class="nm">${p.name}</span><span class="s-info"><span class="s-one">${p.one}</span><span class="chips">${p.chips.slice(0,4).map(c=>`<span>${c}</span>`).join('')}</span></span><span class="s-go" aria-hidden="true">↗</span></a>`).join('')}</div></section>
+  <section class="wrap feat"><div class="feat-sticky"><div class="feat-head"><span class="tag" data-r>Selected work</span><h2 class="h2" data-split>Featured projects &amp; growth stories</h2><p class="muted" data-r>We don't just build websites; we build brands and systems that turn attention into revenue.</p></div></div>
+  <div class="fgrid">${PORTFOLIO.slice(0,5).map((p,i)=>pcard(p,'fc'+(i+1))).join('')}</div><div class="allc"><a class="lnk" href="#work">→ All Work <span class="sup" style="color:var(--red)">(${String(PORTFOLIO.length).padStart(2,'0')})</span></a></div></section>
+  <div id="pricing">${pricing()}</div>
+  ${faqSec()}
+  ${testiSec()}
+  ${journal()}`;
+}
+
+function studio(){
+  const story = 'Exioraa is a digital growth agency built on one idea: a business grows faster when its brand, marketing, technology and content come from one team working from one plan. We help founders build brands people trust, bring in the right customers and put the systems in place to scale.';
+  const story2 = 'Based in Mohali, Punjab, we work with D2C brands, travel companies, education businesses and startups across India and abroad.';
+  const days = [['Day 1','Kickoff call','We learn your business, goals and audience, and set up a shared workspace.'],['Day 2','Research','We study your market, competitors and current numbers.'],['Day 3–4','Strategy','We define positioning, messaging and the growth plan.'],['Week 2','Build','We create the brand, site, store or campaign assets.'],['Week 3','Launch','Campaigns and content go live with tracking in place.'],['Ongoing','Optimise','We test, report weekly and scale what works.']];
+  return `${darkHero('studio','Who we are',`We exist to build lasting <span class="pill-img">${im('teammeet')}</span> brands.`,'Digital growth agency','Mohali · India')}
+  <section class="wrap sec"><div class="story"><div style="display:flex;flex-direction:column;gap:18px;height:100%"><span class="tag" data-r>Our story</span><div class="by" data-r>${im('designer')}<span class="muted">By</span> Gaurav Pratap Singh, Founder</div></div>
+  <div class="t" data-scrubtext><p>${story.split(' ').map(w=>`<span class="w">${w}</span>`).join(' ')}</p><p>${story2.split(' ').map(w=>`<span class="w">${w}</span>`).join(' ')}</p></div></div></section>
+  <section class="pin" id="pin"><div class="dk pin-in"><div class="pin-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag">How we start</span><h2 class="h2">From first call to growth</h2></div><p class="muted" style="max-width:300px;font-size:12px">Every engagement follows the same rhythm, so you always know what happens next.</p></div>
+  <div class="days">${days.map((d,i)=>`<div class="day"><h4>${d[0]}<span>${d[1]}</span></h4>${SHAPES[i]}<p>${d[2]}</p></div>`).join('')}</div></div></section>
+  <section class="wrap sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:14px"><span class="tag" data-r>Client wall</span><h2 class="h2" data-split>Brands we've worked with</h2></div><p class="muted" data-r style="max-width:300px;font-size:12px">From D2C startups and cafés to hotel chains and national retailers.</p></div>${clientWall()}</section>
+  <section class="wrap sec"><div class="found"><div class="im" data-r>${im('teammeet','The Exioraa team in the studio')}</div><div><span class="tag" data-r>Our foundation</span><h2 class="h3" data-split style="margin-top:16px;max-width:18ch">Built on purpose, driven by performance</h2>
+  <div class="acc" data-r><details open><summary>${ICO.mission} Our Mission</summary><p>Help businesses grow with brands that earn trust, marketing that brings customers and systems that make growth repeatable.</p></details><details><summary>${ICO.grow} Training &amp; Progression</summary><p>Every team member gets a monthly learning budget, platform certifications and a clear growth path.</p></details><details><summary>${ICO.home} Our Culture</summary><p>Small teams, direct communication and ownership. We report on results, not activity.</p></details></div></div></div></section>
+  <section class="wrap sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Team</span><h2 class="h2" data-split>The people behind Exioraa</h2></div><p class="muted" data-r style="max-width:280px;font-size:12px">A focused senior team, embedded directly into your project.</p></div>
+  <div class="team"><div class="tm" data-r>${im('teammeet')}<div class="cap"><b>Led by Gaurav Pratap Singh</b><small>Founder</small></div></div>${[['ledger2','Strategy Team','Positioning & research'],['marketer','Performance Team','Ads, SEO & analytics'],['designer','Creative Team','Brand & design'],['videographer','Production Team','Photo & video'],['developer','Tech Team','Shopify, WordPress & SaaS'],['social','Content Team','Social & copy']].map(([k,t,s],i)=>`<div class="tm" data-r style="--d:${((i+1)%4)*.06}s">${im(k)}<div class="cap"><b>${t}</b><small>${s}</small></div></div>`).join('')}
+  <div class="tm join" data-r><p style="font-size:12.5px" class="muted">We're all about hard work, smart solutions and clear results. No fluff, just brilliance.</p><a class="btn b-ink" href="#careers" style="align-self:flex-start">Join Us Now ↗</a></div></div></section>`;
+}
+
+function work(){
+  return `${lightHero('work','Proven impact','Turning ideas into visible growth','Explore our portfolio of brands, stores, campaigns and systems that helped businesses grow.','<a class="btn b-ink" href="#contact">Reach out ↗</a>')}
+  ${logoStrip()}
+  <section class="wrap" style="padding-top:clamp(32px,4vw,56px)"><div class="filters" role="group" aria-label="Filter work">${PCATS.map(([id,n])=>`<button type="button" class="chip" data-pf="${id}" aria-pressed="${id==='all'}">${n}</button>`).join('')}</div><div class="wgrid" id="pgrid">${PORTFOLIO.map(p=>pcard(p)).join('')}</div></section>`;
+}
+
+function project(slug){
+  const i = WORK.findIndex(w=>w.slug===slug); if(i<0) return notFound();
+  const w = WORK[i], others = [WORK[(i+1)%WORK.length], WORK[(i+2)%WORK.length]];
+  return `<div class="navspace"></div>
+  <section class="wrap"><div class="ps-top"><div><span class="tag" data-r>Our portfolio</span><h1 class="h1" data-split style="margin-top:14px">${esc(w.name)}</h1><div class="ps-meta" data-r><div><span>Year</span>${w.year}</div><div><span>Timeline</span>${w.time}</div><div><span>Service</span>${w.svc}</div><div><span class="smp" style="margin:0">Sample case study</span></div></div></div>
+  <div class="ps-thumb" data-r>${im(w.img2[0])}<a class="btn b-ink" href="#contact">Start similar ↗</a></div></div>
+  <div class="ps-hero" data-r>${im(w.img, w.name)}</div>
+  <div class="ps-row"><span class="tag" data-r>Challenge</span><div class="body" data-r><p style="font-size:clamp(18px,1.6vw,22px);line-height:1.4;letter-spacing:-.015em">${esc(w.sum)}</p><p class="muted">${esc(w.ch)}</p></div></div>
+  <div class="ps-row"><span class="tag" data-r>Solutions</span><div class="body" data-r><ul>${w.so.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div></div>
+  <div class="ps-2"><div data-r>${im(w.img2[0])}</div><div data-r style="--d:.1s">${im(w.img2[1])}</div></div>
+  <div class="ps-row"><span class="tag" data-r>Results</span><p class="muted body" data-r>Numbers from the first months after launch.</p></div>
+  <div class="stats" style="margin-top:36px">${w.res.map((r,j)=>stat(r[0],r[1],r[2],j)).join('')}</div>
+  <figure class="quote" data-r><blockquote>${esc(w.q[0])}</blockquote><figcaption>${im(w.img2[1])}<span><b style="font-weight:500">${esc(w.q[1])}</b><br><span class="muted">${esc(w.q[2])}</span></span></figcaption></figure>
+  <div class="sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:14px"><span class="tag" data-r>Projects</span><h2 class="h3" data-split>Other Projects</h2></div><a class="lnk" href="#work" data-r>All Cases</a></div><div class="wgrid" style="margin-top:0">${others.map(o=>fcard(o)).join('')}</div></div></section>`;
+}
+
+function services(){
+  return `${lightHero('services','Services','Everything your brand needs','Four disciplines, one team. Hire us for one, or combine them as you grow.','<a class="btn b-ink" href="#contact">Start a project ↗</a>')}
+  <section class="wrap"><div class="plist">${PILLARS.map((p,i)=>`<div class="pl" id="svc-${p.id}" data-r><span class="mono muted">[${p.num}]</span><div><h3>${p.name}</h3><p class="one">${p.one}</p></div><div class="chips">${p.chips.map(c=>`<span>${c}</span>`).join('')}</div></div>`).join('')}</div></section>
+  <section class="wrap sec"><span class="tag" data-r>How we work</span><div class="stats">${[['01','Discover','Business, market and audience.'],['02','Strategise','Positioning and growth plan.'],['03','Build','Brand, site and systems.'],['04','Launch','Campaigns and content live.']].map((s,i)=>stat(s[0],s[1],s[2],i)).join('')}</div></section>
+  ${pricing()}${faqSec()}`;
+}
+
+function industries(){
+  return `${lightHero('industries','Industries','Sectors we know well','We already know the buyer, the channels and what good looks like in these industries.','<a class="btn b-ink" href="#contact">Talk to us ↗</a>')}
+  <section class="wrap"><div class="igrid" style="margin-top:clamp(40px,5vw,64px)">${INDUSTRIES.map(([n,d],i)=>`<div class="ic" data-r style="--d:${(i%4)*.06}s"><span class="mono muted">[${String(i+1).padStart(2,'0')}]</span><b>${n}</b><p>${d}</p></div>`).join('')}</div></section>
+  <section class="wrap sec"><div class="wgrid" style="margin-top:0">${PORTFOLIO.slice(0,2).map(p=>pcard(p)).join('')}</div></section>`;
+}
+
+function insights(){
+  return `${lightHero('insights','The journal','Stories, strategies and growth thinking','Practical notes from the Exioraa team on branding, marketing, development and content.','')}
+  <section class="wrap"><div class="jgrid" style="margin-top:clamp(40px,5vw,64px)">${POSTS.map(jcard).join('')}</div></section>`;
+}
+function post(slug){
+  const p = POSTS.find(x=>x.slug===slug); if(!p) return notFound();
+  return `<div class="navspace"></div><section class="wrap" style="padding-top:clamp(40px,6vw,80px)"><div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px"><span class="tag" data-r>${p.cat}</span><h1 class="h1" data-split style="max-width:18ch">${p.title}</h1><div class="jc-m" data-r style="gap:20px"><span>${p.date}</span><span class="rd">${p.read}</span></div></div>
+  <div class="ps-hero" data-r>${im(p.img)}</div><article class="prose sec" data-r>${p.body.map(b=>b.startsWith('## ')?`<h2>${b.slice(3)}</h2>`:`<p>${b}</p>`).join('')}</article><div style="display:flex;justify-content:center;margin-top:40px"><a class="btn b-line" href="#insights">← All articles</a></div></section>`;
+}
+
+function careers(){
+  return `${darkHero('careers','Careers','Join the team building brands that grow','Mohali, Punjab','Now hiring')}
+  <section class="wrap sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:14px"><span class="tag" data-r>Open roles</span><h2 class="h2" data-split>Work with us</h2></div><p class="muted" data-r style="max-width:300px;font-size:12px">Don't see your role? Send your portfolio to connect@exioraa.com.</p></div>
+  <div class="jobs">${JOBS.map((j,i)=>`<a class="job" href="#job-${j.slug}" data-r style="--d:${i*.06}s"><b>${j.title}</b><span class="muted h">${j.loc}</span><span class="muted h">${j.type} · ${j.mode}</span><span class="go">↗</span></a>`).join('')}</div></section>`;
+}
+function job(slug){
+  const j = JOBS.find(x=>x.slug===slug); if(!j) return notFound();
+  return `<header class="dk hero" style="min-height:min(520px,70svh)">${bgImg(j.img)}<div class="navspace"></div><div class="hero-c"><span class="tag" data-r>Job opening</span><h1 class="h1" data-split>${esc(j.title)}</h1></div><div class="jhero-b mono"><span>◎ ${j.loc}</span><span>◷ ${j.type} · ${j.mode}</span></div></header>
+  <section class="wrap"><div class="apply orbs"><div class="role" data-r>
+    <div><h3>${ICO.check} The Role</h3><p class="muted">${j.role}</p></div>
+    <div><h3>${ICO.check} Responsibilities</h3><ul class="muted">${j.resp.map(r=>`<li>${r}</li>`).join('')}</ul></div>
+    <div><h3>${ICO.check} Requirements</h3><ul class="muted">${j.req.map(r=>`<li>${r}</li>`).join('')}</ul></div>
+    <div><h3>${ICO.check} Benefits</h3><ul class="muted">${j.ben.map(r=>`<li>${r}</li>`).join('')}</ul></div></div>
+  <div class="fbox glass" data-r id="fhost"><h2>Apply Now</h2><p class="muted" style="font-size:12px">${j.title}, ${j.loc} (${j.mode}), ${j.type}</p>
+  <form id="form" data-kind="apply" data-role="${esc(j.title)}" novalidate style="display:flex;flex-direction:column;gap:14px">
+    <div class="fr"><div class="fl"><label for="f-first">First name <i>*</i></label><input id="f-first" name="first" autocomplete="given-name" placeholder="Enter your name" required><span class="er"></span></div><div class="fl"><label for="f-last">Last name <i>*</i></label><input id="f-last" name="last" autocomplete="family-name" placeholder="Enter your last name" required><span class="er"></span></div></div>
+    <div class="fr"><div class="fl"><label for="f-email">Email <i>*</i></label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="Enter your email" required><span class="er"></span></div><div class="fl"><label for="f-phone">Phone number <i>*</i></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="+91 98765 43210" required><span class="er"></span></div></div>
+    <div class="fr"><div class="fl"><label for="f-exp">Experience</label><select id="f-exp" name="exp"><option value="">Select</option><option>0 to 1 years</option><option>1 to 3 years</option><option>3 to 5 years</option><option>5+ years</option></select></div><div class="fl"><label for="f-link">Portfolio / LinkedIn</label><input id="f-link" name="link" type="url" placeholder="https://"><span class="er"></span></div></div>
+    <div class="fl"><span class="mono" style="font-size:9.5px;font-weight:500">Resume / CV <i style="color:var(--red);font-style:normal">*</i></span><div class="file"><span id="cvname">PDF or DOC, up to 5 MB</span><label class="btn b-ink" style="min-height:30px;font-size:11px" for="f-cv">Upload</label><input id="f-cv" name="cv" type="file" accept=".pdf,.doc,.docx"></div><span class="er" id="cv-er"></span></div>
+    <div class="fl"><label for="f-msg">Cover note <i>*</i></label><textarea id="f-msg" name="msg" placeholder="Tell us why you'd be a great fit" required></textarea><span class="er"></span></div>
+    <button type="submit" class="btn b-red b-lg" style="align-self:flex-start">Submit Application ${AR}</button></form></div></div></section>`;
+}
+
+function contact(plan){
+  const svcs = ['Branding','Meta Ads','Google Ads','SEO','Social media','Shopify','Website','SaaS / CRM','Photo & video','Not sure yet'];
+  const planName = (PLANS.find(p=>p.id===plan)||{}).n || '';
+  return `${lightHero('contact','Contact','Let\'s talk about your brand','Tell us where you are and where you want to go. We reply within one working day.','')}
+  <section class="wrap"><div class="apply orbs"><div class="cinfo">
+    <div class="ci glass" data-r><span class="mono muted">Email</span><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><code>connect@exioraa.com</code><button type="button" class="btn b-ink" style="min-height:32px;font-size:12px" data-copy="connect@exioraa.com">Copy</button></div></div>
+    <div class="ci glass" data-r style="--d:.06s"><span class="mono muted">Studio</span><b style="font-weight:500">Mohali, Punjab, India</b><span class="muted" style="font-size:12.5px">Mon to Sat, 10:00 to 19:00 IST</span></div>
+    <div class="ci glass" data-r style="--d:.12s"><span class="mono muted">What happens next</span><ol class="muted" style="margin:0;padding-left:18px;display:grid;gap:6px;font-size:13px"><li>We read your brief and reply within one working day.</li><li>A free 30-minute discovery call.</li><li>A written plan and fixed-price proposal.</li></ol></div>
+    <div class="ci glass" data-r style="--d:.18s;padding:0;overflow:hidden;aspect-ratio:16/9">${im('teammeet')}</div>
+  </div>
+  <div class="fbox glass" data-r id="fhost"><h2>Book a Call</h2><p class="muted" style="font-size:12px">Fields marked * are required.</p>
+  <form id="form" data-kind="call" novalidate style="display:flex;flex-direction:column;gap:14px">
+    <div class="fr"><div class="fl"><label for="f-first">First name <i>*</i></label><input id="f-first" name="first" autocomplete="given-name" placeholder="Enter your name" required><span class="er"></span></div><div class="fl"><label for="f-last">Last name <i>*</i></label><input id="f-last" name="last" autocomplete="family-name" placeholder="Enter your last name" required><span class="er"></span></div></div>
+    <div class="fr"><div class="fl"><label for="f-email">Email <i>*</i></label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required><span class="er"></span></div><div class="fl"><label for="f-phone">Phone number <i>*</i></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="+91 98765 43210" required><span class="er"></span></div></div>
+    <div class="fr"><div class="fl"><label for="f-co">Company <i>*</i></label><input id="f-co" name="company" autocomplete="organization" placeholder="Brand or company name" required><span class="er"></span></div><div class="fl"><label for="f-web">Website / Instagram</label><input id="f-web" name="web" placeholder="yourbrand.com"></div></div>
+    <fieldset class="fl"><legend>Services <i>*</i></legend><div class="chk">${svcs.map((s,i)=>`<label><input type="checkbox" name="svc" value="${s}" id="f-s${i}"><span>${s}</span></label>`).join('')}</div><span class="er" id="svc-er"></span></fieldset>
+    <div class="fr"><div class="fl"><label for="f-plan">Plan</label><select id="f-plan" name="plan"><option value="">Not sure yet</option>${PLANS.map(p=>`<option ${p.n===planName?'selected':''}>${p.n}</option>`).join('')}</select></div><div class="fl"><label for="f-budget">Budget</label><select id="f-budget" name="budget"><option value="">Select a range</option><option>Under ₹50,000</option><option>₹50,000 to ₹1,50,000</option><option>₹1,50,000 to ₹5,00,000</option><option>₹5,00,000+</option></select></div></div>
+    <div class="fl"><label for="f-msg">Message <i>*</i></label><textarea id="f-msg" name="msg" placeholder="What does your business do, and what do you want to change?" required></textarea><span class="er"></span></div>
+    <button type="submit" class="btn b-red b-lg" style="align-self:flex-start">Book a Consultation ${AR}</button></form></div></div></section>`;
+}
+function notFound(){ return `${darkHero('','404','Page not found','Exioraa','404')}<section class="wrap sec" style="display:flex;justify-content:center"><a class="btn b-ink b-lg" href="#home">Back to home ↗</a></section>`; }
+
+/* ---------- router ---------- */
+const app = document.getElementById('app');
+const gnavEl = document.getElementById('gnav');
+function bindNav(){}
+
+let cleanup = [];
+function resolve(h){
+  if(!h||h==='home') return ['home',home()];
+  if(h==='studio'||h==='about') return ['studio',studio()];
+  if(h==='work') return ['work',work()];
+  if(h.startsWith('work-')) return ['work',project(h.slice(5))];
+  if(h==='services') return ['services',services()];
+  if(PILLARS.some(p=>p.id===h)) return ['services',services(),'svc-'+h];
+  if(h==='pricing') return ['home',home(),'pricing'];
+  if(h==='industries') return ['industries',industries()];
+  if(h==='insights') return ['insights',insights()];
+  if(h.startsWith('post-')) return ['insights',post(h.slice(5))];
+  if(h==='careers') return ['careers',careers()];
+  if(h.startsWith('job-')) return ['careers',job(h.slice(4))];
+  if(h==='contact'||h.startsWith('contact-')) return ['contact',contact(h.split('-')[1])];
+  return ['',notFound()];
+}
+let first = true, curPage = null;
+function route(){
+  const h = decodeURIComponent(location.hash.slice(1));
+  const [page, html, anchor] = resolve(h);
+  const same = page===curPage && anchor && document.getElementById(anchor);
+  const go = () => {
+    if(!same){
+      cleanup.forEach(f=>f()); cleanup=[];
+      app.innerHTML = html; curPage = page;
+      document.title = page && page!=='home' ? page[0].toUpperCase()+page.slice(1)+' · Exioraa' : 'Exioraa';
+      window.scrollTo(0,0);
+      gnavEl.innerHTML = nav('', page); gnavEl.classList.remove('hide');
+      setup();
+    }
+    app.classList.remove('leave');
+    if(anchor){ requestAnimationFrame(()=>{ const el=document.getElementById(anchor); if(el) window.scrollTo({top:el.getBoundingClientRect().top+scrollY-16,behavior:'smooth'}); }); }
+  };
+  if(first||same){ first=false; go(); } else { app.classList.add('leave'); setTimeout(go,230); }
+}
+
+/* ---------- behaviours ---------- */
+let io;
+function observe(root){
+  const els = root.querySelectorAll('[data-r],[data-split],[data-odo]');
+  if(!('IntersectionObserver' in window)){ els.forEach(e=>{e.classList.add('in'); runOdo(e);}); return; }
+  els.forEach(e=>io.observe(e));
+}
+function runOdo(el){ el.querySelectorAll('.col').forEach((c,i)=>{ c.style.transitionDelay=(i*.12)+'s'; c.style.transform=`translateY(-${c.dataset.to}em)`; }); }
+io = 'IntersectionObserver' in window ? new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); if(e.target.hasAttribute('data-odo')) runOdo(e.target); io.unobserve(e.target);} }),{threshold:.14,rootMargin:'0px 0px -6% 0px'}) : null;
+
+function setupSplit(root){ root.querySelectorAll('[data-split]').forEach(h=>{ if(h.querySelector('.w')) return; const walk=n=>{ [...n.childNodes].forEach(c=>{ if(c.nodeType===3){ const parts=c.textContent.split(/(\s+)/); const frag=document.createDocumentFragment(); parts.forEach(p=>{ if(!p) return; if(/^\s+$/.test(p)) frag.appendChild(document.createTextNode(p)); else { const s=document.createElement('span'); s.className='w'; s.textContent=p; frag.appendChild(s);} }); c.replaceWith(frag);} else if(c.nodeType===1 && !c.classList.contains('pill-img')) walk(c); else if(c.nodeType===1){ c.classList.add('w'); } }); }; walk(h); h.querySelectorAll('.w').forEach((w,i)=>w.style.setProperty('--i',i)); }); }
+
+function setup(){
+  setupSplit(document);
+  observe(document);
+  // hero: reveal immediately
+  document.querySelectorAll('.hero [data-split],.hero [data-r],.lhero [data-split],.lhero [data-r]').forEach(e=>setTimeout(()=>e.classList.add('in'),60));
+  // dropdown + menu
+  bindNav();
+  gnavEl.querySelectorAll('.dd').forEach(dd=>{ const b=dd.querySelector('.ddb'), m=dd.querySelector('.ddm'); b.addEventListener('click',e=>{ e.stopPropagation(); const o=m.hidden; m.hidden=!o; b.setAttribute('aria-expanded',o); }); });
+  gnavEl.querySelectorAll('[data-menu]').forEach(b=>b.addEventListener('click',()=>{ mob.hidden=false; document.getElementById('mobx').focus(); }));
+  // pricing toggle
+  app.querySelectorAll('[data-bill]').forEach(b=>b.addEventListener('click',()=>{ const y=b.dataset.bill==='y'; app.querySelectorAll('[data-bill]').forEach(x=>x.setAttribute('aria-pressed',x===b)); PLANS.forEach(p=>{ const el=app.querySelector(`[data-plan="${p.id}"]`); if(!el) return; const v=y?p.y:p.m; el.style.filter='blur(6px)'; el.style.opacity='.2'; setTimeout(()=>{ el.innerHTML=`${v[0]}<small>${v[1]}</small>`; el.style.transition='filter .4s,opacity .4s'; el.style.filter='none'; el.style.opacity='1'; },180); }); }));
+  // testimonials
+  const tr=document.getElementById('track');
+  if(tr){ const cards=[...tr.children], dots=document.getElementById('dots'); const n=Math.max(1,cards.length-1);
+    dots.innerHTML=cards.map((_,i)=>`<button type="button" aria-label="Go to testimonial ${i+1}"></button>`).join('');
+    const db=[...dots.children]; const step=()=>cards[0].getBoundingClientRect().width+10;
+    const upd=()=>{ const k=Math.round(tr.scrollLeft/step()); db.forEach((d,i)=>d.setAttribute('aria-current',i===Math.min(k,cards.length-1))); };
+    tr.addEventListener('scroll',upd,{passive:true}); upd();
+    db.forEach((d,i)=>d.addEventListener('click',()=>tr.scrollTo({left:i*step(),behavior:'smooth'})));
+    document.getElementById('tprev').addEventListener('click',()=>tr.scrollBy({left:-step(),behavior:'smooth'}));
+    document.getElementById('tnext').addEventListener('click',()=>{ if(tr.scrollLeft+tr.clientWidth>=tr.scrollWidth-4) tr.scrollTo({left:0,behavior:'smooth'}); else tr.scrollBy({left:step(),behavior:'smooth'}); });
+    // autoplay: advance every 3.5s, loop, pause on hover/touch/focus or when off-screen
+    let paused=false, onscreen=false;
+    const next=()=>{ if(tr.scrollLeft+tr.clientWidth>=tr.scrollWidth-4) tr.scrollTo({left:0,behavior:'smooth'}); else tr.scrollBy({left:step(),behavior:'smooth'}); };
+    const tick=setInterval(()=>{ if(!paused && onscreen && !document.hidden && !reduce) next(); },3500);
+    const sec=tr.closest('section');
+    ['pointerenter','focusin','touchstart'].forEach(ev=>sec.addEventListener(ev,()=>paused=true,{passive:true}));
+    ['pointerleave','focusout'].forEach(ev=>sec.addEventListener(ev,()=>paused=false));
+    sec.addEventListener('touchend',()=>setTimeout(()=>paused=false,4000),{passive:true});
+    let vo=null; if('IntersectionObserver' in window){ vo=new IntersectionObserver(es=>{ onscreen=es[0].isIntersecting; },{threshold:.35}); vo.observe(sec); } else onscreen=true;
+    cleanup.push(()=>{ clearInterval(tick); vo&&vo.disconnect(); });
+    let dn=false,sx=0,sl=0; tr.addEventListener('pointerdown',e=>{ if(e.pointerType!=='mouse') return; dn=true; sx=e.clientX; sl=tr.scrollLeft; tr.style.scrollSnapType='none'; });
+    addEventListener('pointermove',e=>{ if(dn) tr.scrollLeft=sl-(e.clientX-sx); });
+    addEventListener('pointerup',()=>{ if(dn){ dn=false; tr.style.scrollSnapType=''; tr.scrollBy({left:1}); } });
+  }
+  const hc=app.querySelector('.hh-canvas'); if(hc) cleanup.push(particleHero(hc));
+  // hero video
+  const hv=app.querySelector('.hh-vid');
+  if(hv){ const sd=navigator.connection&&navigator.connection.saveData; const mq=matchMedia('(orientation: portrait)');
+    const load=()=>{ const ext=hv.canPlayType('video/mp4; codecs="avc1.640028"')?'mp4':'webm'; const src=(mq.matches?'hero-portrait.':'hero-landscape.')+ext; if(hv.dataset.src===src) return; hv.dataset.src=src; hv.classList.remove('on'); hv.src=src; hv.play().catch(()=>{}); };
+    hv.addEventListener('playing',()=>hv.classList.add('on'));
+    if(!reduce && !sd){ load(); const onc=()=>load(); mq.addEventListener('change',onc); cleanup.push(()=>mq.removeEventListener('change',onc)); }
+    const vis=()=>{ if(document.hidden) hv.pause(); else if(!reduce && !sd) hv.play().catch(()=>{}); }; document.addEventListener('visibilitychange',vis); cleanup.push(()=>document.removeEventListener('visibilitychange',vis));
+  }
+  // forms
+  setupForm();
+  onScroll();
+}
+
+// scroll-driven effects
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let ticking=false;
+function onScroll(){
+  if(ticking) return; ticking=true;
+  requestAnimationFrame(()=>{ ticking=false; const vh=innerHeight;
+    navTone();
+    const fh=document.querySelector('.feat-head'); if(fh){ const fb=fh.closest('.feat').getBoundingClientRect(); const p=reduce?0:Math.max(0,Math.min(1,(-fb.top+vh*.02)/(vh*.42))); fh.style.opacity=(1-p).toFixed(3); fh.style.filter=p>0?`blur(${(p*14).toFixed(1)}px)`:''; fh.style.transform=`translateY(${(-p*40).toFixed(1)}px) scale(${(1-p*.06).toFixed(3)})`; fh.style.visibility=p>=1?'hidden':''; }
+    document.querySelectorAll('[data-scrub]').forEach(r=>{ const b=r.getBoundingClientRect(); const c=(b.top+b.height/2)/vh; const p=reduce?1:Math.max(0,Math.min(1,1-Math.abs(c-.5)/.32)); r.style.setProperty('--p',p.toFixed(3)); });
+    document.querySelectorAll('[data-scrubtext]').forEach(t=>{ const ws=t.querySelectorAll('.w'); const b=t.getBoundingClientRect(); const p=Math.min(1,Math.max(0,(vh*.85-b.top)/(b.height+vh*.35))); const k=reduce?ws.length:Math.round(p*ws.length); ws.forEach((w,i)=>w.classList.toggle('on',i<k)); });
+    const pin=document.getElementById('pin');
+    if(pin && innerWidth>640){ const b=pin.getBoundingClientRect(); const p=Math.min(1,Math.max(0,-b.top/(b.height-vh))); const days=pin.querySelectorAll('.day'); days.forEach((d,i)=>{ const s=i/(days.length); const t=reduce?1:Math.min(1,Math.max(0,(p-s*0.85)/0.16)); d.style.transform=`translateY(${(1-t)*115}%)`; d.style.opacity=t>0?1:0; }); }
+  });
+}
+let lastY=0;
+function navTone(){ gnavEl.style.pointerEvents='none'; const el=document.elementFromPoint(innerWidth/2, 40); gnavEl.style.pointerEvents=''; gnavEl.classList.toggle('on-dark', !!(el && el.closest('.dk'))); const y=scrollY; if(Math.abs(y-lastY)>6){ gnavEl.classList.toggle('hide', y>lastY && y>240 && mob.hidden); lastY=y; } }
+document.addEventListener('pointermove',e=>{ const g=e.target.closest && e.target.closest('.glass,.glass-dk'); if(!g) return; const b=g.getBoundingClientRect(); g.style.setProperty('--gx',((e.clientX-b.left)/b.width*100).toFixed(1)+'%'); g.style.setProperty('--gy',((e.clientY-b.top)/b.height*100).toFixed(1)+'%'); },{passive:true});
+try{ if(navigator.userAgentData && navigator.userAgentData.brands.some(b=>/Chromium|Google Chrome|Microsoft Edge/.test(b.brand))) document.documentElement.classList.add('chromium'); }catch(e){}
+addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll);
+
+// forms
+function setupForm(){
+  const f=document.getElementById('form'); if(!f) return;
+  const kind=f.dataset.kind, KEY='exioraa-'+kind;
+  try{ const d=JSON.parse(localStorage.getItem(KEY)||'null'); if(d) Object.entries(d).forEach(([k,v])=>{ if(k==='svc') v.forEach(x=>{ const c=f.querySelector(`input[name=svc][value="${x}"]`); if(c) c.checked=true; }); else if(f.elements[k] && f.elements[k].type!=='file' && !f.elements[k].value) f.elements[k].value=v; }); }catch(e){}
+  const cv=f.elements.cv; if(cv) cv.addEventListener('change',()=>{ const x=cv.files[0]; document.getElementById('cvname').textContent = x ? `${x.name} (${Math.max(1,Math.round(x.size/1024))} KB)` : 'PDF or DOC, up to 5 MB'; document.getElementById('cv-er').textContent=''; });
+  const data=()=>{ const o={}; [...f.elements].forEach(el=>{ if(!el.name||el.type==='file') return; if(el.name==='svc'){ o.svc=o.svc||[]; if(el.checked) o.svc.push(el.value); } else o[el.name]=el.value.trim(); }); return o; };
+  f.addEventListener('input',()=>{ try{ localStorage.setItem(KEY,JSON.stringify(data())); }catch(e){} });
+  const setE=(el,m)=>{ const fl=el.closest('.fl'); const er=fl&&fl.querySelector('.er'); if(er) er.textContent=m; if(fl) fl.classList.toggle('bad',!!m); };
+  f.addEventListener('submit',e=>{
+    e.preventDefault(); const d=data(); let bad=null;
+    const req=[['first','Enter your first name.'],['last','Enter your last name.'],['email',''],['phone',''],['msg','']];
+    if(kind==='call') req.push(['company','Enter your company or brand name.']);
+    req.forEach(([k,m])=>{ const el=f.elements[k]; if(!el) return; let msg='';
+      if(k==='email') msg=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)?'':'Enter a valid email, like you@company.com.';
+      else if(k==='phone') msg=(d.phone.replace(/\D/g,'').length>=10)?'':'Enter a phone number with at least 10 digits.';
+      else if(k==='msg') msg=d.msg.length>=15?'':'Add a few more details (at least 15 characters).';
+      else msg=d[k]?'':m;
+      setE(el,msg); if(msg&&!bad) bad=el; });
+    if(f.elements.link && d.link && !/^https?:\/\/\S+\.\S+/.test(d.link)){ setE(f.elements.link,'Start the link with https://'); bad=bad||f.elements.link; } else if(f.elements.link) setE(f.elements.link,'');
+    if(kind==='call'){ const er=document.getElementById('svc-er'); er.textContent=d.svc&&d.svc.length?'':'Pick at least one service, or "Not sure yet".'; if(!d.svc||!d.svc.length) bad=bad||document.getElementById('f-s0'); }
+    if(kind==='apply'){ const x=cv.files[0], er=document.getElementById('cv-er'); let m=''; if(!x) m='Upload your resume.'; else if(x.size>5*1024*1024) m='That file is over 5 MB. Upload a smaller file.'; er.textContent=m; if(m) bad=bad||cv; }
+    if(bad){ bad.focus(); return; }
+    const lines = kind==='apply'
+      ? [`Job application: ${f.dataset.role}`,'',`Name: ${d.first} ${d.last}`,`Email: ${d.email}`,`Phone: ${d.phone}`,d.exp?`Experience: ${d.exp}`:'',d.link?`Portfolio: ${d.link}`:'',`Resume: ${cv.files[0].name} (attach this file)`,'','Cover note:',d.msg]
+      : [`New project enquiry`,'',`Name: ${d.first} ${d.last}`,`Email: ${d.email}`,`Phone: ${d.phone}`,`Company: ${d.company}`,d.web?`Website: ${d.web}`:'',`Services: ${d.svc.join(', ')}`,d.plan?`Plan: ${d.plan}`:'',d.budget?`Budget: ${d.budget}`:'','','Message:',d.msg];
+    const brief=lines.filter((l,i,a)=>l!==''||a[i-1]!=='').join('\n');
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    const host=document.getElementById('fhost');
+    host.innerHTML=`<div class="okbox" tabindex="-1" id="ok"><span class="ic2">${ICO.check}</span><h2 style="font-size:clamp(24px,2.2vw,30px);letter-spacing:-.03em">Thanks, ${esc(d.first)}. ${kind==='apply'?'Your application is ready.':'Your brief is ready.'}</h2><p class="muted" style="font-size:13px">Send it to <b style="color:var(--ink)">connect@exioraa.com</b>${kind==='apply'?' with your resume attached':''}. We reply within one working day.</p><div class="brief" id="brief">${esc(brief)}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn b-red" id="cp">Copy ${kind==='apply'?'application':'brief'}</button><button type="button" class="btn b-ink" data-copy="connect@exioraa.com">Copy email</button><button type="button" class="btn b-line" id="again">Start over</button></div></div>`;
+    document.getElementById('ok').focus();
+    document.getElementById('cp').addEventListener('click',()=>copy(brief,'Copied','brief'));
+    document.getElementById('again').addEventListener('click',()=>{ curPage=null; route(); });
+  });
+}
+
+// global
+const toastEl=document.getElementById('toast'); let tt;
+function toast(m){ toastEl.textContent=m; toastEl.hidden=false; clearTimeout(tt); tt=setTimeout(()=>toastEl.hidden=true,2000); }
+function copy(t,m,sel){ const fb=()=>{ const el=sel&&document.getElementById(sel); if(el){ const r=document.createRange(); r.selectNodeContents(el); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast('Selected. Press Ctrl/Cmd + C'); } else toast(t); }; try{ navigator.clipboard.writeText(t).then(()=>toast(m||'Copied'),fb); }catch(e){ fb(); } }
+document.addEventListener('click',e=>{ const c=e.target.closest('[data-copy]'); if(c){ copy(c.dataset.copy,'Email copied'); return; } if(!e.target.closest('.dd')) document.querySelectorAll('.ddm').forEach(m=>{ m.hidden=true; }); if(e.target.closest('#mob a')) mob.hidden=true; });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ document.querySelectorAll('.ddm').forEach(m=>m.hidden=true); mob.hidden=true; } });
+const mob=document.getElementById('mob'); document.getElementById('mobx').addEventListener('click',()=>mob.hidden=true);
+const foot=document.getElementById('foot'); foot.addEventListener('pointermove',e=>{ const b=foot.getBoundingClientRect(); foot.style.setProperty('--mx',(e.clientX-b.left)+'px'); foot.style.setProperty('--my',(e.clientY-b.top)+'px'); });
+document.getElementById('nf').addEventListener('submit',e=>{ e.preventDefault(); const v=document.getElementById('nf-e').value.trim(), m=document.getElementById('nf-m'); if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){ m.textContent='Enter a valid email address.'; return; } try{ localStorage.setItem('exioraa-news',v); }catch(err){} m.textContent='Thanks. You\'re on the list.'; e.target.reset(); });
+// footer + cta reveal
+setupSplit(document); observe(document.querySelector('.cta').parentNode);
+
+// footer wordmark: letter reveal on scroll + magnetic wave near cursor
+(function(){
+  const wm=document.querySelector('.wm'); if(!wm) return;
+  const txt=wm.textContent; wm.textContent='';
+  [...txt].forEach((c,i)=>{ const sp=document.createElement('span'); if(c===' '){ sp.className='sp'; } else { sp.className='wl'; sp.textContent=c; sp.style.setProperty('--i',i); } wm.appendChild(sp); });
+  const ls=[...wm.querySelectorAll('.wl')];
+  const show=()=>{ wm.classList.add('in'); setTimeout(()=>wm.classList.add('done'), 900+ls.length*55); };
+  if('IntersectionObserver' in window){ const o=new IntersectionObserver(es=>{ if(es[0].isIntersecting){ show(); o.disconnect(); } },{threshold:.35}); o.observe(wm); } else show();
+  const f=document.getElementById('foot'); let raf=0, mx=-1e4, my=-1e4;
+  const draw=()=>{ raf=0; if(!wm.classList.contains('done')||reduce) return; ls.forEach(l=>{ const b=l.getBoundingClientRect(); const dx=mx-(b.left+b.width/2), dy=my-(b.top+b.height/2); const d=Math.hypot(dx,dy); const k=Math.max(0,1-d/260); l.style.transform=k>0?`translateY(${(-k*14).toFixed(1)}%) scale(${(1+k*.05).toFixed(3)})`:''; l.classList.toggle('hot',k>.55); }); };
+  f.addEventListener('pointermove',e=>{ mx=e.clientX; my=e.clientY; if(!raf) raf=requestAnimationFrame(draw); });
+  f.addEventListener('pointerleave',()=>{ mx=my=-1e4; if(!raf) raf=requestAnimationFrame(draw); });
+})();
+setTimeout(()=>document.documentElement.classList.add('logo-done'),2200);
+
+// portfolio lightbox + filters
+(function(){
+  const lb=document.getElementById('lb'), li=document.getElementById('lb-i'), th=document.getElementById('lb-th');
+  let P=null, k=0, last=null;
+  const show=()=>{ const key=P.imgs[k]; li.src=IMG[key]; li.alt=P.title+' design '+(k+1); document.getElementById('lb-c').textContent=`${P.tag} · ${k+1} / ${P.imgs.length}`; [...th.children].forEach((b,i)=>b.setAttribute('aria-current',i===k)); const multi=P.imgs.length>1; document.getElementById('lb-p').hidden=!multi; document.getElementById('lb-n').hidden=!multi; th.hidden=!multi; };
+  const open=id=>{ P=PORTFOLIO.find(p=>p.id===id); if(!P) return; k=0; last=document.activeElement; document.getElementById('lb-t').textContent=P.title; document.getElementById('lb-d').textContent=P.desc; th.innerHTML=P.imgs.map((x,i)=>`<button type="button" aria-label="Design ${i+1}"><img src="${IMG[x]}" alt=""></button>`).join(''); [...th.children].forEach((b,i)=>b.addEventListener('click',()=>{k=i;show();})); show(); lb.hidden=false; document.body.style.overflow='hidden'; document.getElementById('lb-x').focus(); };
+  const close=()=>{ lb.hidden=true; document.body.style.overflow=''; last&&last.focus&&last.focus(); };
+  document.addEventListener('click',e=>{ const c=e.target.closest('[data-view]'); if(c){ e.preventDefault(); open(c.dataset.view); return; } const f=e.target.closest('[data-pf]'); if(f){ const id=f.dataset.pf; document.querySelectorAll('[data-pf]').forEach(b=>b.setAttribute('aria-pressed',b===f)); const g=document.getElementById('pgrid'); g.innerHTML=PORTFOLIO.filter(p=>id==='all'||p.cat===id).map(p=>pcard(p)).join(''); g.querySelectorAll('[data-r]').forEach(x=>x.classList.add('in')); } });
+  document.getElementById('lb-x').addEventListener('click',close);
+  lb.addEventListener('click',e=>{ if(e.target===lb||e.target.classList.contains('lb-stage')) close(); });
+  document.getElementById('lb-p').addEventListener('click',()=>{ k=(k-1+P.imgs.length)%P.imgs.length; show(); });
+  document.getElementById('lb-n').addEventListener('click',()=>{ k=(k+1)%P.imgs.length; show(); });
+  lb.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); if(e.key==='ArrowRight') document.getElementById('lb-n').click(); if(e.key==='ArrowLeft') document.getElementById('lb-p').click(); });
+})();
+addEventListener('hashchange',route);
+route();
+})();
+</script>
+
+</body>
+</html>

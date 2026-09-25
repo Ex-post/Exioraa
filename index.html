@@ -766,6 +766,32 @@ html.intro-on .snd{opacity:0;pointer-events:none}
   .plan{padding:20px}
   .faqw .l .h2{font-size:32px}
 }
+
+/* ===== phone declutter (desktop unchanged) ===== */
+@media (max-width:640px){
+  .gnav{width:calc(100% - 28px)!important;top:calc(10px + env(safe-area-inset-top,0px))!important}
+  .gnav .logo{height:40px!important;font-size:16px;padding:0 14px 0 10px!important;gap:7px}
+  .gnav .logo .mark{width:16px;height:16px}
+  .gnav .burger{width:40px!important;height:40px!important}
+  .hh{min-height:0!important;justify-content:flex-start}
+  .hh-main{padding-top:56px!important}
+  .hh-main{padding-top:36px!important;gap:18px}
+  .hh-h{font-size:clamp(40px,11.6vw,50px)!important;line-height:1.02!important}
+  .hh-sub{font-size:15px!important;color:#CFCFCF!important;max-width:30ch;margin-top:0!important}
+  .hh-side p,.hh-meta{display:none!important}
+  .hh-foot{padding-top:40px!important;padding-bottom:24px!important;gap:0!important}
+  .hh-side{max-width:none;width:100%}
+  .hh-side .hero-cta .btn{min-height:50px;font-size:15px}
+  .hh .hh-spot{background:radial-gradient(70% 45% at 85% 0%,rgba(214,40,47,.45),rgba(214,40,47,0) 70%)!important}
+  .lstrip{gap:12px!important;padding-block:18px!important}
+  .ls-lead{gap:10px}
+  .ls-lead svg{width:22px;height:22px}
+  .ls-lead p br{display:none}
+  .ls-lead p{font-size:10.5px}
+  .ls-rows .ls-track-w:nth-child(2){display:none}
+}
+.srow{grid-template-columns:minmax(0,1fr) minmax(0,420px) 48px!important}
+@media (max-width:900px){.srow{grid-template-columns:minmax(0,1fr) 44px!important;align-items:center!important}.srow .nm{grid-row:1;grid-column:1}.srow .s-go{grid-row:1!important;grid-column:2!important}.s-info{grid-column:1/3!important;grid-row:2}}
 </style>
 </head>
 <body>
@@ -787,15 +813,15 @@ html.intro-on .snd{opacity:0;pointer-events:none}
   <section class="cta">
     <span class="tag" data-r>Get started</span>
     <h2 data-split>Start Building Your Brand Today</h2>
-    <a href="#contact" class="btn b-red" data-r style="--d:.25s">Book a Consultation <span class="ar">↗</span></a>
+    <a href="#contact" class="btn b-red" data-r style="--d:.25s">Book a Consultation <span class="ar">↗︎</span></a>
   </section>
   <footer class="dk foot" id="foot">
     <div class="f-top">
       <div class="f-news">
         <h3>Stay updated with<br>Exioraa news</h3>
-        <form class="nf" id="nf" novalidate><label for="nf-e" class="sr">Email address</label><input id="nf-e" type="email" placeholder="Enter your email" autocomplete="email"><button type="submit" aria-label="Subscribe">↗</button></form>
+        <form class="nf" id="nf" novalidate><label for="nf-e" class="sr">Email address</label><input id="nf-e" type="email" placeholder="Enter your email" autocomplete="email"><button type="submit" aria-label="Subscribe">↗︎</button></form>
         <p id="nf-m" style="font-size:11px;color:var(--dmuted);min-height:16px" aria-live="polite"></p>
-        <div class="soc"><a href="https://www.instagram.com/" target="_blank" rel="noopener">IG ↗</a><a href="https://www.linkedin.com/" target="_blank" rel="noopener">IN ↗</a><a href="https://x.com/" target="_blank" rel="noopener">X ↗</a><a href="https://www.youtube.com/" target="_blank" rel="noopener">YT ↗</a></div>
+        <div class="soc"><a href="https://www.instagram.com/" target="_blank" rel="noopener">IG ↗︎</a><a href="https://www.linkedin.com/" target="_blank" rel="noopener">IN ↗︎</a><a href="https://x.com/" target="_blank" rel="noopener">X ↗︎</a><a href="https://www.youtube.com/" target="_blank" rel="noopener">YT ↗︎</a></div>
       </div>
       <div class="f-cols">
         <div><a href="#home">Home</a><a href="#studio">Studio</a><a href="#work">Work</a><a href="#careers">Careers</a><a href="#insights">Blog</a></div>
@@ -811,9 +837,9 @@ html.intro-on .snd{opacity:0;pointer-events:none}
 <div class="mob" id="mob" hidden>
   <button type="button" class="x" id="mobx" aria-label="Close menu">✕</button>
   <a href="#home">Home</a><a href="#studio">Studio</a><a href="#work">Work</a><a href="#services">Services</a><a href="#industries">Industries</a><a href="#insights">Insights</a><a href="#careers">Careers</a><a href="#contact">Contact</a>
-  <a href="#contact" class="btn b-red b-lg" style="margin-top:20px;border:0;font-size:15px;letter-spacing:0">Book A Call ↗</a>
+  <a href="#contact" class="btn b-red b-lg" style="margin-top:20px;border:0;font-size:15px;letter-spacing:0">Book A Call ↗︎</a>
 </div>
-<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lb-t" hidden><div class="lb-top"><div><b id="lb-t"></b><span class="mono" id="lb-c"></span></div><button type="button" class="btn b-glass" id="lb-x" aria-label="Close">✕</button></div><div class="lb-stage"><button type="button" class="lb-nav btn b-glass" id="lb-p" aria-label="Previous design">←</button><img id="lb-i" alt=""><button type="button" class="lb-nav btn b-glass" id="lb-n" aria-label="Next design">→</button></div><p class="lb-d" id="lb-d"></p><div class="lb-th" id="lb-th"></div></div>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lb-t" hidden><div class="lb-top"><div><b id="lb-t"></b><span class="mono" id="lb-c"></span></div><button type="button" class="btn b-glass" id="lb-x" aria-label="Close">✕</button></div><div class="lb-stage"><button type="button" class="lb-nav btn b-glass" id="lb-p" aria-label="Previous design">←︎</button><img id="lb-i" alt=""><button type="button" class="lb-nav btn b-glass" id="lb-n" aria-label="Next design">→︎</button></div><p class="lb-d" id="lb-d"></p><div class="lb-th" id="lb-th"></div></div>
 <audio id="theme" src="assets/audio/theme.mp3" loop preload="auto" playsinline></audio>
 <div class="toast" id="toast" role="status" hidden></div>
 
@@ -875,7 +901,7 @@ document.documentElement.classList.add('js');
 const IMG = {"red": "assets/img/red.jpg", "saffron": "assets/img/saffron.jpg", "olive": "assets/img/olive.jpg", "orchid": "assets/img/orchid.jpg", "cobalt": "assets/img/cobalt.jpg", "sand": "assets/img/sand.jpg", "ember": "assets/img/ember.jpg", "teal": "assets/img/teal.jpg", "mono": "assets/img/mono.jpg", "plum": "assets/img/plum.jpg", "lg00": "assets/img/logos/lg00.png", "lg01": "assets/img/logos/lg01.png", "lg02": "assets/img/logos/lg02.png", "lg03": "assets/img/logos/lg03.png", "lg04": "assets/img/logos/lg04.png", "lg05": "assets/img/logos/lg05.png", "lg06": "assets/img/logos/lg06.png", "lg07": "assets/img/logos/lg07.png", "lg08": "assets/img/logos/lg08.png", "lg09": "assets/img/logos/lg09.png", "lg10": "assets/img/logos/lg10.png", "lg11": "assets/img/logos/lg11.png", "lg12": "assets/img/logos/lg12.png", "lg13": "assets/img/logos/lg13.png", "lg14": "assets/img/logos/lg14.png", "lg15": "assets/img/logos/lg15.png", "lg16": "assets/img/logos/lg16.png", "lg17": "assets/img/logos/lg17.png", "lg18": "assets/img/logos/lg18.png", "lg19": "assets/img/logos/lg19.png", "lg20": "assets/img/logos/lg20.png", "lg21": "assets/img/logos/lg21.png", "lg22": "assets/img/logos/lg22.png", "lg23": "assets/img/logos/lg23.png", "lg24": "assets/img/logos/lg24.png", "lg25": "assets/img/logos/lg25.png", "lg26": "assets/img/logos/lg26.png", "lg27": "assets/img/logos/lg27.png", "lg28": "assets/img/logos/lg28.png", "lg29": "assets/img/logos/lg29.png", "r_z_highlights": "assets/img/work/r_z_highlights.jpg", "r_z_women": "assets/img/work/r_z_women.jpg", "r_z_mix": "assets/img/work/r_z_mix.jpg", "r_z_windows": "assets/img/work/r_z_windows.jpg", "r_z_cyber": "assets/img/work/r_z_cyber.jpg", "r_z_cartoon": "assets/img/work/r_z_cartoon.jpg", "r_z_180": "assets/img/work/r_z_180.jpg", "r_z_comic": "assets/img/work/r_z_comic.jpg", "r_saree": "assets/img/work/r_saree.jpg", "r_mw_social": "assets/img/work/r_mw_social.jpg", "r_mw_brand": "assets/img/work/r_mw_brand.jpg", "r_mova": "assets/img/work/r_mova.jpg", "r_ssvarna": "assets/img/work/r_ssvarna.jpg", "r_quantira": "assets/img/work/r_quantira.jpg", "r_velour": "assets/img/work/r_velour.jpg", "r_posts_grid": "assets/img/work/r_posts_grid.jpg", "r_posts_phone": "assets/img/work/r_posts_phone.jpg", "r_posts_right": "assets/img/work/r_posts_right.jpg", "r_coffee_post": "assets/img/work/r_coffee_post.jpg", "r_coffee_strip": "assets/img/work/r_coffee_strip.jpg"};
 window.__IMG = IMG;
 const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const AR = '<span class="ar">↗</span>';
+const AR = '<span class="ar">↗︎</span>';
 const PLUS = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
 const ICO = {
   star:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>',
@@ -1006,7 +1032,7 @@ function nav(theme, active){
       <div class="dd"><button type="button" class="ddb" aria-expanded="false">Pages <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="ddm glass" hidden><a href="#services">Services</a><a href="#industries">Industries</a><a href="#pricing">Pricing</a><a href="#insights">Insights</a><a href="#careers">Careers</a></div></div>
       ${a('careers','Careers')}${a('contact','Contact')}</div>
-    <a class="call" href="#contact">${im('teammeet')}Book A Call ↗</a>
+    <a class="call" href="#contact">${im('teammeet')}Book A Call ↗︎</a>
     <button type="button" class="burger" aria-label="Open menu" data-menu><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
   </nav>`;
 }
@@ -1016,7 +1042,7 @@ const darkHero = (active, tag, title, left, right, extra='') => `<header class="
 const lightHero = (active, tag, title, text, btn) => `<header class="lhero">${bgImg(HBG[active]||'sand')}<div class="navspace"></div><div class="lhero-c"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>${tag}</span><h1 class="h1" data-split style="max-width:13ch">${title}</h1></div><div class="side" data-r style="--d:.2s"><p class="muted" style="font-size:13px">${text}</p>${btn||''}</div></div></header>`;
 const odo = v => { let out=''; for(const ch of v){ if(/\d/.test(ch)) out+=`<span class="odo"><span class="col" data-to="${ch}">${'0123456789'.split('').map(d=>`<span>${d}</span>`).join('')}</span></span>`; else out+=`<span>${ch}</span>`; } return out; };
 const stat = (v,b,p,i) => `<div class="stat" data-r style="--d:${i*.08}s"><div class="num" data-odo>${odo(v)}</div><b>${b}</b><p>${p}</p></div>`;
-const fcard = (w,cls='') => `<a class="fcard ${cls}" href="#work-${w.slug}" data-r><div class="im">${im(w.img,w.name+' project cover')}<span class="gchip">${esc(w.ind)}</span><span class="gview" aria-hidden="true">↗</span></div><div class="fmeta"><b>${esc(w.name)}</b><span class="mono muted">${esc(w.svc)}</span></div></a>`;
+const fcard = (w,cls='') => `<a class="fcard ${cls}" href="#work-${w.slug}" data-r><div class="im">${im(w.img,w.name+' project cover')}<span class="gchip">${esc(w.ind)}</span><span class="gview" aria-hidden="true">↗︎</span></div><div class="fmeta"><b>${esc(w.name)}</b><span class="mono muted">${esc(w.svc)}</span></div></a>`;
 
 function pricing(){
   return `<section class="pricing" id="pricing-sec"><div class="aura" aria-hidden="true">${im('mehr1')}</div><div class="wrap"><div class="p-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Pricing plans</span><h2 class="h2" data-split>Ready to scale your brand?</h2></div>
@@ -1030,7 +1056,7 @@ const faqSec = () => `<section class="wrap sec"><div class="faqw orbs"><div clas
   <div class="faq">${FAQS.map(([q,a],i)=>`<details class="glass" data-r style="--d:${i*.07}s"><summary>${q}${PLUS}</summary><p class="a">${a}</p></details>`).join('')}</div></div></section>`;
 const testiSec = () => `<section class="dk testi"><div class="aura" aria-hidden="true" style="opacity:.7">${im('ugc')}</div><div class="t-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Collaborations</span><h2 class="h2" data-split>Why they love working with us</h2></div><p class="muted" data-r>We don't just finish projects; we build growth together. Here is what our clients say.</p></div>
   <div class="track" id="track">${WORK.map((w,i)=>`<figure class="tc glass-dk" data-r style="margin:0;--d:${i*.06}s"><div class="tc-h">${im(w.img2[0])}<span>${esc(w.name)}</span></div><q>${esc(w.q[0])}</q><figcaption class="who"><b>${esc(w.q[1])}</b><small>${esc(w.q[2])} · <span class="smp">Sample</span></small></figcaption></figure>`).join('')}</div>
-  <div class="t-ctl"><div class="dots" id="dots"></div><div class="arrows"><button type="button" id="tprev" aria-label="Previous">←</button><button type="button" id="tnext" aria-label="Next">→</button></div></div></section>`;
+  <div class="t-ctl"><div class="dots" id="dots"></div><div class="arrows"><button type="button" id="tprev" aria-label="Previous">←︎</button><button type="button" id="tnext" aria-label="Next">→︎</button></div></div></section>`;
 const jcard = (p,i) => `<a class="jc" href="#post-${p.slug}" data-r style="--d:${i*.08}s"><div class="jc-h"><span>${p.cat}</span>${im(p.img)}</div><div class="jc-f"><div class="jc-m"><span>${p.date}</span><span class="rd">${p.read}</span></div><h3>${p.title}</h3><p>${p.ex}</p></div></a>`;
 const journal = () => `<section class="wrap sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>The journal</span><h2 class="h2" data-split>Stories, strategies, <span class="muted">and growth thinking.</span></h2></div><a class="lnk" href="#insights" data-r>View All Blogs</a></div><div class="jgrid">${POSTS.map(jcard).join('')}</div></section>`;
 
@@ -1039,7 +1065,7 @@ const CLIENTS = ["The Casa Kitchen", "Tatvik Ayurveda", "Mom's Cook House", "Zea
 const logoTile = c => `<span class="ltile" title="${esc(c.n)}"><img src="${IMG[c.k]}" alt="${esc(c.n)}" loading="lazy" decoding="async"></span>`;
 function logoStrip(){
   const a = CLIENTS.filter((_,i)=>i%2===0).map(logoTile).join(''), b = CLIENTS.filter((_,i)=>i%2===1).map(logoTile).join('');
-  return `<div class="lstrip" data-r><div class="ls-lead"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M24 4v40M4 24h40M9.9 9.9l28.2 28.2M38.1 9.9 9.9 38.1"/></svg><p class="mono">Trusted by ${CLIENTS.length}+ brands<br>across India and beyond.</p></div><div class="ls-rows" aria-label="Brands we have worked with"><div class="ls-track-w"><div class="ls-track">${a}${a}</div></div><div class="ls-track-w"><div class="ls-track rev">${b}${b}</div></div></div></div>`;
+  return `<div class="lstrip" data-r><div class="ls-lead"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M24 4v40M4 24h40M9.9 9.9l28.2 28.2M38.1 9.9 9.9 38.1"/></svg><p class="mono">Trusted by ${CLIENTS.length}+ brands <br>across India and beyond.</p></div><div class="ls-rows" aria-label="Brands we have worked with"><div class="ls-track-w"><div class="ls-track">${a}${a}</div></div><div class="ls-track-w"><div class="ls-track rev">${b}${b}</div></div></div></div>`;
 }
 const clientWall = () => `<div class="cwall">${CLIENTS.map((c,i)=>`<div class="cw" data-r style="--d:${(i%6)*.05}s">${logoTile(c)}<span class="cw-n">${esc(c.n)}</span></div>`).join('')}</div>`;
 const PORTFOLIO = [
@@ -1054,10 +1080,10 @@ const PORTFOLIO = [
  {id:'social-posts',title:'Product & F&B Posts',cat:'social',tag:'Social Media Posts',year:'2024',cover:'r_posts_grid',imgs:['r_posts_grid','r_posts_phone','r_posts_right'],desc:'Product, food and lifestyle post designs for Instagram feeds and stories.'}
 ];
 const PCATS=[['all','All work'],['social','Social media'],['branding','Branding'],['campaign','Campaigns']];
-const pcard = (p,cls='') => `<a class="fcard pcard ${cls}" href="#view-${p.id}" data-view="${p.id}" data-r><div class="im ${p.fit==='contain'?'fit':''}"><img src="${IMG[p.cover]}" alt="${esc(p.title)} project" loading="lazy" decoding="async"><span class="gchip">${esc(p.tag)}</span><span class="gview" aria-hidden="true">↗</span>${p.imgs.length>1?`<span class="pcount mono">${p.imgs.length} designs</span>`:''}</div><div class="fmeta"><b>${esc(p.title)}</b><span class="mono muted">${esc(p.tag)}</span></div></a>`;
+const pcard = (p,cls='') => `<a class="fcard pcard ${cls}" href="#view-${p.id}" data-view="${p.id}" data-r><div class="im ${p.fit==='contain'?'fit':''}"><img src="${IMG[p.cover]}" alt="${esc(p.title)} project" loading="lazy" decoding="async"><span class="gchip">${esc(p.tag)}</span><span class="gview" aria-hidden="true">↗︎</span>${p.imgs.length>1?`<span class="pcount mono">${p.imgs.length} designs</span>`:''}</div><div class="fmeta"><b>${esc(p.title)}</b><span class="mono muted">${esc(p.tag)}</span></div></a>`;
 function homeHero(){
   return `<header class="dk hero hh"><div class="hh-spot" aria-hidden="true"></div><canvas class="hh-canvas" aria-hidden="true"></canvas><div class="navspace"></div>
-  <div class="hh-main"><span class="tag" data-r>Next-gen growth agency</span><h1 class="hh-h" data-split>Building Brands <br>That Grow, Sell <br>and Scale</h1><p class="hh-sub" data-r style="--d:.35s">Branding, marketing, technology and content, built by one team from one plan.</p></div>
+  <div class="hh-main"><h1 class="hh-h" data-split>Building Brands <br>That Grow, Sell <br>and Scale</h1><p class="hh-sub" data-r style="--d:.35s">Branding, marketing, technology and content, built by one team from one plan.</p></div>
   <div class="hh-foot"><div class="hh-meta mono" data-r style="--d:.5s"><span>+ Strategy first</span><span>+ Based in Mohali, India</span><span>+ System: Exioraa Agency</span></div>
   <div class="hh-side" data-r style="--d:.6s"><p>Branding, Performance &amp; Tech for founders and growing brands</p><div class="hero-cta" style="justify-content:flex-start"><a class="btn b-red b-lg" href="#work">View Projects ${AR}</a><a class="btn b-white b-lg" href="#contact">Reach Out ${AR}</a></div></div></div></header>`;
 }
@@ -1080,13 +1106,13 @@ function particleHero(cv){
   function frame(now){
     raf=running?requestAnimationFrame(frame):0;
     const T=Math.max(0,(now-t0)/1000), ph=(T%LOOP)/LOOP, w=Math.PI*2*ph;
-    const wide=W>900, cx=wide?W*.7:W*.5, cy=wide?H*.43:H*.34, sc=Math.min(wide?W*.18:W*.34,H*.26);
+    const wide=W>900, isPh=W<=640, cx=wide?W*.7:(isPh?W*.84:W*.5), cy=wide?H*.43:(isPh?Math.min(H*.2,190):H*.34), sc=wide?Math.min(W*.18,H*.26):(isPh?W*.3:Math.min(W*.34,H*.26));
     const ry=T*.22, rx=.35+Math.sin(w)*.12, cyr=Math.cos(ry), syr=Math.sin(ry), cxr=Math.cos(rx), sxr=Math.sin(rx);
     // a dust wave sweeps across the orb once per loop (x from -1.6 to 1.6), lifting particles off the surface
     const wave=-1.6+ph*3.2*1.25;
     ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
     ctx.globalCompositeOperation='lighter';
-    const aB=wide?1:.6;
+    const aB=wide?1:(W<=640?.42:.6);
     for(let i=0;i<N;i++){
       const k=i*3,q=i*4, dx0=dir[k],dy0=dir[k+1],dz0=dir[k+2];
       // organic surface: layered waves over the sphere, looping with w
@@ -1127,9 +1153,9 @@ function home(){
   <div class="marq" data-r><div class="marq-track">${items}${items}</div></div>
   <section class="wrap sec"><span class="tag" data-r>By the numbers</span><div class="stats">${stat('04','Core disciplines','Branding, marketing, development and production under one roof.',0)}${stat('25+','Service lines','From Meta Ads to custom Shopify apps.',1)}${stat('06','Step process','Discover, strategise, build, launch, optimise, scale.',2)}${stat('24h','Response time','Every enquiry gets a reply within one working day.',3)}</div></section>
   <section class="dk svc"><div class="svc-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Services</span><h2 class="h2" data-split>Everything <span class="pill-img">${im('kaavya1')}</span> your brand needs</h2></div><p class="muted" data-r>Strategy, marketing, technology and content, working from one plan.</p></div>
-  <div class="srows">${PILLARS.map(p=>`<a class="srow" href="#${p.id}" data-scrub><span class="s-num mono">[${p.num}]</span><span class="nm">${p.name}</span><span class="s-info"><span class="s-one">${p.one}</span><span class="chips">${p.chips.slice(0,4).map(c=>`<span>${c}</span>`).join('')}</span></span><span class="s-go" aria-hidden="true">↗</span></a>`).join('')}</div></section>
+  <div class="srows">${PILLARS.map(p=>`<a class="srow" href="#${p.id}" data-scrub><span class="nm">${p.name}</span><span class="s-info"><span class="s-one">${p.one}</span><span class="chips">${p.chips.slice(0,4).map(c=>`<span>${c}</span>`).join('')}</span></span><span class="s-go" aria-hidden="true">↗︎</span></a>`).join('')}</div></section>
   <section class="wrap feat"><div class="feat-sticky"><div class="feat-head"><span class="tag" data-r>Selected work</span><h2 class="h2" data-split>Featured projects &amp; growth stories</h2><p class="muted" data-r>We don't just build websites; we build brands and systems that turn attention into revenue.</p></div></div>
-  <div class="fgrid">${PORTFOLIO.slice(0,5).map((p,i)=>pcard(p,'fc'+(i+1))).join('')}</div><div class="allc"><a class="lnk" href="#work">→ All Work <span class="sup" style="color:var(--red)">(${String(PORTFOLIO.length).padStart(2,'0')})</span></a></div></section>
+  <div class="fgrid">${PORTFOLIO.slice(0,5).map((p,i)=>pcard(p,'fc'+(i+1))).join('')}</div><div class="allc"><a class="lnk" href="#work">→︎ All Work <span class="sup" style="color:var(--red)">(${String(PORTFOLIO.length).padStart(2,'0')})</span></a></div></section>
   <div id="pricing">${pricing()}</div>
   ${faqSec()}
   ${testiSec()}
@@ -1150,11 +1176,11 @@ function studio(){
   <div class="acc" data-r><details open><summary>${ICO.mission} Our Mission</summary><p>Help businesses grow with brands that earn trust, marketing that brings customers and systems that make growth repeatable.</p></details><details><summary>${ICO.grow} Training &amp; Progression</summary><p>Every team member gets a monthly learning budget, platform certifications and a clear growth path.</p></details><details><summary>${ICO.home} Our Culture</summary><p>Small teams, direct communication and ownership. We report on results, not activity.</p></details></div></div></div></section>
   <section class="wrap sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Team</span><h2 class="h2" data-split>The people behind Exioraa</h2></div><p class="muted" data-r style="max-width:280px;font-size:12px">A focused senior team, embedded directly into your project.</p></div>
   <div class="team"><div class="tm" data-r>${im('teammeet')}<div class="cap"><b>Led by Gaurav Pratap Singh</b><small>Founder</small></div></div>${[['ledger2','Strategy Team','Positioning & research'],['marketer','Performance Team','Ads, SEO & analytics'],['designer','Creative Team','Brand & design'],['videographer','Production Team','Photo & video'],['developer','Tech Team','Shopify, WordPress & SaaS'],['social','Content Team','Social & copy']].map(([k,t,s],i)=>`<div class="tm" data-r style="--d:${((i+1)%4)*.06}s">${im(k)}<div class="cap"><b>${t}</b><small>${s}</small></div></div>`).join('')}
-  <div class="tm join" data-r><p style="font-size:12.5px" class="muted">We're all about hard work, smart solutions and clear results. No fluff, just brilliance.</p><a class="btn b-ink" href="#careers" style="align-self:flex-start">Join Us Now ↗</a></div></div></section>`;
+  <div class="tm join" data-r><p style="font-size:12.5px" class="muted">We're all about hard work, smart solutions and clear results. No fluff, just brilliance.</p><a class="btn b-ink" href="#careers" style="align-self:flex-start">Join Us Now ↗︎</a></div></div></section>`;
 }
 
 function work(){
-  return `${lightHero('work','Proven impact','Turning ideas into visible growth','Explore our portfolio of brands, stores, campaigns and systems that helped businesses grow.','<a class="btn b-ink" href="#contact">Reach out ↗</a>')}
+  return `${lightHero('work','Proven impact','Turning ideas into visible growth','Explore our portfolio of brands, stores, campaigns and systems that helped businesses grow.','<a class="btn b-ink" href="#contact">Reach out ↗︎</a>')}
   ${logoStrip()}
   <section class="wrap" style="padding-top:clamp(32px,4vw,56px)"><div class="filters" role="group" aria-label="Filter work">${PCATS.map(([id,n])=>`<button type="button" class="chip" data-pf="${id}" aria-pressed="${id==='all'}">${n}</button>`).join('')}</div><div class="wgrid" id="pgrid">${PORTFOLIO.map(p=>pcard(p)).join('')}</div></section>`;
 }
@@ -1164,7 +1190,7 @@ function project(slug){
   const w = WORK[i], others = [WORK[(i+1)%WORK.length], WORK[(i+2)%WORK.length]];
   return `<div class="navspace"></div>
   <section class="wrap"><div class="ps-top"><div><span class="tag" data-r>Our portfolio</span><h1 class="h1" data-split style="margin-top:14px">${esc(w.name)}</h1><div class="ps-meta" data-r><div><span>Year</span>${w.year}</div><div><span>Timeline</span>${w.time}</div><div><span>Service</span>${w.svc}</div><div><span class="smp" style="margin:0">Sample case study</span></div></div></div>
-  <div class="ps-thumb" data-r>${im(w.img2[0])}<a class="btn b-ink" href="#contact">Start similar ↗</a></div></div>
+  <div class="ps-thumb" data-r>${im(w.img2[0])}<a class="btn b-ink" href="#contact">Start similar ↗︎</a></div></div>
   <div class="ps-hero" data-r>${im(w.img, w.name)}</div>
   <div class="ps-row"><span class="tag" data-r>Challenge</span><div class="body" data-r><p style="font-size:clamp(18px,1.6vw,22px);line-height:1.4;letter-spacing:-.015em">${esc(w.sum)}</p><p class="muted">${esc(w.ch)}</p></div></div>
   <div class="ps-row"><span class="tag" data-r>Solutions</span><div class="body" data-r><ul>${w.so.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div></div>
@@ -1176,14 +1202,14 @@ function project(slug){
 }
 
 function services(){
-  return `${lightHero('services','Services','Everything your brand needs','Four disciplines, one team. Hire us for one, or combine them as you grow.','<a class="btn b-ink" href="#contact">Start a project ↗</a>')}
+  return `${lightHero('services','Services','Everything your brand needs','Four disciplines, one team. Hire us for one, or combine them as you grow.','<a class="btn b-ink" href="#contact">Start a project ↗︎</a>')}
   <section class="wrap"><div class="plist">${PILLARS.map((p,i)=>`<div class="pl" id="svc-${p.id}" data-r><span class="mono muted">[${p.num}]</span><div><h3>${p.name}</h3><p class="one">${p.one}</p></div><div class="chips">${p.chips.map(c=>`<span>${c}</span>`).join('')}</div></div>`).join('')}</div></section>
   <section class="wrap sec"><span class="tag" data-r>How we work</span><div class="stats">${[['01','Discover','Business, market and audience.'],['02','Strategise','Positioning and growth plan.'],['03','Build','Brand, site and systems.'],['04','Launch','Campaigns and content live.']].map((s,i)=>stat(s[0],s[1],s[2],i)).join('')}</div></section>
   ${pricing()}${faqSec()}`;
 }
 
 function industries(){
-  return `${lightHero('industries','Industries','Sectors we know well','We already know the buyer, the channels and what good looks like in these industries.','<a class="btn b-ink" href="#contact">Talk to us ↗</a>')}
+  return `${lightHero('industries','Industries','Sectors we know well','We already know the buyer, the channels and what good looks like in these industries.','<a class="btn b-ink" href="#contact">Talk to us ↗︎</a>')}
   <section class="wrap"><div class="igrid" style="margin-top:clamp(40px,5vw,64px)">${INDUSTRIES.map(([n,d],i)=>`<div class="ic" data-r style="--d:${(i%4)*.06}s"><span class="mono muted">[${String(i+1).padStart(2,'0')}]</span><b>${n}</b><p>${d}</p></div>`).join('')}</div></section>
   <section class="wrap sec"><div class="wgrid" style="margin-top:0">${PORTFOLIO.slice(0,2).map(p=>pcard(p)).join('')}</div></section>`;
 }
@@ -1195,13 +1221,13 @@ function insights(){
 function post(slug){
   const p = POSTS.find(x=>x.slug===slug); if(!p) return notFound();
   return `<div class="navspace"></div><section class="wrap" style="padding-top:clamp(40px,6vw,80px)"><div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px"><span class="tag" data-r>${p.cat}</span><h1 class="h1" data-split style="max-width:18ch">${p.title}</h1><div class="jc-m" data-r style="gap:20px"><span>${p.date}</span><span class="rd">${p.read}</span></div></div>
-  <div class="ps-hero" data-r>${im(p.img)}</div><article class="prose sec" data-r>${p.body.map(b=>b.startsWith('## ')?`<h2>${b.slice(3)}</h2>`:`<p>${b}</p>`).join('')}</article><div style="display:flex;justify-content:center;margin-top:40px"><a class="btn b-line" href="#insights">← All articles</a></div></section>`;
+  <div class="ps-hero" data-r>${im(p.img)}</div><article class="prose sec" data-r>${p.body.map(b=>b.startsWith('## ')?`<h2>${b.slice(3)}</h2>`:`<p>${b}</p>`).join('')}</article><div style="display:flex;justify-content:center;margin-top:40px"><a class="btn b-line" href="#insights">←︎ All articles</a></div></section>`;
 }
 
 function careers(){
   return `${darkHero('careers','Careers','Join the team building brands that grow','Mohali, Punjab','Now hiring')}
   <section class="wrap sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:14px"><span class="tag" data-r>Open roles</span><h2 class="h2" data-split>Work with us</h2></div><p class="muted" data-r style="max-width:300px;font-size:12px">Don't see your role? Send your portfolio to connect@exioraa.com.</p></div>
-  <div class="jobs">${JOBS.map((j,i)=>`<a class="job" href="#job-${j.slug}" data-r style="--d:${i*.06}s"><b>${j.title}</b><span class="muted h">${j.loc}</span><span class="muted h">${j.type} · ${j.mode}</span><span class="go">↗</span></a>`).join('')}</div></section>`;
+  <div class="jobs">${JOBS.map((j,i)=>`<a class="job" href="#job-${j.slug}" data-r style="--d:${i*.06}s"><b>${j.title}</b><span class="muted h">${j.loc}</span><span class="muted h">${j.type} · ${j.mode}</span><span class="go">↗︎</span></a>`).join('')}</div></section>`;
 }
 function job(slug){
   const j = JOBS.find(x=>x.slug===slug); if(!j) return notFound();
@@ -1241,7 +1267,7 @@ function contact(plan){
     <div class="fl"><label for="f-msg">Message <i>*</i></label><textarea id="f-msg" name="msg" placeholder="What does your business do, and what do you want to change?" required></textarea><span class="er"></span></div>
     <button type="submit" class="btn b-red b-lg" style="align-self:flex-start">Book a Consultation ${AR}</button></form></div></div></section>`;
 }
-function notFound(){ return `${darkHero('','404','Page not found','Exioraa','404')}<section class="wrap sec" style="display:flex;justify-content:center"><a class="btn b-ink b-lg" href="#home">Back to home ↗</a></section>`; }
+function notFound(){ return `${darkHero('','404','Page not found','Exioraa','404')}<section class="wrap sec" style="display:flex;justify-content:center"><a class="btn b-ink b-lg" href="#home">Back to home ↗︎</a></section>`; }
 
 /* ---------- router ---------- */
 const app = document.getElementById('app');

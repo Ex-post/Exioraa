@@ -748,6 +748,24 @@ html.no-intro .intro{display:none}
 .snd-t{font-size:10px}
 html.intro-on .snd{opacity:0;pointer-events:none}
 @media (max-width:640px){.snd-t{display:none}.snd{padding:0 13px;height:40px}}
+
+/* ===== phone layout, matched to reference ===== */
+@media (max-width:640px){
+  .hh{min-height:auto!important}
+  .hh-main{padding-top:40px}
+  .hh-foot{padding-top:48px}
+  .stats{grid-template-columns:1fr!important;row-gap:28px}
+  .stat .num{font-size:56px}
+  .jc{padding:10px}
+  .jc-h{flex-direction:column;gap:10px}
+  .jc-h img{width:100%!important;aspect-ratio:4/3;border-radius:10px;order:2}
+  .jc-h span{order:1;align-self:flex-start}
+  .fcard .im{aspect-ratio:4/3.3!important}
+  .fmeta{flex-direction:column;align-items:flex-start;gap:2px}
+  .tc{flex-basis:86vw;min-height:300px}
+  .plan{padding:20px}
+  .faqw .l .h2{font-size:32px}
+}
 </style>
 </head>
 <body>
@@ -1109,7 +1127,7 @@ function home(){
   <div class="marq" data-r><div class="marq-track">${items}${items}</div></div>
   <section class="wrap sec"><span class="tag" data-r>By the numbers</span><div class="stats">${stat('04','Core disciplines','Branding, marketing, development and production under one roof.',0)}${stat('25+','Service lines','From Meta Ads to custom Shopify apps.',1)}${stat('06','Step process','Discover, strategise, build, launch, optimise, scale.',2)}${stat('24h','Response time','Every enquiry gets a reply within one working day.',3)}</div></section>
   <section class="dk svc"><div class="svc-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Services</span><h2 class="h2" data-split>Everything <span class="pill-img">${im('kaavya1')}</span> your brand needs</h2></div><p class="muted" data-r>Strategy, marketing, technology and content, working from one plan.</p></div>
-  <div class="srows">${PILLARS.map(p=>`<a class="srow" href="#${p.id}" data-scrub><span class="s-img" aria-hidden="true">${im({branding:'r_mova',marketing:'r_z_cyber',development:'r_mw_brand',production:'r_saree'}[p.id])}</span><span class="s-num mono">[${p.num}]</span><span class="nm">${p.name}</span><span class="s-info"><span class="s-one">${p.one}</span><span class="chips">${p.chips.slice(0,4).map(c=>`<span>${c}</span>`).join('')}</span></span><span class="s-go" aria-hidden="true">↗</span></a>`).join('')}</div></section>
+  <div class="srows">${PILLARS.map(p=>`<a class="srow" href="#${p.id}" data-scrub><span class="s-num mono">[${p.num}]</span><span class="nm">${p.name}</span><span class="s-info"><span class="s-one">${p.one}</span><span class="chips">${p.chips.slice(0,4).map(c=>`<span>${c}</span>`).join('')}</span></span><span class="s-go" aria-hidden="true">↗</span></a>`).join('')}</div></section>
   <section class="wrap feat"><div class="feat-sticky"><div class="feat-head"><span class="tag" data-r>Selected work</span><h2 class="h2" data-split>Featured projects &amp; growth stories</h2><p class="muted" data-r>We don't just build websites; we build brands and systems that turn attention into revenue.</p></div></div>
   <div class="fgrid">${PORTFOLIO.slice(0,5).map((p,i)=>pcard(p,'fc'+(i+1))).join('')}</div><div class="allc"><a class="lnk" href="#work">→ All Work <span class="sup" style="color:var(--red)">(${String(PORTFOLIO.length).padStart(2,'0')})</span></a></div></section>
   <div id="pricing">${pricing()}</div>

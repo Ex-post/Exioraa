@@ -796,16 +796,16 @@ html.intro-on .snd{opacity:0;pointer-events:none}
   <a href="#contact" class="btn b-red b-lg" style="margin-top:20px;border:0;font-size:15px;letter-spacing:0">Book A Call ↗</a>
 </div>
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lb-t" hidden><div class="lb-top"><div><b id="lb-t"></b><span class="mono" id="lb-c"></span></div><button type="button" class="btn b-glass" id="lb-x" aria-label="Close">✕</button></div><div class="lb-stage"><button type="button" class="lb-nav btn b-glass" id="lb-p" aria-label="Previous design">←</button><img id="lb-i" alt=""><button type="button" class="lb-nav btn b-glass" id="lb-n" aria-label="Next design">→</button></div><p class="lb-d" id="lb-d"></p><div class="lb-th" id="lb-th"></div></div>
-<audio id="theme" src="assets/audio/theme.mp3" loop preload="auto" autoplay playsinline></audio>
+<audio id="theme" src="assets/audio/theme.mp3" loop preload="auto" playsinline></audio>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
 document.documentElement.classList.add('js');
 (function(){
-  const el=document.getElementById('intro'); if(!el) return;
+  const el=document.getElementById('intro'); if(!el){ window.__introDone=true; return; }
   const H=document.documentElement;
   let seen=false; try{ seen=sessionStorage.getItem('exi-intro')==='1'; }catch(e){}
-  if(seen || matchMedia('(prefers-reduced-motion: reduce)').matches){ H.classList.add('no-intro'); el.remove(); return; }
+  if(seen || matchMedia('(prefers-reduced-motion: reduce)').matches){ H.classList.add('no-intro'); el.remove(); window.__introDone=true; return; }
   try{ sessionStorage.setItem('exi-intro','1'); }catch(e){}
   H.classList.add('intro-on');
   const V='viewBox="0 0 100 100"';
@@ -842,13 +842,13 @@ document.documentElement.classList.add('js');
     if(done) return; done=true; H.classList.add('logo-done');
     const nav=document.querySelector('#gnav .logo'), nm=nav&&nav.querySelector('.mark');
     el.classList.add('fly'); H.classList.remove('intro-on'); H.classList.add('intro-fly');
-    if(!nm||!nm.getBoundingClientRect().width){ lock.style.transition='opacity .5s'; lock.style.opacity='0'; setTimeout(()=>{el.remove();H.classList.remove('intro-fly');},800); return; }
+    if(!nm||!nm.getBoundingClientRect().width){ lock.style.transition='opacity .5s'; lock.style.opacity='0'; setTimeout(()=>{el.remove();H.classList.remove('intro-fly');window.__introDone=true;dispatchEvent(new Event('exi:introdone'));},800); return; }
     const im=lock.querySelector('.imark').getBoundingClientRect(), r=nm.getBoundingClientRect();
     const lx=(im.left-X)/S, ly=(im.top-Y)/S, S2=r.width/18;
     const lag=nav.querySelector('.lag'); if(!lag||getComputedStyle(lag).display==='none'){ lock.querySelector('.ag').style.cssText='transition:opacity .3s;opacity:0'; lock.querySelector('sup').style.opacity='0'; }
     lock.animate([{transform:`translate(${X}px,${Y}px) scale(${S})`},{transform:`translate(${r.left-lx*S2}px,${r.top-ly*S2}px) scale(${S2})`}],{duration:1000,easing:EZ,fill:'forwards'});
     setTimeout(()=>{ H.classList.add('intro-land'); lock.style.transition='opacity .25s'; lock.style.opacity='0'; },990);
-    setTimeout(()=>{ el.remove(); H.classList.remove('intro-fly','intro-land'); },1350);
+    setTimeout(()=>{ el.remove(); H.classList.remove('intro-fly','intro-land'); window.__introDone=true; dispatchEvent(new Event('exi:introdone')); },1350);
   }
   el.addEventListener('click',()=>{ if(done) return; timers.forEach(clearTimeout); timers=[]; window.__introWait=900; document.getElementById('wstage').classList.add('gone'); place(); lock.classList.add('on'); setTimeout(dock,450); });
   addEventListener('resize',()=>{ if(!done && lock.classList.contains('on')) place(); });
@@ -1426,18 +1426,29 @@ setTimeout(()=>document.documentElement.classList.add('logo-done'),2200+(window.
   lb.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); if(e.key==='ArrowRight') document.getElementById('lb-n').click(); if(e.key==='ArrowLeft') document.getElementById('lb-p').click(); });
 })();
 
-// theme music: plays on repeat in the background
+// theme music: starts when the opening animation ends, then loops
 (function(){
   const a=document.getElementById('theme'); if(!a) return;
-  const TARGET=.35; let playing=false, fadeT;
+  const TARGET=.35; let playing=false, unlocked=false, fadeT;
   a.loop=true;
-  const fadeIn=()=>{ clearInterval(fadeT); const st=performance.now(); fadeT=setInterval(()=>{ const p=Math.min(1,(performance.now()-st)/2200); a.volume=TARGET*p; if(p>=1) clearInterval(fadeT); },40); };
   const EV=['pointerdown','pointerup','click','keydown','touchstart','touchend'];
-  const start=()=>{ if(playing) return; a.volume=0; const p=a.play(); const ok=()=>{ playing=true; fadeIn(); EV.forEach(t=>removeEventListener(t,start,true)); };
-    if(p&&p.then) p.then(ok).catch(()=>{}); else ok(); };
-  EV.forEach(t=>addEventListener(t,start,{capture:true,passive:true}));
-  if(document.readyState==='complete') start(); else addEventListener('load',start);
-  a.addEventListener('pause',()=>{ if(playing && !document.hidden) a.play().catch(()=>{ playing=false; EV.forEach(t=>addEventListener(t,start,{capture:true,passive:true})); }); });
+  const fadeIn=()=>{ clearInterval(fadeT); a.volume=0; const st=performance.now(); fadeT=setInterval(()=>{ const p=Math.min(1,(performance.now()-st)/2200); a.volume=TARGET*p; if(p>=1) clearInterval(fadeT); },40); };
+  const off=()=>EV.forEach(t=>removeEventListener(t,onGesture,true));
+  const begin=()=>{ // audible start
+    if(playing) return;
+    const go=()=>{ playing=true; a.muted=false; fadeIn(); off(); };
+    if(unlocked && !a.paused){ a.currentTime=0; go(); return; }
+    a.muted=false; a.volume=0; const p=a.play(); if(p&&p.then) p.then(go).catch(()=>{}); else go();
+  };
+  function onGesture(){
+    if(playing) return;
+    if(window.__introDone){ begin(); return; }
+    // during the intro: unlock audio silently so it can start the moment the intro ends (needed on iPhone)
+    if(!unlocked){ a.muted=true; const p=a.play(); if(p&&p.then) p.then(()=>{ unlocked=true; }).catch(()=>{}); else unlocked=true; }
+  }
+  EV.forEach(t=>addEventListener(t,onGesture,{capture:true,passive:true}));
+  if(window.__introDone){ if(document.readyState==='complete') begin(); else addEventListener('load',begin); }
+  else addEventListener('exi:introdone',begin);
   document.addEventListener('visibilitychange',()=>{ if(!playing) return; if(document.hidden) a.pause(); else a.play().catch(()=>{}); });
 })();
 addEventListener('hashchange',route);

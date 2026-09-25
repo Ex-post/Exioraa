@@ -735,6 +735,19 @@ html.intro-land #gnav .logo{opacity:1;transition:none}
 html.intro-fly #gnav .lname .l>span,html.intro-fly #gnav .mark .q{animation:none!important}
 html.no-intro .intro{display:none}
 @media (prefers-reduced-motion:reduce){.intro{display:none}}
+
+/* ===== theme music toggle ===== */
+.snd{position:fixed;left:calc(14px + env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:70;display:flex;align-items:center;gap:9px;height:42px;padding:0 14px 0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.22);color:#fff;cursor:pointer;background:rgba(20,20,20,.35);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 10px 24px -12px rgba(0,0,0,.5);transition:transform .3s var(--ease),opacity .4s}
+.snd:hover{transform:translateY(-2px)}
+.snd .bars{display:flex;align-items:flex-end;gap:2.5px;height:14px}
+.snd .bars i{width:2.5px;height:3px;border-radius:2px;background:#fff;transition:height .3s}
+.snd.on .bars i{animation:sbar .9s ease-in-out infinite}
+.snd.on .bars i:nth-child(2){animation-delay:-.3s}.snd.on .bars i:nth-child(3){animation-delay:-.6s}.snd.on .bars i:nth-child(4){animation-delay:-.15s}
+@keyframes sbar{0%,100%{height:3px}50%{height:14px}}
+.snd.on .bars i{background:#D6282F}
+.snd-t{font-size:10px}
+html.intro-on .snd{opacity:0;pointer-events:none}
+@media (max-width:640px){.snd-t{display:none}.snd{padding:0 13px;height:40px}}
 </style>
 </head>
 <body>
@@ -783,6 +796,8 @@ html.no-intro .intro{display:none}
   <a href="#contact" class="btn b-red b-lg" style="margin-top:20px;border:0;font-size:15px;letter-spacing:0">Book A Call ↗</a>
 </div>
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lb-t" hidden><div class="lb-top"><div><b id="lb-t"></b><span class="mono" id="lb-c"></span></div><button type="button" class="btn b-glass" id="lb-x" aria-label="Close">✕</button></div><div class="lb-stage"><button type="button" class="lb-nav btn b-glass" id="lb-p" aria-label="Previous design">←</button><img id="lb-i" alt=""><button type="button" class="lb-nav btn b-glass" id="lb-n" aria-label="Next design">→</button></div><p class="lb-d" id="lb-d"></p><div class="lb-th" id="lb-th"></div></div>
+<button type="button" class="snd" id="snd" aria-label="Play theme music" aria-pressed="false"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="snd-t mono">Sound</span></button>
+<audio id="theme" src="assets/audio/theme.mp3" loop preload="auto" autoplay playsinline></audio>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
@@ -1410,6 +1425,28 @@ setTimeout(()=>document.documentElement.classList.add('logo-done'),2200+(window.
   document.getElementById('lb-p').addEventListener('click',()=>{ k=(k-1+P.imgs.length)%P.imgs.length; show(); });
   document.getElementById('lb-n').addEventListener('click',()=>{ k=(k+1)%P.imgs.length; show(); });
   lb.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); if(e.key==='ArrowRight') document.getElementById('lb-n').click(); if(e.key==='ArrowLeft') document.getElementById('lb-p').click(); });
+})();
+
+// theme music: starts softly on first interaction, remembers mute
+(function(){
+  const a=document.getElementById('theme'), b=document.getElementById('snd'); if(!a||!b) return;
+  let pref=null; try{ pref=localStorage.getItem('exi-sound'); }catch(e){}
+  const TARGET=.35; let fadeT;
+  const fade=(to,ms,done)=>{ clearInterval(fadeT); const from=a.volume, st=performance.now(); fadeT=setInterval(()=>{ const p=Math.min(1,(performance.now()-st)/ms); a.volume=from+(to-from)*p; if(p>=1){ clearInterval(fadeT); done&&done(); } },40); };
+  const set=on=>{ b.classList.toggle('on',on); b.setAttribute('aria-pressed',on); b.setAttribute('aria-label',on?'Mute theme music':'Play theme music'); };
+  const play=()=>{ a.volume=0; const p=a.play(); if(p&&p.then) p.then(()=>{ set(true); fade(TARGET,1800); }).catch(()=>set(false)); else { set(true); fade(TARGET,1800); } };
+  const stop=()=>{ set(false); fade(0,500,()=>a.pause()); };
+  b.addEventListener('click',e=>{ e.stopPropagation(); const on=!b.classList.contains('on'); try{ localStorage.setItem('exi-sound',on?'on':'off'); }catch(err){} on?play():stop(); });
+  if(pref!=='off'){
+    const EV=['pointerdown','pointerup','click','keydown','touchstart','touchend'];
+    const first=()=>{ if(b.classList.contains('on')){ EV.forEach(t=>removeEventListener(t,first,true)); return; } play(); };
+    EV.forEach(t=>addEventListener(t,first,{capture:true,passive:true}));
+    // try to start straight away (works where the browser allows autoplay)
+    a.preload='auto'; a.volume=0;
+    const tryAuto=()=>{ const p=a.play(); if(p&&p.then) p.then(()=>{ set(true); fade(TARGET,2200); }).catch(()=>{}); };
+    if(document.readyState==='complete') tryAuto(); else addEventListener('load',tryAuto);
+  }
+  document.addEventListener('visibilitychange',()=>{ if(!b.classList.contains('on')) return; if(document.hidden) a.pause(); else a.play().catch(()=>{}); });
 })();
 addEventListener('hashchange',route);
 route();

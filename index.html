@@ -792,6 +792,19 @@ html.intro-on .snd{opacity:0;pointer-events:none}
 }
 .srow{grid-template-columns:minmax(0,1fr) minmax(0,420px) 48px!important}
 @media (max-width:900px){.srow{grid-template-columns:minmax(0,1fr) 44px!important;align-items:center!important}.srow .nm{grid-row:1;grid-column:1}.srow .s-go{grid-row:1!important;grid-column:2!important}.s-info{grid-column:1/3!important;grid-row:2}}
+/* Editorial photography */
+.marq-item span,.sector-scenes figcaption{background:rgba(18,15,15,.76);color:white;border-radius:6px;padding:5px 9px;text-shadow:none}
+.srow .nm{display:flex;align-items:center;gap:clamp(12px,2vw,28px)}
+.srow .nm img{width:clamp(56px,7vw,100px);height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:8px}
+.pl{grid-template-columns:minmax(110px,.65fr) minmax(0,1fr) minmax(0,1.25fr);align-items:center}
+.service-photo img,.careers-photo img,.sector-scenes img{display:block;width:100%;height:auto;object-fit:cover;border-radius:12px}
+.service-photo img{aspect-ratio:3/2}
+.careers-photo{margin:0 0 32px}
+.careers-photo img{height:clamp(180px,30vw,400px);object-position:center 50%}
+.sector-scenes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.sector-scenes figure{margin:0;position:relative}
+.sector-scenes figcaption{position:absolute;bottom:12px;left:12px;font-size:12px}
+@media(max-width:760px){.pl{grid-template-columns:1fr}.service-photo img{max-height:240px}.sector-scenes{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -972,11 +985,11 @@ const WORK = [
 ];
 
 const POSTS = [
- {slug:'ads-need-content-system',cat:'Marketing',title:'Why Ads Stop Working Without a Content System',date:'September 18, 2026',read:'6 min read',img:'marketer',ex:'Most ad accounts fail on creative, not targeting. Here is the fix.',
+ {slug:'ads-need-content-system',cat:'Marketing',title:'Why Ads Stop Working Without a Content System',date:'September 18, 2026',read:'6 min read',img:'journal-ads',ex:'Most ad accounts fail on creative, not targeting. Here is the fix.',
   body:['Most ad accounts don\'t fail on targeting. Meta\'s algorithm is very good at finding buyers. What it can\'t do is make up for the same three creatives running for two months.','Creative fatigue is the most common reason costs rise. Frequency climbs, click-through drops, and the account looks broken when it simply ran out of new things to say.','## Build the system behind the ads','Start from content pillars, turn them into topics, then into formats: statics, carousels, Reels and UGC. Each month the ad account gets a fresh batch built from the same plan.','## Where to start','Count how many distinct concepts you ran in the last 90 days. If the answer is under ten, the problem is creative, not targeting.']},
- {slug:'shopify-or-wordpress',cat:'Development',title:'Shopify or WordPress: Choosing Your Foundation',date:'September 4, 2026',read:'5 min read',img:'kaavya2',ex:'Both are good. The right choice depends on what you sell.',
+ {slug:'shopify-or-wordpress',cat:'Development',title:'Shopify or WordPress: Choosing Your Foundation',date:'September 4, 2026',read:'5 min read',img:'journal-web',ex:'Both are good. The right choice depends on what you sell.',
   body:['We build on both platforms every month. The right choice depends on what you sell and who runs the site after launch.','## Choose Shopify when','You sell physical products, want checkout and inventory handled for you, and need your team to add products without a developer.','## Choose WordPress when','You sell services, courses or bookings, content drives your leads, or you need custom features like a CRM or member area.','## Or use both','Shopify for the store and WordPress for content works well when both are designed as one brand and tracked as one funnel.']},
- {slug:'brand-beyond-logo',cat:'Branding',title:'A Brand Is More Than a Logo',date:'August 21, 2026',read:'4 min read',img:'stationery',ex:'Positioning, audience and voice come before colours.',
+ {slug:'brand-beyond-logo',cat:'Branding',title:'A Brand Is More Than a Logo',date:'August 21, 2026',read:'4 min read',img:'journal-brand',ex:'Positioning, audience and voice come before colours.',
   body:['When a business asks for a logo, the real question is bigger: how should we look and sound so the right people trust us?','## The order we work in','Positioning first: who you serve and why you are the better choice. Then audience, messaging and voice. Only then the logo, colours and type.','## Why it matters','A visual identity with a clear brief is faster to design, easier to agree on, and lasts longer.']}
 ];
 
@@ -1021,6 +1034,21 @@ const PLANS = [
 
 /* ---------- helpers ---------- */
 const FB={kaavya1:'saffron',kaavya2:'sand',packaging:'sand',trail1:'teal',trail2:'cobalt',social:'olive',ledger1:'cobalt',ledger2:'mono',developer:'mono',hearth1:'ember',hearth2:'ember',mehr1:'red',mehr2:'plum',videographer:'plum',upskill1:'olive',upskill2:'teal',marketer:'cobalt',stationery:'mono',designer:'orchid',ugc:'orchid',teammeet:'sand'};
+const editorialAlt = {
+  "studio": "Designers reviewing printed work in a sunlit studio",
+  "branding": "Embossed packaging with a red paper sleeve",
+  "marketing": "Three beverage campaign proofs on a worktable",
+  "development": "A ceramics storefront on desktop and mobile screens",
+  "production": "A red bottle on a tabletop photography set",
+  "journal-ads": "A loupe over a running-shoe campaign contact sheet",
+  "journal-web": "Storefront and editorial page layouts on paper",
+  "journal-brand": "One motif on embossed paper, a woven tag and a wax seal",
+  "fashion": "Red silk sweeping across stone steps",
+  "hospitality": "A barista working beside a fresh cup of espresso",
+  "strategy": "Hands arranging photographs on a storyboard",
+  "doorway": "A figure passing through a sunlit studio doorway",
+};
+const photo = (key, decorative=false) => `<img src="assets/img/editorial/${key}.jpg" alt="${decorative ? '' : esc(editorialAlt[key])}" width="1280" height="853" loading="lazy" decoding="async">`;
 const im = (k, alt='') => `<img src="${IMG[k]||IMG[FB[k]]||IMG.red}" alt="${esc(alt)}" loading="lazy" decoding="async">`;
 const split = t => t.split(' ').map((w,i)=>`<span class="w" style="--i:${i}">${w}</span>`).join(' ');
 function nav(theme, active){
@@ -1057,7 +1085,7 @@ const faqSec = () => `<section class="wrap sec"><div class="faqw orbs"><div clas
 const testiSec = () => `<section class="dk testi"><div class="aura" aria-hidden="true" style="opacity:.7">${im('ugc')}</div><div class="t-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Collaborations</span><h2 class="h2" data-split>Why they love working with us</h2></div><p class="muted" data-r>We don't just finish projects; we build growth together. Here is what our clients say.</p></div>
   <div class="track" id="track">${WORK.map((w,i)=>`<figure class="tc glass-dk" data-r style="margin:0;--d:${i*.06}s"><div class="tc-h">${im(w.img2[0])}<span>${esc(w.name)}</span></div><q>${esc(w.q[0])}</q><figcaption class="who"><b>${esc(w.q[1])}</b><small>${esc(w.q[2])} · <span class="smp">Sample</span></small></figcaption></figure>`).join('')}</div>
   <div class="t-ctl"><div class="dots" id="dots"></div><div class="arrows"><button type="button" id="tprev" aria-label="Previous">←︎</button><button type="button" id="tnext" aria-label="Next">→︎</button></div></div></section>`;
-const jcard = (p,i) => `<a class="jc" href="#post-${p.slug}" data-r style="--d:${i*.08}s"><div class="jc-h"><span>${p.cat}</span>${im(p.img)}</div><div class="jc-f"><div class="jc-m"><span>${p.date}</span><span class="rd">${p.read}</span></div><h3>${p.title}</h3><p>${p.ex}</p></div></a>`;
+const jcard = (p,i) => `<a class="jc" href="#post-${p.slug}" data-r style="--d:${i*.08}s"><div class="jc-h"><span>${p.cat}</span>${photo(p.img)}</div><div class="jc-f"><div class="jc-m"><span>${p.date}</span><span class="rd">${p.read}</span></div><h3>${p.title}</h3><p>${p.ex}</p></div></a>`;
 const journal = () => `<section class="wrap sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>The journal</span><h2 class="h2" data-split>Stories, strategies, <span class="muted">and growth thinking.</span></h2></div><a class="lnk" href="#insights" data-r>View All Blogs</a></div><div class="jgrid">${POSTS.map(jcard).join('')}</div></section>`;
 
 
@@ -1144,16 +1172,15 @@ function particleHero(cv){
 }
 /* ---------- pages ---------- */
 function home(){
-  const mq = ['stationery','marketer','kaavya1','ugc','designer','packaging','developer','videographer','mehr1','trail1'];
-  const names = ['Branding','Performance','Product shoots','UGC','Brand design','Packaging','Development','Production','Lookbooks','Travel campaigns'];
-  const items = mq.map((k,i)=>`<div class="marq-item">${im(k)}<span>${names[i]}</span></div>`).join('');
+  const sequence = [['studio','Studio'],['strategy','Strategy'],['branding','Packaging'],['production','Production'],['marketing','Campaigns'],['development','Development'],['fashion','Lookbooks'],['hospitality','Food & beverage']];
+  const items = sequence.map(([key,label])=>`<div class="marq-item">${photo(key,true)}<span>${label}</span></div>`).join('');
   return `${homeHero()}
   ${logoStrip()}
   <section class="wrap sec"><div class="who"><div style="display:flex;flex-direction:column;gap:14px"><span class="tag" data-r>Who we are</span><h2 class="h2" data-split>We build brands, drive growth and build the systems behind it.</h2></div><a class="lnk" href="#studio" data-r>About The Studio</a></div></section>
   <div class="marq" data-r><div class="marq-track">${items}${items}</div></div>
   <section class="wrap sec"><span class="tag" data-r>By the numbers</span><div class="stats">${stat('04','Core disciplines','Branding, marketing, development and production under one roof.',0)}${stat('25+','Service lines','From Meta Ads to custom Shopify apps.',1)}${stat('06','Step process','Discover, strategise, build, launch, optimise, scale.',2)}${stat('24h','Response time','Every enquiry gets a reply within one working day.',3)}</div></section>
   <section class="dk svc"><div class="svc-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Services</span><h2 class="h2" data-split>Everything <span class="pill-img">${im('kaavya1')}</span> your brand needs</h2></div><p class="muted" data-r>Strategy, marketing, technology and content, working from one plan.</p></div>
-  <div class="srows">${PILLARS.map(p=>`<a class="srow" href="#${p.id}" data-scrub><span class="nm">${p.name}</span><span class="s-info"><span class="s-one">${p.one}</span><span class="chips">${p.chips.slice(0,4).map(c=>`<span>${c}</span>`).join('')}</span></span><span class="s-go" aria-hidden="true">↗︎</span></a>`).join('')}</div></section>
+  <div class="srows">${PILLARS.map(p=>`<a class="srow" href="#${p.id}" data-scrub><span class="nm">${photo(p.id,true)}${p.name}</span><span class="s-info"><span class="s-one">${p.one}</span><span class="chips">${p.chips.slice(0,4).map(c=>`<span>${c}</span>`).join('')}</span></span><span class="s-go" aria-hidden="true">↗︎</span></a>`).join('')}</div></section>
   <section class="wrap feat"><div class="feat-sticky"><div class="feat-head"><span class="tag" data-r>Selected work</span><h2 class="h2" data-split>Featured projects &amp; growth stories</h2><p class="muted" data-r>We don't just build websites; we build brands and systems that turn attention into revenue.</p></div></div>
   <div class="fgrid">${PORTFOLIO.slice(0,5).map((p,i)=>pcard(p,'fc'+(i+1))).join('')}</div><div class="allc"><a class="lnk" href="#work">→︎ All Work <span class="sup" style="color:var(--red)">(${String(PORTFOLIO.length).padStart(2,'0')})</span></a></div></section>
   <div id="pricing">${pricing()}</div>
@@ -1172,10 +1199,10 @@ function studio(){
   <section class="pin" id="pin"><div class="dk pin-in"><div class="pin-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag">How we start</span><h2 class="h2">From first call to growth</h2></div><p class="muted" style="max-width:300px;font-size:12px">Every engagement follows the same rhythm, so you always know what happens next.</p></div>
   <div class="days">${days.map((d,i)=>`<div class="day"><h4>${d[0]}<span>${d[1]}</span></h4>${SHAPES[i]}<p>${d[2]}</p></div>`).join('')}</div></div></section>
   <section class="wrap sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:14px"><span class="tag" data-r>Client wall</span><h2 class="h2" data-split>Brands we've worked with</h2></div><p class="muted" data-r style="max-width:300px;font-size:12px">From D2C startups and cafés to hotel chains and national retailers.</p></div>${clientWall()}</section>
-  <section class="wrap sec"><div class="found"><div class="im" data-r>${im('teammeet','The Exioraa team in the studio')}</div><div><span class="tag" data-r>Our foundation</span><h2 class="h3" data-split style="margin-top:16px;max-width:18ch">Built on purpose, driven by performance</h2>
+  <section class="wrap sec"><div class="found"><div class="im" data-r>${photo('studio')}</div><div><span class="tag" data-r>Our foundation</span><h2 class="h3" data-split style="margin-top:16px;max-width:18ch">Built on purpose, driven by performance</h2>
   <div class="acc" data-r><details open><summary>${ICO.mission} Our Mission</summary><p>Help businesses grow with brands that earn trust, marketing that brings customers and systems that make growth repeatable.</p></details><details><summary>${ICO.grow} Training &amp; Progression</summary><p>Every team member gets a monthly learning budget, platform certifications and a clear growth path.</p></details><details><summary>${ICO.home} Our Culture</summary><p>Small teams, direct communication and ownership. We report on results, not activity.</p></details></div></div></div></section>
   <section class="wrap sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:16px"><span class="tag" data-r>Team</span><h2 class="h2" data-split>The people behind Exioraa</h2></div><p class="muted" data-r style="max-width:280px;font-size:12px">A focused senior team, embedded directly into your project.</p></div>
-  <div class="team"><div class="tm" data-r>${im('teammeet')}<div class="cap"><b>Led by Gaurav Pratap Singh</b><small>Founder</small></div></div>${[['ledger2','Strategy Team','Positioning & research'],['marketer','Performance Team','Ads, SEO & analytics'],['designer','Creative Team','Brand & design'],['videographer','Production Team','Photo & video'],['developer','Tech Team','Shopify, WordPress & SaaS'],['social','Content Team','Social & copy']].map(([k,t,s],i)=>`<div class="tm" data-r style="--d:${((i+1)%4)*.06}s">${im(k)}<div class="cap"><b>${t}</b><small>${s}</small></div></div>`).join('')}
+  <div class="team"><div class="tm" data-r>${photo('strategy',true)}<div class="cap"><b>Led by Gaurav Pratap Singh</b><small>Founder</small></div></div>${[['strategy','Strategy Team','Positioning & research'],['marketing','Performance Team','Ads, SEO & analytics'],['branding','Creative Team','Brand & design'],['production','Production Team','Photo & video'],['development','Tech Team','Shopify, WordPress & SaaS'],['journal-ads','Content Team','Social & copy']].map(([k,t,s],i)=>`<div class="tm" data-r style="--d:${((i+1)%4)*.06}s">${photo(k,true)}<div class="cap"><b>${t}</b><small>${s}</small></div></div>`).join('')}
   <div class="tm join" data-r><p style="font-size:12.5px" class="muted">We're all about hard work, smart solutions and clear results. No fluff, just brilliance.</p><a class="btn b-ink" href="#careers" style="align-self:flex-start">Join Us Now ↗︎</a></div></div></section>`;
 }
 
@@ -1203,7 +1230,7 @@ function project(slug){
 
 function services(){
   return `${lightHero('services','Services','Everything your brand needs','Four disciplines, one team. Hire us for one, or combine them as you grow.','<a class="btn b-ink" href="#contact">Start a project ↗︎</a>')}
-  <section class="wrap"><div class="plist">${PILLARS.map((p,i)=>`<div class="pl" id="svc-${p.id}" data-r><span class="mono muted">[${p.num}]</span><div><h3>${p.name}</h3><p class="one">${p.one}</p></div><div class="chips">${p.chips.map(c=>`<span>${c}</span>`).join('')}</div></div>`).join('')}</div></section>
+  <section class="wrap"><div class="plist">${PILLARS.map((p,i)=>`<div class="pl" id="svc-${p.id}" data-r><div class="service-photo">${photo(p.id)}</div><div><h3>${p.name}</h3><p class="one">${p.one}</p></div><div class="chips">${p.chips.map(c=>`<span>${c}</span>`).join('')}</div></div>`).join('')}</div></section>
   <section class="wrap sec"><span class="tag" data-r>How we work</span><div class="stats">${[['01','Discover','Business, market and audience.'],['02','Strategise','Positioning and growth plan.'],['03','Build','Brand, site and systems.'],['04','Launch','Campaigns and content live.']].map((s,i)=>stat(s[0],s[1],s[2],i)).join('')}</div></section>
   ${pricing()}${faqSec()}`;
 }
@@ -1211,7 +1238,8 @@ function services(){
 function industries(){
   return `${lightHero('industries','Industries','Sectors we know well','We already know the buyer, the channels and what good looks like in these industries.','<a class="btn b-ink" href="#contact">Talk to us ↗︎</a>')}
   <section class="wrap"><div class="igrid" style="margin-top:clamp(40px,5vw,64px)">${INDUSTRIES.map(([n,d],i)=>`<div class="ic" data-r style="--d:${(i%4)*.06}s"><span class="mono muted">[${String(i+1).padStart(2,'0')}]</span><b>${n}</b><p>${d}</p></div>`).join('')}</div></section>
-  <section class="wrap sec"><div class="wgrid" style="margin-top:0">${PORTFOLIO.slice(0,2).map(p=>pcard(p)).join('')}</div></section>`;
+  <section class="wrap sec"><div class="sector-scenes">${[['hospitality','Food & Beverage'],['fashion','Fashion & Lifestyle']].map(([key,label])=>`<figure data-r>${photo(key)}<figcaption>${label}</figcaption></figure>`).join('')}</div>
+  <div class="wgrid">${PORTFOLIO.filter(p=>['mova','cafe','saree','ssvarna'].includes(p.id)).map(p=>pcard(p)).join('')}</div></section>`;
 }
 
 function insights(){
@@ -1221,12 +1249,13 @@ function insights(){
 function post(slug){
   const p = POSTS.find(x=>x.slug===slug); if(!p) return notFound();
   return `<div class="navspace"></div><section class="wrap" style="padding-top:clamp(40px,6vw,80px)"><div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px"><span class="tag" data-r>${p.cat}</span><h1 class="h1" data-split style="max-width:18ch">${p.title}</h1><div class="jc-m" data-r style="gap:20px"><span>${p.date}</span><span class="rd">${p.read}</span></div></div>
-  <div class="ps-hero" data-r>${im(p.img)}</div><article class="prose sec" data-r>${p.body.map(b=>b.startsWith('## ')?`<h2>${b.slice(3)}</h2>`:`<p>${b}</p>`).join('')}</article><div style="display:flex;justify-content:center;margin-top:40px"><a class="btn b-line" href="#insights">←︎ All articles</a></div></section>`;
+  <div class="ps-hero" data-r>${photo(p.img)}</div><article class="prose sec" data-r>${p.body.map(b=>b.startsWith('## ')?`<h2>${b.slice(3)}</h2>`:`<p>${b}</p>`).join('')}</article><div style="display:flex;justify-content:center;margin-top:40px"><a class="btn b-line" href="#insights">←︎ All articles</a></div></section>`;
 }
 
 function careers(){
   return `${darkHero('careers','Careers','Join the team building brands that grow','Mohali, Punjab','Now hiring')}
   <section class="wrap sec"><div class="j-top"><div style="display:flex;flex-direction:column;gap:14px"><span class="tag" data-r>Open roles</span><h2 class="h2" data-split>Work with us</h2></div><p class="muted" data-r style="max-width:300px;font-size:12px">Don't see your role? Send your portfolio to connect@exioraa.com.</p></div>
+  <div class="careers-photo" data-r>${photo('doorway')}</div>
   <div class="jobs">${JOBS.map((j,i)=>`<a class="job" href="#job-${j.slug}" data-r style="--d:${i*.06}s"><b>${j.title}</b><span class="muted h">${j.loc}</span><span class="muted h">${j.type} · ${j.mode}</span><span class="go">↗︎</span></a>`).join('')}</div></section>`;
 }
 function job(slug){
@@ -1255,7 +1284,7 @@ function contact(plan){
     <div class="ci glass" data-r><span class="mono muted">Email</span><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><code>connect@exioraa.com</code><button type="button" class="btn b-ink" style="min-height:32px;font-size:12px" data-copy="connect@exioraa.com">Copy</button></div></div>
     <div class="ci glass" data-r style="--d:.06s"><span class="mono muted">Studio</span><b style="font-weight:500">Mohali, Punjab, India</b><span class="muted" style="font-size:12.5px">Mon to Sat, 10:00 to 19:00 IST</span></div>
     <div class="ci glass" data-r style="--d:.12s"><span class="mono muted">What happens next</span><ol class="muted" style="margin:0;padding-left:18px;display:grid;gap:6px;font-size:13px"><li>We read your brief and reply within one working day.</li><li>A free 30-minute discovery call.</li><li>A written plan and fixed-price proposal.</li></ol></div>
-    <div class="ci glass" data-r style="--d:.18s;padding:0;overflow:hidden;aspect-ratio:16/9">${im('teammeet')}</div>
+    <div class="ci glass" data-r style="--d:.18s;padding:0;overflow:hidden;aspect-ratio:16/9">${photo('doorway')}</div>
   </div>
   <div class="fbox glass" data-r id="fhost"><h2>Book a Call</h2><p class="muted" style="font-size:12px">Fields marked * are required.</p>
   <form id="form" data-kind="call" novalidate style="display:flex;flex-direction:column;gap:14px">
@@ -1278,6 +1307,7 @@ let cleanup = [];
 function resolve(h){
   if(!h||h==='home') return ['home',home()];
   if(h==='studio'||h==='about') return ['studio',studio()];
+  if(h.startsWith('view-') && PORTFOLIO.some(p=>'view-'+p.id===h)) return ['work',work(),null,h.slice(5)];
   if(h==='work') return ['work',work()];
   if(h.startsWith('work-')) return ['work',project(h.slice(5))];
   if(h==='services') return ['services',services()];
@@ -1294,7 +1324,8 @@ function resolve(h){
 let first = true, curPage = null;
 function route(){
   const h = decodeURIComponent(location.hash.slice(1));
-  const [page, html, anchor] = resolve(h);
+  const [page, html, anchor, gallery] = resolve(h);
+  portfolioViewer.dismiss();
   const same = page===curPage && anchor && document.getElementById(anchor);
   const go = () => {
     if(!same){
@@ -1306,6 +1337,7 @@ function route(){
       setup();
     }
     app.classList.remove('leave');
+    if(gallery) portfolioViewer.open(gallery);
     if(anchor){ requestAnimationFrame(()=>{ const el=document.getElementById(anchor); if(el) window.scrollTo({top:el.getBoundingClientRect().top+scrollY-16,behavior:'smooth'}); }); }
   };
   if(first||same){ first=false; go(); } else { app.classList.add('leave'); setTimeout(go,230); }
@@ -1456,18 +1488,20 @@ setupSplit(document); observe(document.querySelector('.cta').parentNode);
 setTimeout(()=>document.documentElement.classList.add('logo-done'),2200+(window.__introWait||0));
 
 // portfolio lightbox + filters
-(function(){
+const portfolioViewer = (function(){
   const lb=document.getElementById('lb'), li=document.getElementById('lb-i'), th=document.getElementById('lb-th');
   let P=null, k=0, last=null;
   const show=()=>{ const key=P.imgs[k]; li.src=IMG[key]; li.alt=P.title+' design '+(k+1); document.getElementById('lb-c').textContent=`${P.tag} · ${k+1} / ${P.imgs.length}`; [...th.children].forEach((b,i)=>b.setAttribute('aria-current',i===k)); const multi=P.imgs.length>1; document.getElementById('lb-p').hidden=!multi; document.getElementById('lb-n').hidden=!multi; th.hidden=!multi; };
   const open=id=>{ P=PORTFOLIO.find(p=>p.id===id); if(!P) return; k=0; last=document.activeElement; document.getElementById('lb-t').textContent=P.title; document.getElementById('lb-d').textContent=P.desc; th.innerHTML=P.imgs.map((x,i)=>`<button type="button" aria-label="Design ${i+1}"><img src="${IMG[x]}" alt=""></button>`).join(''); [...th.children].forEach((b,i)=>b.addEventListener('click',()=>{k=i;show();})); show(); lb.hidden=false; document.body.style.overflow='hidden'; document.getElementById('lb-x').focus(); };
-  const close=()=>{ lb.hidden=true; document.body.style.overflow=''; last&&last.focus&&last.focus(); };
-  document.addEventListener('click',e=>{ const c=e.target.closest('[data-view]'); if(c){ e.preventDefault(); open(c.dataset.view); return; } const f=e.target.closest('[data-pf]'); if(f){ const id=f.dataset.pf; document.querySelectorAll('[data-pf]').forEach(b=>b.setAttribute('aria-pressed',b===f)); const g=document.getElementById('pgrid'); g.innerHTML=PORTFOLIO.filter(p=>id==='all'||p.cat===id).map(p=>pcard(p)).join(''); g.querySelectorAll('[data-r]').forEach(x=>x.classList.add('in')); } });
+  const dismiss=()=>{ if(lb.hidden) return; lb.hidden=true; document.body.style.overflow=''; last?.focus(); };
+  const close=()=>{ dismiss(); if(location.hash==='#view-'+P.id) history.replaceState(history.state,'','#work'); };
+  document.addEventListener('click',e=>{ const c=e.target.closest('[data-view]'); if(c && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey){ e.preventDefault(); open(c.dataset.view); return; } const f=e.target.closest('[data-pf]'); if(f){ const id=f.dataset.pf; document.querySelectorAll('[data-pf]').forEach(b=>b.setAttribute('aria-pressed',b===f)); const g=document.getElementById('pgrid'); g.innerHTML=PORTFOLIO.filter(p=>id==='all'||p.cat===id).map(p=>pcard(p)).join(''); g.querySelectorAll('[data-r]').forEach(x=>x.classList.add('in')); } });
   document.getElementById('lb-x').addEventListener('click',close);
   lb.addEventListener('click',e=>{ if(e.target===lb||e.target.classList.contains('lb-stage')) close(); });
   document.getElementById('lb-p').addEventListener('click',()=>{ k=(k-1+P.imgs.length)%P.imgs.length; show(); });
   document.getElementById('lb-n').addEventListener('click',()=>{ k=(k+1)%P.imgs.length; show(); });
   lb.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); if(e.key==='ArrowRight') document.getElementById('lb-n').click(); if(e.key==='ArrowLeft') document.getElementById('lb-p').click(); });
+  return {open,dismiss};
 })();
 
 // theme music: starts when the opening animation ends, then loops
